@@ -1,0 +1,153 @@
+[gd_scene format=3 uid="uid://bl8qem2snvq4t"]
+
+[ext_resource type="Script" uid="uid://jjo8h5ej4wko" path="res://scripts/title_screen.gd" id="1_title"]
+[ext_resource type="Script" uid="uid://bqu3hk326euye" path="res://scripts/idle_chef.gd" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
+[ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" uid="uid://ci6jg0ujhn7rp" path="res://assets/images/player/Princess Dish 110x80.png" id="5_princess"]
+[ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="6_lasagna"]
+[ext_resource type="Texture2D" uid="uid://b80hoxdx32g1e" path="res://assets/images/player/Pastatouille 110x80.png" id="7_pasta"]
+[ext_resource type="Texture2D" uid="uid://c3g4ls31mmqjr" path="res://assets/images/player/Mavis Papaya 110x80.png" id="8_mavis"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_mykxm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+bg_color = Color(0.91, 0.6, 0.17, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+bg_color = Color(0.78, 0.48, 0.1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+bg_color = Color(0.97, 0.71, 0.28, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="TitleScreen" type="Control" unique_id=458584348]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=1583098312]
+texture = ExtResource("3_wall")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=2025411109]
+position = Vector2(0, 720)
+scale = Vector2(1.344, 1.344)
+texture = ExtResource("4_floor")
+centered = false
+
+[node name="Chefs" type="Node2D" parent="." unique_id=1310964205]
+
+[node name="PrincessDish" type="Sprite2D" parent="Chefs" unique_id=64107663]
+position = Vector2(660, 830)
+scale = Vector2(2, 2)
+texture_filter = 1
+texture = ExtResource("5_princess")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+
+[node name="LegendOfLasagna" type="Sprite2D" parent="Chefs" unique_id=910000474]
+position = Vector2(860, 830)
+scale = Vector2(2, 2)
+texture_filter = 1
+texture = ExtResource("6_lasagna")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.15
+
+[node name="Pastatouille" type="Sprite2D" parent="Chefs" unique_id=1932937973]
+position = Vector2(1060, 830)
+scale = Vector2(2, 2)
+texture_filter = 1
+texture = ExtResource("7_pasta")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.3
+
+[node name="MavisPapaya" type="Sprite2D" parent="Chefs" unique_id=1587087294]
+position = Vector2(1260, 830)
+scale = Vector2(2, 2)
+texture_filter = 1
+texture = ExtResource("8_mavis")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.45
+
+[node name="TitleFaster" type="Label" parent="." unique_id=25844606]
+layout_mode = 0
+offset_top = -14.0
+offset_right = 1920.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.96, 0.65, 0.17, 1)
+theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = ExtResource("9_mykxm")
+theme_override_font_sizes/font_size = 144
+text = "FASTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleChef" type="Label" parent="." unique_id=2108353221]
+layout_mode = 0
+offset_top = 126.0
+offset_right = 1920.0
+offset_bottom = 310.0
+theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.12, 0.16, 1)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = ExtResource("9_mykxm")
+theme_override_font_sizes/font_size = 144
+text = "CHEF 2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="." unique_id=1809287303]
+layout_mode = 0
+offset_left = 730.0
+offset_top = 436.0
+offset_right = 1190.0
+offset_bottom = 572.0
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("9_mykxm")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+text = "START"
