@@ -105,9 +105,17 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ejf1h"]
-size = Vector2(62, 103)
+size = Vector2(62, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ui4j7"]
+size = Vector2(43, 33)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ejf1h"]
+a = Vector2(-3.333334, 20.333336)
+b = Vector2(-22, -6.333332)
 
 [node name="Player 1" type="CharacterBody2D" unique_id=697734632]
+scale = Vector2(0.75, 0.75)
 script = ExtResource("1_gneq0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1857205123]
@@ -117,5 +125,18 @@ animation = &"jumping"
 autoplay = "idle_side"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2143044411]
-position = Vector2(-3, 3.5)
+position = Vector2(-3, -10)
 shape = SubResource("RectangleShape2D_ejf1h")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=570985507]
+position = Vector2(6.5, 38.5)
+shape = SubResource("RectangleShape2D_ui4j7")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="." unique_id=1550857838]
+position = Vector2(-10, 33)
+shape = SubResource("SegmentShape2D_ejf1h")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1518106743]
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://gcofjvyfat3h"
-path="res://.godot/imported/professional_kitchen.png-0f2c2677e368295a1b656e8a37bf64d7.ctex"
+uid="uid://crxdba668f5jj"
+path="res://.godot/imported/Terrain (16x16).png-40394fc07aafe3f4a9a78aba21f498f9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/tilemaps/professional_kitchen.png"
-dest_files=["res://.godot/imported/professional_kitchen.png-0f2c2677e368295a1b656e8a37bf64d7.ctex"]
+source_file="res://assets/images/tilemap/Terrain (16x16).png"
+dest_files=["res://.godot/imported/Terrain (16x16).png-40394fc07aafe3f4a9a78aba21f498f9.ctex"]
 
 [params]
 
