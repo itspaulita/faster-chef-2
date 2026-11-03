@@ -3,3 +3,4 @@ res://scripts/idle_chef.gd
 res://scripts/title_screen.gd
 res://scenes/cutscene.tscn
 res://scripts/cutscene.gd
+res://scenes/choose_chef.tscn

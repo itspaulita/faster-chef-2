@@ -151,15 +151,3 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "START"
-
-[node name="PromptLabel" type="Label" parent="." unique_id=475429864]
-layout_mode = 0
-offset_top = 960.0
-offset_right = 1920.0
-offset_bottom = 1050.0
-theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
-theme_override_fonts/font = ExtResource("9_mykxm")
-theme_override_font_sizes/font_size = 48
-text = "Select a chef and press start"
-horizontal_alignment = 1
-vertical_alignment = 1
