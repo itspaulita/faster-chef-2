@@ -18,7 +18,7 @@ func _ready() -> void:
 	# Zoom so the screen shows `screen_rows` tiles from top to bottom.
 	var tile_height := (bottom_right.y - top_left.y) / used.size.y
 	var view_height := screen_rows * tile_height
-	var zoom := get_viewport_rect().size.y / view_height
+	#var zoom := get_viewport_rect().size.y / view_height
 	#camera.zoom = Vector2(zoom, zoom)
 
 	camera.limit_left = int(top_left.x)

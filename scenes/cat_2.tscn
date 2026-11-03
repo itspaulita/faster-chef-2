@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b78dclmajmf1j"]
 
 [ext_resource type="Texture2D" uid="uid://cavmtuyw85t30" path="res://assets/images/cats/Lem sprite 45x45.png" id="1_2i48f"]
+[ext_resource type="Script" uid="uid://dgbio1mfltad1" path="res://scripts/cat_2.gd" id="1_vv6aa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vv6aa"]
 atlas = ExtResource("1_2i48f")
@@ -43,6 +44,7 @@ size = Vector2(43, 38)
 
 [node name="cat_2" type="Area2D" unique_id=1820588675]
 scale = Vector2(0.5, 0.5)
+script = ExtResource("1_vv6aa")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=518724420]
 texture_filter = 1
@@ -53,3 +55,9 @@ autoplay = "running"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1461977312]
 position = Vector2(-0.5, 2)
 shape = SubResource("RectangleShape2D_yhv81")
+
+[node name="Timer" type="Timer" parent="." unique_id=1493815779]
+wait_time = 1.5999999999999999
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
