@@ -9,7 +9,7 @@ size = Vector2(127, 127)
 [node name="Main" type="Node2D" unique_id=625426806]
 
 [node name="Player 1" parent="." unique_id=697734632 instance=ExtResource("1_o5qli")]
-position = Vector2(565, 395)
+position = Vector2(571, 426)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1872264214]
 position = Vector2(577, 583)
@@ -19,5 +19,16 @@ metadata/_edit_group_ = true
 texture = ExtResource("2_0wfyh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=745629479]
+position = Vector2(-0.5, -0.5)
+shape = SubResource("RectangleShape2D_ejf1h")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1122480671]
+position = Vector2(705, 512)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2" unique_id=1573252374]
+texture = ExtResource("2_0wfyh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=1245366479]
 position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_ejf1h")
