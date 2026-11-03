@@ -1,5 +1,5 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793701113
+::res://::1793710866
 faster-chef-jam-plan.md::TextFile::-1::1793643961::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::3595101794491397811::1793645223::1793645313::1::::<><><>0<>0<>231936cf950f8ae9cf9014aa0396d8ba<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1793623917::0::1::::<><><>0<>0<><>::
@@ -15,8 +15,11 @@ Legend of Lasagna 110x80.png::CompressedTexture2D::2746113705494321793::17937009
 Mavis Papaya 110x80.png::CompressedTexture2D::6752296682171322595::1793700929::1793700929::1::::<><><>0<>0<>7c17ef1360d519150fb7a5b8bf52cf96<>res://.godot/imported/Mavis Papaya 110x80.png-484e3f0ab027073c4e502d7c798d688e.ctex::
 Pastatouille 110x80.png::CompressedTexture2D::4754713201418665672::1793700929::1793700929::1::::<><><>0<>0<>8914fc60ebfe6a0ad5d9b8d341c66bee<>res://.godot/imported/Pastatouille 110x80.png-db3ff3154914171852284c90fb959871.ctex::
 Princess Dish 110x80.png::CompressedTexture2D::5398906338963305417::1793700929::1793700929::1::::<><><>0<>0<>83a5ac949a9c241f08c3c9db385ca186<>res://.godot/imported/Princess Dish 110x80.png-eca8cb36d3227f40ae56c858e9b3fa3d.ctex::
-::res://scenes/::1793701113
-title_screen.tscn::PackedScene::-1::1793701113::0::1::::<><><>0<>0<><>::res://scripts/title_screen.gd<>res://scripts/idle_chef.gd<>res://assets/images/bg/blue wall.png<>res://assets/images/bg/floor.png<>res://assets/images/player/Princess Dish 110x80.png<>res://assets/images/player/Legend of Lasagna 110x80.png<>res://assets/images/player/Pastatouille 110x80.png<>res://assets/images/player/Mavis Papaya 110x80.png
-::res://scripts/::1793701177
-idle_chef.gd::GDScript::3552442883093999092::1793701113::0::1::::<>Sprite2D<><>0<>0<><>::
-title_screen.gd::GDScript::651188375828939314::1793701113::0::1::::<>Control<><>0<>0<><>::
+::res://scenes/::1793706726
+title_screen.tscn::PackedScene::3227601717481288741::1793710866::0::1::::<><><>0<>0<><>::uid://jjo8h5ej4wko::::res://scripts/title_screen.gd<>uid://bqu3hk326euye::::res://scripts/idle_chef.gd<>uid://b5q5aj7nxg2lp::::res://assets/images/bg/blue wall.png<>uid://mvvgcvd3hqf5::::res://assets/images/bg/floor.png<>uid://ci6jg0ujhn7rp::::res://assets/images/player/Princess Dish 110x80.png<>uid://bfeidd182ogx2::::res://assets/images/player/Legend of Lasagna 110x80.png<>uid://b80hoxdx32g1e::::res://assets/images/player/Pastatouille 110x80.png<>uid://c3g4ls31mmqjr::::res://assets/images/player/Mavis Papaya 110x80.png<>uid://gdslv24chos0::::res://assets/font/RetroGaming.ttf
+::res://scripts/::1793710866
+game_state.gd::GDScript::2231937960309826450::1793710866::0::1::::GameState<>RefCounted<><>0<>0<><>::
+idle_chef.gd::GDScript::3552442883093999092::1793706726::0::1::::<>Sprite2D<><>0<>0<><>::
+title_screen.gd::GDScript::651188375828939314::1793710866::0::1::::<>Control<><>0<>0<><>::
+::res://shaders/::1793710866
+outline.gdshader::Shader::1930327104175307299::1793710866::0::1::::<><><>0<>0<><>::

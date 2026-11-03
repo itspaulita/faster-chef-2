@@ -68,18 +68,18 @@ centered = false
 [node name="Chefs" type="Node2D" parent="." unique_id=1310964205]
 
 [node name="PrincessDish" type="Sprite2D" parent="Chefs" unique_id=64107663]
+texture_filter = 1
 position = Vector2(660, 830)
 scale = Vector2(2, 2)
-texture_filter = 1
 texture = ExtResource("5_princess")
 hframes = 8
 vframes = 4
 script = ExtResource("2_idle")
 
 [node name="LegendOfLasagna" type="Sprite2D" parent="Chefs" unique_id=910000474]
+texture_filter = 1
 position = Vector2(860, 830)
 scale = Vector2(2, 2)
-texture_filter = 1
 texture = ExtResource("6_lasagna")
 hframes = 8
 vframes = 4
@@ -87,9 +87,9 @@ script = ExtResource("2_idle")
 start_delay = 0.15
 
 [node name="Pastatouille" type="Sprite2D" parent="Chefs" unique_id=1932937973]
+texture_filter = 1
 position = Vector2(1060, 830)
 scale = Vector2(2, 2)
-texture_filter = 1
 texture = ExtResource("7_pasta")
 hframes = 8
 vframes = 4
@@ -97,9 +97,9 @@ script = ExtResource("2_idle")
 start_delay = 0.3
 
 [node name="MavisPapaya" type="Sprite2D" parent="Chefs" unique_id=1587087294]
+texture_filter = 1
 position = Vector2(1260, 830)
 scale = Vector2(2, 2)
-texture_filter = 1
 texture = ExtResource("8_mavis")
 hframes = 8
 vframes = 4
@@ -151,3 +151,15 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "START"
+
+[node name="PromptLabel" type="Label" parent="." unique_id=475429864]
+layout_mode = 0
+offset_top = 960.0
+offset_right = 1920.0
+offset_bottom = 1050.0
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("9_mykxm")
+theme_override_font_sizes/font_size = 48
+text = "Select a chef and press start"
+horizontal_alignment = 1
+vertical_alignment = 1
