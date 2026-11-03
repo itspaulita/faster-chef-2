@@ -1,5 +1,7 @@
+class_name IdleChef
 extends Sprite2D
-## Two-frame idle loop for a chef sheet (row 0, columns 0-1) with a small bob.
+## Looping frame animation for a sprite sheet, with an optional small bob.
+## Defaults to the two-frame front-facing idle (row 0, columns 0-1).
 
 @export var idle_frames: PackedInt32Array = [0, 1]
 @export var frame_time := 0.4

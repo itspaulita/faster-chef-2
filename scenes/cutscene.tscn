@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://dvm3x5yuaajt8"]
+
+[ext_resource type="Script" uid="uid://mv1kko68jnkg" path="res://scripts/cutscene.gd" id="1_cut"]
+[ext_resource type="Script" uid="uid://bqu3hk326euye" path="res://scripts/idle_chef.gd" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
+[ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
+[ext_resource type="Texture2D" uid="uid://q11ar1gspomi" path="res://assets/images/monsters/starfish.png" id="6_monster"]
+[ext_resource type="Texture2D" uid="uid://bxxjwvhtqi585" path="res://assets/images/misc/single-line-tilemap.png" id="7_bubble"]
+[ext_resource type="Texture2D" uid="uid://chma8f38ds6y5" path="res://assets/images/food/5 dishes 60x60.png" id="8_dishes"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_font"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bubble"]
+atlas = ExtResource("7_bubble")
+region = Rect2(0, 0, 320, 160)
+
+[node name="Cutscene" type="Control" unique_id=181687458]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cut")
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=694374194]
+texture = ExtResource("3_wall")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=961773922]
+position = Vector2(0, 720)
+scale = Vector2(1.344, 1.344)
+texture = ExtResource("4_floor")
+centered = false
+
+[node name="Monster" type="Sprite2D" parent="." unique_id=930034121]
+position = Vector2(1380, 828)
+scale = Vector2(4, 4)
+texture = ExtResource("6_monster")
+hframes = 11
+script = ExtResource("2_idle")
+frame_time = 0.1
+
+[node name="Chef" type="Sprite2D" parent="." unique_id=1645282207]
+texture_filter = 1
+position = Vector2(-120, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("5_chef")
+hframes = 8
+vframes = 4
+frame = 14
+script = ExtResource("2_idle")
+frame_time = 0.15
+
+[node name="OrderBubble" type="Node2D" parent="." unique_id=2027521582]
+position = Vector2(1380, 650)
+
+[node name="Bubble" type="Sprite2D" parent="OrderBubble" unique_id=990724272]
+texture_filter = 1
+position = Vector2(-150, -318)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_bubble")
+centered = false
+
+[node name="DishIcon" type="Sprite2D" parent="OrderBubble" unique_id=849706675]
+texture_filter = 1
+position = Vector2(-30, -198)
+scale = Vector2(3, 3)
+texture = ExtResource("8_dishes")
+hframes = 5
+
+[node name="DishLabel" type="Label" parent="OrderBubble" unique_id=1954958955]
+offset_left = 80.0
+offset_top = -298.0
+offset_right = 440.0
+offset_bottom = -98.0
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 38
+text = "Tom yum"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Fade" type="ColorRect" parent="." unique_id=1251890914]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

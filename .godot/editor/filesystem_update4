@@ -1,3 +1,5 @@
 res://scenes/title_screen.tscn
 res://scripts/idle_chef.gd
 res://scripts/title_screen.gd
+res://scenes/cutscene.tscn
+res://scripts/cutscene.gd
