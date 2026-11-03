@@ -115,7 +115,7 @@ a = Vector2(-3.333334, 20.333336)
 b = Vector2(-22, -6.333332)
 
 [node name="Player 1" type="CharacterBody2D" unique_id=697734632]
-scale = Vector2(0.75, 0.75)
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_gneq0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1857205123]

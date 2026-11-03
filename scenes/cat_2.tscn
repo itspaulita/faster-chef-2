@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://b78dclmajmf1j"]
+
+[ext_resource type="Texture2D" uid="uid://cavmtuyw85t30" path="res://assets/images/cats/Lem sprite 45x45.png" id="1_2i48f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv6aa"]
+atlas = ExtResource("1_2i48f")
+region = Rect2(0, 45, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obp25"]
+atlas = ExtResource("1_2i48f")
+region = Rect2(45, 45, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n4yoq"]
+atlas = ExtResource("1_2i48f")
+region = Rect2(90, 45, 45, 45)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iy1we"]
+atlas = ExtResource("1_2i48f")
+region = Rect2(135, 45, 45, 45)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vv6aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obp25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n4yoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iy1we")
+}],
+"loop": 1,
+"name": &"running",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhv81"]
+size = Vector2(43, 38)
+
+[node name="cat_2" type="Area2D" unique_id=1820588675]
+scale = Vector2(0.5, 0.5)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=518724420]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+animation = &"running"
+autoplay = "running"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1461977312]
+position = Vector2(-0.5, 2)
+shape = SubResource("RectangleShape2D_yhv81")

@@ -3,3 +3,6 @@ res://scenes/main.tscn
 res://scripts/player_1.gd
 res://scenes/levels/level_1.tscn
 res://scenes/levels/level_1.gd
+res://scenes/cat_1.tscn
+res://scenes/cat_2.tscn
+res://scripts/cat_1.gd
