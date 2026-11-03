@@ -1,5 +1,18 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793645308
-faster-chef-jam-plan.md::TextFile::-1::1793643961::0::1::::<><><>0<>0<><>::
-icon.svg::CompressedTexture2D::3595101794491397811::1793645223::1793645313::1::::<><><>0<>0<>231936cf950f8ae9cf9014aa0396d8ba<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-README.md::TextFile::-1::1793623917::0::1::::<><><>0<>0<><>::
+::res://::1793684021
+faster-chef-jam-plan.md::TextFile::-1::1793683526::0::1::::<><><>0<>0<><>::
+icon.svg::CompressedTexture2D::3595101794491397811::1793683526::1793683526::1::::<><><>0<>0<>231936cf950f8ae9cf9014aa0396d8ba<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+README.md::TextFile::-1::1793683526::0::1::::<><><>0<>0<><>::
+::res://assets/::1793684699
+::res://assets/images/::1793684699
+::res://assets/images/player/::1793700797
+Legend of Lasagna 110x80.png::CompressedTexture2D::8596958877150324186::1793683533::1793683736::1::::<><><>0<>0<>d07b1a895946f4c5748ff399231ef97b<>res://.godot/imported/Legend of Lasagna 110x80.png-7d6a5e27249000ec2fc1c58616972f13.ctex::
+Mavis Papaya 110x80.png::CompressedTexture2D::6704818383717571808::1793683533::1793683736::1::::<><><>0<>0<>f41dcab1aaddae3902536866ca2dc58a<>res://.godot/imported/Mavis Papaya 110x80.png-484e3f0ab027073c4e502d7c798d688e.ctex::
+Pastatouille 110x80.png::CompressedTexture2D::3824695478109420119::1793683533::1793683736::1::::<><><>0<>0<>74d03de537a8fd206254ffc6c7c09cf3<>res://.godot/imported/Pastatouille 110x80.png-db3ff3154914171852284c90fb959871.ctex::
+princess dish 2_2.png::CompressedTexture2D::1594842742983379668::1793700797::1793700797::1::::<><><>0<>0<>cc7a89a7738b74239d43c5d5de40941c<>res://.godot/imported/princess dish 2_2.png-421b6168b79e90fbbc2dcc513abdcbca.ctex::
+Princess Dish 110x80.png::CompressedTexture2D::2705574135325091919::1793683533::1793683736::1::::<><><>0<>0<>4fda19861182203d858e353f2f77583c<>res://.godot/imported/Princess Dish 110x80.png-eca8cb36d3227f40ae56c858e9b3fa3d.ctex::
+::res://scenes/::1793686621
+main.tscn::PackedScene::6902269626835348913::1793686621::0::1::::<><><>0<>0<><>::uid://kxgk2rptjesw::::res://scenes/player_1.tscn<>uid://brhq2ikp2447h::::res://icon.svg
+player_1.tscn::PackedScene::749752729718756130::1793683533::0::1::::<><><>0<>0<><>::uid://q8cvoxv6shnv::::res://scripts/player_1.gd<>uid://besun716hsljr::::res://assets/images/player/Princess Dish 110x80.png
+::res://scripts/::1793683533
+player_1.gd::GDScript::1191305671603716427::1793683533::0::1::::<>CharacterBody2D<><>0<>0<><>::
