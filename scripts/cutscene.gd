@@ -1,12 +1,14 @@
 extends Control
 ## Chef runs in, stops by the monster, and the monster's order pops up.
 
-const NEXT_SCENE := "res://scenes/countdown.tscn"
+const NEXT_SCENE := "res://scenes/main.tscn" # Chi - change scene to main after cutscene
 const FALLBACK_SCENE := "res://scenes/title_screen.tscn"
 ## Sheet row 1 (side view): columns 6-7 walk right, columns 2-3 stand facing right.
 const CHEF_WALK_RIGHT := [14, 15]
 const CHEF_STAND_RIGHT := [10, 11]
 const MONSTER_FRAMES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
+const CHEF_EXIT_X := 2100.0
 
 @export var dish_name := "Tom yum"
 ## Index into the 5-dish sheet.
@@ -44,8 +46,11 @@ func _ready() -> void:
 	_tween.tween_property(bubble, "scale", Vector2.ONE, 0.35) \
 			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_tween.tween_property(dish_label, "visible_ratio", 1.0, 0.6)
-	_tween.tween_interval(2.5)
-	_tween.tween_callback(_finish)
+	_tween.tween_interval(2.0) #Chi
+	_tween.tween_callback(_on_chef_leaves) #Chi
+	_tween.tween_property(chef, "position:x", CHEF_EXIT_X, 1.0) \
+			.set_ease(Tween.EASE_IN) #Chi
+	_tween.tween_callback(_finish) #Chi
 
 
 func _input(event: InputEvent) -> void:
@@ -57,6 +62,10 @@ func _on_chef_arrived() -> void:
 	chef.idle_frames = PackedInt32Array(CHEF_STAND_RIGHT)
 	chef.frame_time = 0.4
 
+# Chi - when chef leave the cut scene, walk all the way to the right
+func _on_chef_leaves() -> void:
+	chef.idle_frames = PackedInt32Array(CHEF_WALK_RIGHT)
+	chef.frame_time = 0.1   # faster steps = running
 
 func _finish() -> void:
 	if _finished:
