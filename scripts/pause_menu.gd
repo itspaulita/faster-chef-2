@@ -1,15 +1,18 @@
 class_name PauseMenu
 extends CanvasLayer
-## Pause screen: Resume, Back to lobby, Sound on/off, Quit.
+## Pause screen: Resume, Restart level, Back to lobby, Sound on/off, Quit.
 ## Call open() (the HUD's pause button does). Esc toggles it too.
 
 const LOBBY_SCENE := "res://scenes/choose_chef.tscn"
 const TITLE_SCENE := "res://scenes/title_screen.tscn"
 
 signal resumed
+## Emitted just before the level is reloaded, in case something outside the scene needs resetting.
+signal restart_requested
 
 @onready var banner: Control = $Dim/CenterContainer/Banner
 @onready var resume_button: Button = %ResumeButton
+@onready var restart_button: Button = %RestartButton
 @onready var lobby_button: Button = %LobbyButton
 @onready var sound_button: Button = %SoundButton
 @onready var quit_button: Button = %QuitButton
@@ -19,6 +22,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	resume_button.pressed.connect(close)
+	restart_button.pressed.connect(_restart_level)
 	lobby_button.pressed.connect(_go_to_lobby)
 	sound_button.pressed.connect(_toggle_sound)
 	quit_button.pressed.connect(_quit)
@@ -53,6 +57,13 @@ func close() -> void:
 	visible = false
 	get_tree().paused = false
 	resumed.emit()
+
+
+## Reloads the current scene, so anything living in the level (HUD, cats, pieces, chef) starts fresh.
+func _restart_level() -> void:
+	restart_requested.emit()
+	get_tree().paused = false
+	get_tree().reload_current_scene()
 
 
 func _go_to_lobby() -> void:

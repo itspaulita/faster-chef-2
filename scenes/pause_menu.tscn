@@ -124,6 +124,11 @@ custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
 text = "RESUME"
 
+[node name="RestartButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "RESTART LEVEL"
+
 [node name="LobbyButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
