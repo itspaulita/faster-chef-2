@@ -1,10 +1,10 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1793744475
+::res://::1793791855
 faster-chef-jam-plan.md::TextFile::-1::1793683526::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::3595101794491397811::1793683526::1793683526::1::::<><><>0<>0<>231936cf950f8ae9cf9014aa0396d8ba<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1793683526::0::1::::<><><>0<>0<><>::
 ::res://assets/::1793725958
-::res://assets/images/::1793748636
+::res://assets/images/::1793791737
 ::res://assets/images/background/::1793743708
 blue wall.png::CompressedTexture2D::3214174788572450164::1793729662::1793729663::1::::<><><>0<>0<>8775091f08963902475d8780249d24c9<>res://.godot/imported/blue wall.png-f95e68a1888b8563ab65739b4aae25ff.ctex::
 floor.png::CompressedTexture2D::2410153333210029508::1793729662::1793729663::1::::<><><>0<>0<>94fed31c26fdafa8130fe2760b7e1727<>res://.godot/imported/floor.png-2da4077e7ee5443af906e1d3c8798aa3.ctex::
@@ -13,7 +13,9 @@ wall_2.png::CompressedTexture2D::7989960640263473175::1793743707::1793743708::1:
 Doramochi sprite 45x45.png::CompressedTexture2D::8492952604573680597::1793738492::1793738492::1::::<><><>0<>0<>5ab124f5fe834aec817c2eae7fb876a5<>res://.godot/imported/Doramochi sprite 45x45.png-87c0e0513c6c127384a9bcc292e0109c.ctex::
 Lem sprite 45x45.png::CompressedTexture2D::4816956922806037341::1793738492::1793738492::1::::<><><>0<>0<>eaeda3a993fadcb4269b8c2420a6d7c5<>res://.godot/imported/Lem sprite 45x45.png-85e7b27c68856271bebdc03f71646b4b.ctex::
 Lily sprite 45x45.png::CompressedTexture2D::1602244581256577895::1793738492::1793738492::1::::<><><>0<>0<>a9275bffff73637a952638e4a4de6bc0<>res://.godot/imported/Lily sprite 45x45.png-26078102bf807ce99dd9136a8e24ddd3.ctex::
-::res://assets/images/ingredients/::1793748683
+::res://assets/images/collected sprites/::1793791751
+30.png::CompressedTexture2D::3151287324818319802::1793791708::1793791751::1::::<><><>0<>0<>e267facde144bc156b82ea4e34ad0423<>res://.godot/imported/30.png-ccab4af62410e437e6b5e8119bf405f7.ctex::
+::res://assets/images/ingredients/::1793791751
 ingredients 32x32.png::CompressedTexture2D::2241025968614992719::1793748683::1793748684::1::::<><><>0<>0<>2c92fec57f52fded565cf34b73ef60ea<>res://.godot/imported/ingredients 32x32.png-6e838c4db8cfd409a958a3b08ff3eb05.ctex::
 ::res://assets/images/player/::1793725958
 Legend of Lasagna 110x80.png::CompressedTexture2D::8596958877150324186::1793720241::1793725958::1::::<><><>0<>0<>d07b1a895946f4c5748ff399231ef97b<>res://.godot/imported/Legend of Lasagna 110x80.png-7d6a5e27249000ec2fc1c58616972f13.ctex::
@@ -25,15 +27,18 @@ Princess Dish 110x80.png::CompressedTexture2D::2705574135325091919::1793720241::
 professional_kitchen.png::CompressedTexture2D::426121290452767643::1793729694::1793732282::1::::<><><>0<>0<>27a4e386059563a93d0d5428971ba120<>res://.godot/imported/professional_kitchen.png-a71f736c5c3d8c46bd36582811965207.ctex::
 professional_kitchen_withshadows.png::CompressedTexture2D::6869489087085684509::1793729694::1793732282::1::::<><><>0<>0<>435bd6fb15c4152acb41255f4eecf9b9<>res://.godot/imported/professional_kitchen_withshadows.png-072524b5ac8ae83d24e3077a392b7284.ctex::
 Terrain (16x16).png::CompressedTexture2D::6013716383690097419::1793733169::1793733170::1::::<><><>0<>0<>988070e79402b8339d6459a34d1cbdf9<>res://.godot/imported/Terrain (16x16).png-40394fc07aafe3f4a9a78aba21f498f9.ctex::
-::res://scenes/::1793744221
-cat_1.tscn::PackedScene::4481193841416268068::1793742529::0::1::::<><><>0<>0<><>::uid://dbgkns8if04f8::::res://scripts/cat_1.gd<>uid://w3ey7xrxomdr::::res://assets/images/cats/Lily sprite 45x45.png
+::res://scenes/::1793791855
+cat_1.tscn::PackedScene::4481193841416268068::1793749953::0::1::::<><><>0<>0<><>::uid://dbgkns8if04f8::::res://scripts/cat_1.gd<>uid://w3ey7xrxomdr::::res://assets/images/cats/Lily sprite 45x45.png
 cat_2.tscn::PackedScene::4700774464867229057::1793744221::0::1::::<><><>0<>0<><>::uid://cavmtuyw85t30::::res://assets/images/cats/Lem sprite 45x45.png<>uid://dgbio1mfltad1::::res://scripts/cat_2.gd
 main.tscn::PackedScene::6902269626835348913::1793744192::0::1::::<><><>0<>0<><>::uid://brmturxh7svlg::::res://scenes/levels/level_1.tscn
-player_1.tscn::PackedScene::749752729718756130::1793742611::0::1::::<><><>0<>0<><>::uid://q8cvoxv6shnv::::res://scripts/player_1.gd<>uid://besun716hsljr::::res://assets/images/player/Princess Dish 110x80.png<>uid://wys3d8eo11sy::::res://assets/images/player/princess dish 2_2.png
-::res://scenes/levels/::1793744480
-level_1.tscn::PackedScene::3605593826118026496::1793744480::0::1::::<><><>0<>0<><>::uid://crxdba668f5jj::::res://assets/images/tilemap/Terrain (16x16).png<>uid://c25debtjygqjl::::res://scripts/level_1.gd<>uid://gcofjvyfat3h::::res://assets/images/tilemap/professional_kitchen.png<>uid://dl3nqp70r3alr::::res://assets/images/background/wall_2.png<>uid://kxgk2rptjesw::::res://scenes/player_1.tscn<>uid://b43yuwxh413k7::::res://scenes/cat_1.tscn<>uid://b78dclmajmf1j::::res://scenes/cat_2.tscn
-::res://scripts/::1793744475
-cat_1.gd::GDScript::7242468543260152215::1793742529::0::1::::<>Area2D<><>0<>0<><>::
+moving_microwave.tscn::PackedScene::1162926079455273942::1793751571::0::1::::<><><>0<>0<><>::uid://gcofjvyfat3h::::res://assets/images/tilemap/professional_kitchen.png
+moving_platform_up.tscn::PackedScene::4363183487178982613::1793751212::0::1::::<><><>0<>0<><>::uid://gcofjvyfat3h::::res://assets/images/tilemap/professional_kitchen.png
+player_1.tscn::PackedScene::749752729718756130::1793790934::0::1::::<><><>0<>0<><>::uid://q8cvoxv6shnv::::res://scripts/player_1.gd<>uid://besun716hsljr::::res://assets/images/player/Princess Dish 110x80.png<>uid://wys3d8eo11sy::::res://assets/images/player/princess dish 2_2.png
+salmon.tscn::PackedScene::7039423157937985948::1793792055::0::1::::<><><>0<>0<><>::uid://bk5rihs6mjmis::::res://assets/images/collected sprites/30.png<>uid://66tmubxknpop::::res://assets/images/ingredients/ingredients 32x32.png
+::res://scenes/levels/::1793751824
+level_1.tscn::PackedScene::3605593826118026496::1793751824::0::1::::<><><>0<>0<><>::uid://crxdba668f5jj::::res://assets/images/tilemap/Terrain (16x16).png<>uid://c25debtjygqjl::::res://scripts/level_1.gd<>uid://gcofjvyfat3h::::res://assets/images/tilemap/professional_kitchen.png<>uid://dl3nqp70r3alr::::res://assets/images/background/wall_2.png<>uid://kxgk2rptjesw::::res://scenes/player_1.tscn<>uid://b43yuwxh413k7::::res://scenes/cat_1.tscn<>uid://b78dclmajmf1j::::res://scenes/cat_2.tscn<>uid://b3fs82ymxhtgv::::res://scenes/moving_platform_up.tscn<>uid://qtlhtl8eqi2a::::res://scenes/moving_microwave.tscn
+::res://scripts/::1793749953
+cat_1.gd::GDScript::7242468543260152215::1793749953::0::1::::<>Area2D<><>0<>0<><>::
 cat_2.gd::GDScript::7582971612105737960::1793744150::0::1::::<>Area2D<><>0<>0<><>::
 level_1.gd::GDScript::6730060854704668301::1793743832::0::1::::<>Node2D<><>0<>0<><>::
 player_1.gd::GDScript::1191305671603716427::1793742597::0::1::::<>CharacterBody2D<><>0<>0<><>::
