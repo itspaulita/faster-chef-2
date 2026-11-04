@@ -1,0 +1,207 @@
+[gd_scene format=3 uid="uid://dajd8k8b6grhf"]
+
+[ext_resource type="Script" uid="uid://d07ea6jkyiijv" path="res://scripts/choose_chef.gd" id="1_choose"]
+[ext_resource type="Script" uid="uid://bqu3hk326euye" path="res://scripts/idle_chef.gd" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
+[ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" uid="uid://ci6jg0ujhn7rp" path="res://assets/images/player/Princess Dish 110x80.png" id="5_princess"]
+[ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="6_lasagna"]
+[ext_resource type="Texture2D" uid="uid://b80hoxdx32g1e" path="res://assets/images/player/Pastatouille 110x80.png" id="7_pasta"]
+[ext_resource type="Texture2D" uid="uid://c3g4ls31mmqjr" path="res://assets/images/player/Mavis Papaya 110x80.png" id="8_mavis"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_popup"]
+content_margin_left = 32.0
+content_margin_top = 24.0
+content_margin_right = 32.0
+content_margin_bottom = 24.0
+bg_color = Color(1, 0.97, 0.88, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+bg_color = Color(0.91, 0.6, 0.17, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+bg_color = Color(0.78, 0.48, 0.1, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+bg_color = Color(0.97, 0.71, 0.28, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="ChooseChef" type="Control" unique_id=418357467]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_choose")
+
+[node name="Wall" type="Sprite2D" parent="." unique_id=286222765]
+texture = ExtResource("3_wall")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="." unique_id=1367832809]
+position = Vector2(0, 720)
+scale = Vector2(1.344, 1.344)
+texture = ExtResource("4_floor")
+centered = false
+
+[node name="Header" type="Label" parent="." unique_id=1502877783]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 1920.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.96, 0.65, 0.17, 1)
+theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 24
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 110
+text = "CHOOSE YOUR CHEF"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chefs" type="Node2D" parent="." unique_id=934518680]
+
+[node name="PrincessDish" type="Sprite2D" parent="Chefs" unique_id=1948015659]
+texture_filter = 1
+position = Vector2(510, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("5_princess")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+
+[node name="LegendOfLasagna" type="Sprite2D" parent="Chefs" unique_id=1218817258]
+texture_filter = 1
+position = Vector2(810, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("6_lasagna")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.15
+
+[node name="Pastatouille" type="Sprite2D" parent="Chefs" unique_id=349186219]
+texture_filter = 1
+position = Vector2(1110, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("7_pasta")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.3
+
+[node name="MavisPapaya" type="Sprite2D" parent="Chefs" unique_id=232573293]
+texture_filter = 1
+position = Vector2(1410, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("8_mavis")
+hframes = 8
+vframes = 4
+script = ExtResource("2_idle")
+start_delay = 0.45
+
+[node name="StatsPopup" type="PanelContainer" parent="." unique_id=282204254]
+visible = false
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 0
+offset_right = 640.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_popup")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsPopup" unique_id=349558274]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="NameLabel" type="Label" parent="StatsPopup/VBoxContainer" unique_id=2101642680]
+custom_minimum_size = Vector2(576, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.48, 0.1, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 48
+text = "Chef name"
+autowrap_mode = 3
+
+[node name="AbilityLabel" type="Label" parent="StatsPopup/VBoxContainer" unique_id=736992734]
+custom_minimum_size = Vector2(576, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.45, 0.2, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 34
+text = "Ability:"
+autowrap_mode = 3
+
+[node name="WeaknessLabel" type="Label" parent="StatsPopup/VBoxContainer" unique_id=1601069770]
+custom_minimum_size = Vector2(576, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.2, 0.15, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 34
+text = "Weakness:"
+autowrap_mode = 3
+
+[node name="PromptLabel" type="Label" parent="." unique_id=2060700668]
+layout_mode = 0
+offset_left = 259.0
+offset_top = 175.0
+offset_right = 1659.0
+offset_bottom = 265.0
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 48
+text = "Select a chef and press play"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayButton" type="Button" parent="." unique_id=419130274]
+layout_mode = 0
+offset_left = 1440.0
+offset_top = 930.0
+offset_right = 1840.0
+offset_bottom = 1050.0
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+text = "PLAY"
