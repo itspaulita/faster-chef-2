@@ -3,11 +3,18 @@ extends Node2D
 
 ## How many tiles tall the screen shows. Used to keep the floor on the bottom edge.
 @export var screen_rows := 18.0
+## The Phase 2-3 map this level leads to. Leave empty until it exists.
+@export_file("*.tscn") var next_phase_scene := ""
 
 @onready var terrain: TileMapLayer = $TileMapLayer
 @onready var camera: Camera2D = $"Player 1/Camera2D"
+@onready var exit_wall: TileMapLayer = $ExitWall
+@onready var exit_zone: Area2D = $ExitZone
 
+var exit_open := false # if player doesnt collect enough ingredient, exit is blocked
 
+signal exit_opened
+signal phase_one_complete(final_xp: int)
 signal xp_changed(total_xp: int)
 signal ingredient_progress(type: String, have: int, total: int)
 
@@ -34,6 +41,7 @@ func _ready() -> void:
 	_fit_camera_to_map()
 	_setup_ingredients()
 	_setup_cats()
+	exit_zone.body_entered.connect(_on_exit_zone_entered)
 
 func _fit_camera_to_map() -> void:
 	var used := terrain.get_used_rect()
@@ -79,6 +87,7 @@ func _on_ingredient_collected(type: String, spawn_position: Vector2) -> void:
 	xp_changed.emit(xp)
 	ingredient_progress.emit(type, have, total)
 	print("%s %d/%d  +%d XP  (total %d XP)" % [type, have, total, gained, xp])
+	_update_exit()
 
 
 func _setup_cats() -> void:
@@ -117,3 +126,33 @@ func _respawn_piece(type: String, spawn_position: Vector2) -> void:
 	# Deferred: we're inside a collision callback, where Godot won't let us add Areas.
 	ingredients.add_child.call_deferred(piece)
 	
+func _update_exit() -> void:
+	if exit_open or not _all_ingredients_at_minimum():
+		return
+	exit_open = true
+	_open_exit_wall()
+	exit_opened.emit()
+
+
+func _open_exit_wall() -> void:
+	# Fade the wall out, then turn it off (no drawing, no collision).
+	var tween := create_tween()
+	tween.tween_property(exit_wall, "modulate:a", 0.0, 0.6)
+	tween.tween_callback(func(): exit_wall.enabled = false)
+
+
+func _all_ingredients_at_minimum() -> bool:
+	for type in total_by_type:
+		if collected_by_type[type] * 100 < total_by_type[type] * BONUS_PERCENT:
+			return false
+	return true
+
+
+func _on_exit_zone_entered(body: Node2D) -> void:
+	if not exit_open or not body is CharacterBody2D:
+		return
+	# A cat may have stolen us back below the minimum after the wall opened.
+	if not _all_ingredients_at_minimum():
+		message.emit("You're missing ingredients! Go get them back first.")
+		return
+	phase_one_complete.emit(xp)
