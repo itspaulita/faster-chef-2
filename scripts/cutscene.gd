@@ -6,7 +6,7 @@ const FALLBACK_SCENE := "res://scenes/title_screen.tscn"
 ## Sheet row 1 (side view): columns 6-7 walk right, columns 2-3 stand facing right.
 const CHEF_WALK_RIGHT := [14, 15]
 const CHEF_STAND_RIGHT := [10, 11]
-const MONSTER_FRAMES := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+const MONSTER_FRAMES := [0, 1, 2, 3]
 ## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
 const CHEF_EXIT_X := 2100.0
 
@@ -33,7 +33,7 @@ func _ready() -> void:
 	chef.idle_frames = PackedInt32Array(CHEF_WALK_RIGHT)
 	chef.frame_time = 0.15
 	monster.idle_frames = PackedInt32Array(MONSTER_FRAMES)
-	monster.frame_time = 0.1
+	monster.frame_time = 0.3
 	dish_icon.frame = dish_frame
 	dish_label.text = dish_name
 	dish_label.visible_ratio = 0.0
