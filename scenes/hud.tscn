@@ -43,6 +43,22 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_points"]
+content_margin_left = 32.0
+content_margin_top = 12.0
+content_margin_right = 32.0
+content_margin_bottom = 12.0
+bg_color = Color(0.95, 0.66, 0.18, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
 
@@ -128,3 +144,22 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 step = 0.0
+
+[node name="PointsPanel" type="PanelContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 24.0
+offset_right = -24.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_points")
+
+[node name="PointsLabel" type="Label" parent="PointsPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 40
+text = "POINT: 0 XP"
+horizontal_alignment = 1
+vertical_alignment = 1

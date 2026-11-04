@@ -1,6 +1,7 @@
 class_name Hud
 extends CanvasLayer
-## Top-left HUD: three ingredient progress bars with icons (percentage shown inside the bar).
+## HUD: three ingredient progress bars with icons (percentage inside the bar) on the top left,
+## and the points counter on the top right.
 
 const ICON_SIZE := 32
 ## Frames on "ingredients 32x32.png" (6 columns x 2 rows, row-major):
@@ -11,6 +12,8 @@ const ICON_SIZE := 32
 var _full_style: StyleBoxFlat
 var _normal_style: StyleBox
 
+@onready var points_panel: PanelContainer = $PointsPanel
+@onready var points_label: Label = $PointsPanel/PointsLabel
 @onready var rows: Array[Node] = [
 	$Rows/Row1,
 	$Rows/Row2,
@@ -30,6 +33,7 @@ func _ready() -> void:
 		icon.region = Rect2((frame % 6) * ICON_SIZE, (frame / 6) * ICON_SIZE, ICON_SIZE, ICON_SIZE)
 		rows[i].get_node("IconTile/Icon").texture = icon
 		set_ingredient(i, 0, false)
+	set_points(0, false)
 
 
 ## Sets how many of ingredient `index` (0-2) have been collected.
@@ -43,3 +47,11 @@ func set_ingredient(index: int, count: int, animate := true) -> void:
 		bar.value = minf(count, goal)
 	bar.add_theme_stylebox_override("fill", _full_style if count >= goal else _normal_style)
 
+
+func set_points(value: int, animate := true) -> void:
+	points_label.text = "POINT: %d XP" % value
+	if animate:
+		await get_tree().process_frame
+		points_panel.pivot_offset = points_panel.size / 2.0
+		create_tween().tween_property(points_panel, "scale", Vector2.ONE, 0.25) \
+				.from(Vector2(1.15, 1.15)).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
