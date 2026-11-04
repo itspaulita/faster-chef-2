@@ -14,6 +14,7 @@ var _normal_style: StyleBox
 
 @onready var points_panel: PanelContainer = $PointsPanel
 @onready var points_label: Label = $PointsPanel/PointsLabel
+@onready var pause_menu: PauseMenu = $PauseMenu
 @onready var rows: Array[Node] = [
 	$Rows/Row1,
 	$Rows/Row2,
@@ -34,6 +35,7 @@ func _ready() -> void:
 		rows[i].get_node("IconTile/Icon").texture = icon
 		set_ingredient(i, 0, false)
 	set_points(0, false)
+	$PauseButton.pressed.connect(pause_menu.open)
 
 
 ## Sets how many of ingredient `index` (0-2) have been collected.
