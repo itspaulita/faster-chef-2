@@ -1,4 +1,9 @@
 extends Area2D
+
+# cat hit logic
+signal hit_chef(cat_name: String)
+
+@export var cat_name := "Lily"
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 const SPEED = 40.0
@@ -17,7 +22,7 @@ func _on_timer_timeout() -> void:
 	direction *= -1
 	animated_sprite_2d.flip_h = !animated_sprite_2d.flip_h
 
-
 func _on_body_entered(body: Node2D) -> void:
-	if body.has_method("hit_by_cat"):
-		body.hit_by_cat()
+	# hit_by_cat() returns false while the chef is immune, so no steal then.
+	if body.has_method("hit_by_cat") and body.hit_by_cat():
+		hit_chef.emit(cat_name)

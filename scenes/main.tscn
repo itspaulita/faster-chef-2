@@ -32,3 +32,14 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "SCORE:"
 max_lines_visible = 1
+
+[node name="Message_Placeholder" type="Label" parent="HUD" unique_id=1771905916]
+custom_minimum_size = Vector2(0, 80)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -151.0
+offset_top = 2.0
+offset_right = 146.0
+offset_bottom = 82.0
+grow_horizontal = 2

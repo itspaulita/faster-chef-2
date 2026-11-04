@@ -1,6 +1,9 @@
 extends Node2D
 ## Holds the current level. Loads, restarts and switches levels.
-@onready var score_label: Label = $HUD/Score_Placeholder/Score_label
+@onready var score_label: Label = $HUD/Score_Placeholder/Score_label ## Placeholder
+
+@onready var message_placeholder: Label = $HUD/Message_Placeholder ## Placeholder
+var message_count := 0
 
 const LEVELS: Array[String] = [
 	"res://scenes/levels/level_1.tscn",
@@ -31,6 +34,9 @@ func load_level(index: int) -> void:
 	_update_score(0)
 	if current_level.has_signal("xp_changed"):
 		current_level.xp_changed.connect(_update_score)
+	message_placeholder.text = ""     # ← only runs if the level has XP
+	if current_level.has_signal("message"):
+		current_level.message.connect(_show_message)
 
 
 func restart_level() -> void:
@@ -43,3 +49,12 @@ func next_level() -> void:
 
 func _update_score(total_xp: int) -> void:
 	score_label.text = "XP: %d" % total_xp
+	
+func _show_message(text: String) -> void:
+	message_count += 1
+	var my_count := message_count
+	message_placeholder.text = text
+	await get_tree().create_timer(2.5).timeout
+	# Only clear it if no newer message replaced this one.
+	if my_count == message_count:
+		message_placeholder.text = ""
