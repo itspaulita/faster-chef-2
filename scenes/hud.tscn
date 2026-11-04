@@ -1,0 +1,130 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.84, 0.93, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(1, 0.97, 0.88, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.91, 0.6, 0.17, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+offset_left = 24.0
+offset_top = 24.0
+theme_override_constants/separation = 12
+
+[node name="Row1" type="HBoxContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="IconTile" type="PanelContainer" parent="Rows/Row1"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Icon" type="TextureRect" parent="Rows/Row1/IconTile"]
+texture_filter = 1
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Bar" type="ProgressBar" parent="Rows/Row1"]
+custom_minimum_size = Vector2(260, 40)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+step = 0.0
+
+[node name="Row2" type="HBoxContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="IconTile" type="PanelContainer" parent="Rows/Row2"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Icon" type="TextureRect" parent="Rows/Row2/IconTile"]
+texture_filter = 1
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Bar" type="ProgressBar" parent="Rows/Row2"]
+custom_minimum_size = Vector2(260, 40)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+step = 0.0
+
+[node name="Row3" type="HBoxContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="IconTile" type="PanelContainer" parent="Rows/Row3"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Icon" type="TextureRect" parent="Rows/Row3/IconTile"]
+texture_filter = 1
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Bar" type="ProgressBar" parent="Rows/Row3"]
+custom_minimum_size = Vector2(260, 40)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+step = 0.0
