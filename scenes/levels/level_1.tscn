@@ -1132,7 +1132,7 @@ position = Vector2(800.3334, 256.6667)
 position = Vector2(1397, 149.66667)
 
 [node name="Player 1" parent="." unique_id=697734632 instance=ExtResource("3_nsrm0")]
-position = Vector2(1820.6666, 295)
+position = Vector2(40.666664, 280.66666)
 
 [node name="cats" type="Node2D" parent="." unique_id=1801766643]
 
