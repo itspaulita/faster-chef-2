@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://qtlhtl8eqi2a"]
+
+[ext_resource type="Texture2D" uid="uid://gcofjvyfat3h" path="res://assets/images/tilemap/professional_kitchen.png" id="1_c71lw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e7gk4"]
+size = Vector2(28, 26)
+
+[sub_resource type="Animation" id="Animation_janmx"]
+length = 6.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 2.5, 3.5, 5.5, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -100), Vector2(0, -100), Vector2(0, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l10qr"]
+resource_name = "move"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 2.1, 2.8, 4.8, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(0, -100), Vector2(0, -100), Vector2(0, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_281ww"]
+_data = {
+&"RESET": SubResource("Animation_janmx"),
+&"move": SubResource("Animation_l10qr")
+}
+
+[node name="moving_microwave" type="Node2D" unique_id=1371352868]
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="." unique_id=1035699385]
+
+[node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D" unique_id=778722373]
+texture_filter = 1
+texture = ExtResource("1_c71lw")
+region_enabled = true
+region_rect = Rect2(321.7747, 0.6856499, 28.59375, 26.45103)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=247290698]
+shape = SubResource("RectangleShape2D_e7gk4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatableBody2D" unique_id=1655231146]
+libraries/ = SubResource("AnimationLibrary_281ww")
+autoplay = &"RESET"
