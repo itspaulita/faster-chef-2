@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
 [ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
 [ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
-[ext_resource type="Texture2D" uid="uid://q11ar1gspomi" path="res://assets/images/monsters/starfish.png" id="6_monster"]
+[ext_resource type="Texture2D" uid="uid://btb2xltvcvwa5" path="res://assets/images/monsters/monster_potato.png" id="6_monster"]
 [ext_resource type="Texture2D" uid="uid://bxxjwvhtqi585" path="res://assets/images/misc/single-line-tilemap.png" id="7_bubble"]
 [ext_resource type="Texture2D" uid="uid://chma8f38ds6y5" path="res://assets/images/food/5 dishes 60x60.png" id="8_dishes"]
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_font"]
@@ -34,12 +34,14 @@ texture = ExtResource("4_floor")
 centered = false
 
 [node name="Monster" type="Sprite2D" parent="." unique_id=930034121]
-position = Vector2(1380, 828)
+texture_filter = 1
+position = Vector2(1380, 656)
 scale = Vector2(4, 4)
 texture = ExtResource("6_monster")
-hframes = 11
+hframes = 2
+vframes = 2
 script = ExtResource("2_idle")
-frame_time = 0.1
+frame_time = 0.3
 
 [node name="Chef" type="Sprite2D" parent="." unique_id=1645282207]
 texture_filter = 1
@@ -53,7 +55,7 @@ script = ExtResource("2_idle")
 frame_time = 0.15
 
 [node name="OrderBubble" type="Node2D" parent="." unique_id=2027521582]
-position = Vector2(1380, 650)
+position = Vector2(1380, 380)
 
 [node name="Bubble" type="Sprite2D" parent="OrderBubble" unique_id=990724272]
 texture_filter = 1
@@ -84,7 +86,9 @@ autowrap_mode = 3
 
 [node name="Fade" type="ColorRect" parent="." unique_id=1251890914]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1921.0
+offset_bottom = 1079.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
