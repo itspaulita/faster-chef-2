@@ -1,0 +1,6 @@
+
+# Godot cache
+.godot/
+
+# DS store
+.DS_store/
