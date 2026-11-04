@@ -1,7 +1,7 @@
 extends Area2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-const SPEED = 100.0
+const SPEED = 40.0
 var direction = -1.0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
