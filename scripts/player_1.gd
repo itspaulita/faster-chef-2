@@ -17,6 +17,11 @@ const BLINK_INTERVAL := 0.4
 var is_immune := false
 var blink_tween: Tween
 
+# Bubblegum (and any future slow zone): 1.0 = normal
+var speed_multiplier := 1.0
+var jump_multiplier := 1.0
+var _gum_count := 0   # how many gum patches the chef is touching right now
+
 func _physics_process(delta: float) -> void:
 	# Coyote time: refill while standing, count down while in the air.
 	if is_on_floor():
@@ -32,7 +37,7 @@ func _physics_process(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
-		velocity.y = JUMP_VELOCITY
+		velocity.y = JUMP_VELOCITY * jump_multiplier
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
 
@@ -41,13 +46,27 @@ func _physics_process(delta: float) -> void:
 		velocity.y *= 0.5
 
 	var direction := Input.get_axis("left", "right")
-	apply_horizontal_movement(delta, direction, SPEED)
+	apply_horizontal_movement(delta, direction, SPEED * speed_multiplier)
 	if direction:
 		sprite.flip_h = direction < 0
 
 	move_and_slide()
 	_update_animation()
 
+## Called by a bubblegum path when the chef steps on it.
+func enter_gum(speed_mult: float, jump_mult: float) -> void:
+	_gum_count += 1
+	speed_multiplier = speed_mult
+	jump_multiplier = jump_mult
+	sprite.speed_scale = speed_mult          # run animation looks sticky/slow too
+
+## Called by a bubblegum path when the chef leaves it.
+func exit_gum() -> void:
+	_gum_count = maxi(_gum_count - 1, 0)
+	if _gum_count == 0:                      # only back to normal when off ALL gum
+		speed_multiplier = 1.0
+		jump_multiplier = 1.0
+		sprite.speed_scale = 1.0
 
 func _update_animation() -> void:
 	if not is_on_floor():
