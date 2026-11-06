@@ -1,6 +1,6 @@
 class_name Hud
 extends CanvasLayer
-## HUD: three ingredient progress bars with icons (percentage inside the bar) on the top left,
+## HUD: three ingredient progress bars with icons ("have/goal" count inside the bar) on the top left,
 ## and the points counter on the top right.
 
 const ICON_SIZE := 32
@@ -33,9 +33,25 @@ func _ready() -> void:
 		var frame := ingredient_frames[i]
 		icon.region = Rect2((frame % 6) * ICON_SIZE, (frame / 6) * ICON_SIZE, ICON_SIZE, ICON_SIZE)
 		rows[i].get_node("IconTile/Icon").texture = icon
+		_setup_count_label(rows[i].get_node("Bar"))
 		set_ingredient(i, 0, false)
 	set_points(0, false)
 	$PauseButton.pressed.connect(pause_menu.open)
+
+
+## Replaces the bar's built-in percentage with a centered "have/goal" label.
+func _setup_count_label(bar: ProgressBar) -> void:
+	bar.show_percentage = false
+	var label := Label.new()
+	label.name = "CountLabel"
+	label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	label.add_theme_font_override("font", bar.get_theme_font("font"))
+	label.add_theme_font_size_override("font_size", 24)
+	label.add_theme_color_override("font_color", Color(0.23, 0.12, 0.08, 1))
+	bar.add_child(label)
 
 
 ## Sets how many of ingredient `index` (0-2) have been collected.
@@ -43,6 +59,7 @@ func set_ingredient(index: int, count: int, animate := true) -> void:
 	var goal := ingredient_goals[index]
 	var bar: ProgressBar = rows[index].get_node("Bar")
 	bar.max_value = goal
+	(bar.get_node("CountLabel") as Label).text = "%d/%d" % [count, goal]
 	if animate:
 		create_tween().tween_property(bar, "value", minf(count, goal), 0.2)
 	else:

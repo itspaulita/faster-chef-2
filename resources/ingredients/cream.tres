@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ingredient_data.gd" id="1_0hmco"]
+[ext_resource type="Texture2D" path="res://assets/images/food/ingredients sprite sheet 80x80.png" id="2_33pxw"]
+
+[resource]
+script = ExtResource("1_0hmco")
+id = &"cream"
+display_name = "Cream"
+sheet = ExtResource("2_33pxw")
+stage_frames = PackedInt32Array(6, 7, 8)

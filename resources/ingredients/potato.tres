@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ingredient_data.gd" id="1_cwjf7"]
+[ext_resource type="Texture2D" path="res://assets/images/food/ingredients sprite sheet 80x80.png" id="2_ua8wc"]
+
+[resource]
+script = ExtResource("1_cwjf7")
+id = &"potato"
+display_name = "Potato"
+sheet = ExtResource("2_ua8wc")
+stage_frames = PackedInt32Array(24, 25, 26)

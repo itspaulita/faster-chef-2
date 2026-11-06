@@ -63,8 +63,15 @@ func _connect_level_signals() -> void:
 		current_level.message.connect(notifications.notify)
 	if current_level.has_signal("exit_opened"):
 		current_level.exit_opened.connect(_on_exit_opened)
+	if current_level.has_signal("phase_two_complete"):
+		current_level.phase_two_complete.connect(_on_phase_two_complete)
 	if current_level.has_signal("phase_one_complete"):
 		current_level.phase_one_complete.connect(_on_phase_one_complete)
+
+
+## Placeholder: the dish was picked up. The real Phase 3 transition replaces this.
+func _on_phase_two_complete(recipe: Recipe) -> void:
+	popup.open("%s is ready!\nDelivering..." % recipe.dish_name, [], false, 3.0)
 
 
 func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
@@ -73,7 +80,7 @@ func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
 
 
 func _on_exit_opened() -> void:
-	popup.open("The wall is open!\nWalk out to the right for Phase 2,\nor keep collecting for bonus XP.", ["Keep going"])
+	popup.open("The wall is open!\nWalk out to the right for Phase 2,\nor keep collecting for bonus XP.", [], false, 5.0)
 
 
 func _on_phase_one_complete(final_xp: int) -> void:
@@ -83,6 +90,5 @@ func _on_phase_one_complete(final_xp: int) -> void:
 		# Deferred: we're inside a collision callback, so swap scenes after it.
 		_show_scene.call_deferred(next)
 	else:
-		# No Phase 2-3 map yet: freeze the level and show the result.
-		current_level.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-		popup.open("Phase 1 complete!\nXP: %d\n\nPhase 2 coming soon..." % final_xp, ["OK"])
+		# No Phase 2-3 map yet: just show the result for a few seconds.
+		popup.open("Phase 1 complete!\nXP: %d\n\nPhase 2 coming soon..." % final_xp, [], false, 5.0)
