@@ -63,8 +63,15 @@ func _connect_level_signals() -> void:
 		current_level.message.connect(notifications.notify)
 	if current_level.has_signal("exit_opened"):
 		current_level.exit_opened.connect(_on_exit_opened)
+	if current_level.has_signal("phase_two_complete"):
+		current_level.phase_two_complete.connect(_on_phase_two_complete)
 	if current_level.has_signal("phase_one_complete"):
 		current_level.phase_one_complete.connect(_on_phase_one_complete)
+
+
+## Placeholder: the dish was picked up. The real Phase 3 transition replaces this.
+func _on_phase_two_complete(recipe: Recipe) -> void:
+	popup.open("%s is ready!\nDelivering..." % recipe.dish_name, [], false, 3.0)
 
 
 func _on_ingredient_progress(type: String, have: int, _total: int) -> void:

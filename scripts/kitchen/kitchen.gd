@@ -4,6 +4,8 @@ extends Node2D
 ## main.gd can connect to the notifications.
 
 signal message(text: String)
+## The chef picked up the plated dish: Phase 2 is over, Phase 3 (deliver) starts.
+signal phase_two_complete(recipe: Recipe)
 
 ## The dish this kitchen cooks. Swap the .tres per level.
 @export var recipe: Recipe = preload("res://resources/recipes/level_1.tres")
@@ -29,11 +31,17 @@ func _ready() -> void:
 	for station in $Stations.get_children():
 		if station is Station:
 			station.message.connect(message.emit)
+	plating.dish_picked_up.connect(phase_two_complete.emit)
 	# Run on its own (F6) there's no main.gd to show the toasts, so show them here.
 	if get_tree().current_scene == self:
 		var toasts: Notifications = load("res://scenes/notifications.tscn").instantiate()
 		add_sibling.call_deferred(toasts)
 		message.connect(toasts.notify)
+		# Placeholder hand-off, until main.gd / the Phase 3 scene takes over.
+		var popup: ModalPopup = load("res://scenes/modal_popup.tscn").instantiate()
+		add_sibling.call_deferred(popup)
+		phase_two_complete.connect(func(r: Recipe) -> void:
+			popup.open("%s is ready!\nDelivering..." % r.dish_name, [], false, 3.0))
 
 
 ## Debug shortcuts (editor/debug builds only) to try the held-item system before the
