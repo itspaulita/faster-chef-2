@@ -89,17 +89,27 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e5i80"]
-size = Vector2(32, 10)
+size = Vector2(64, 10)
 
 [node name="fire" type="Area2D" unique_id=1650290766]
 script = ExtResource("1_7p2pl")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=440634889]
+[node name="fire1" type="AnimatedSprite2D" parent="." unique_id=440634889]
 texture_filter = 1
+position = Vector2(-16, 0)
 sprite_frames = SubResource("SpriteFrames_ejf1h")
 animation = &"fire"
 autoplay = "fire"
-frame_progress = 0.0009965544
+frame_progress = 0.6809206
+
+[node name="fire2" type="AnimatedSprite2D" parent="." unique_id=1032937714]
+texture_filter = 1
+position = Vector2(16, 0)
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+animation = &"fire"
+autoplay = "fire"
+frame_progress = 0.5794352
+flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1439716790]
 position = Vector2(0, 11)
