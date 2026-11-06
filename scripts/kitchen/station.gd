@@ -40,12 +40,14 @@ func _get_prompt_text() -> String:
 
 
 ## Subclasses react to the keys here. Only called while the chef is in the zone.
+## By default a station isn't for chopping; the chopping board overrides this.
 func _on_chop() -> void:
-	pass
+	message.emit("Chopping happens at the chopping board!")
 
 
+## By default there's nothing to do here.
 func _on_grab_drop() -> void:
-	pass
+	message.emit("Nothing to pick up here.")
 
 
 ## Call whenever something that changes the prompt text changes.

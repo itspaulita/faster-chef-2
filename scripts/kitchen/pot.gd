@@ -59,11 +59,22 @@ func _on_grab_drop() -> void:
 		State.FILLING:
 			if holder.holds(ItemHolder.Kind.INGREDIENT):
 				_try_add(holder.ingredient)
+			elif holder.is_empty():
+				message.emit("Bring a chopped ingredient to the pot.")
+			else:
+				message.emit("You can't put %s in the pot." % holder.describe())
+		State.COOKING:
+			message.emit("Still cooking!")
 		State.DONE:
 			if holder.hold_pot():
 				state = State.TAKEN
 				_update_visuals()
 				pot_taken.emit()
+			else:
+				message.emit("Your hands are full! You're carrying %s." % holder.describe())
+		State.TAKEN:
+			message.emit("Nothing to pick up here.")
+
 
 
 func _try_add(ingredient: IngredientData) -> void:

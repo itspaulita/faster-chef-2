@@ -29,6 +29,11 @@ func _ready() -> void:
 	for station in $Stations.get_children():
 		if station is Station:
 			station.message.connect(message.emit)
+	# Run on its own (F6) there's no main.gd to show the toasts, so show them here.
+	if get_tree().current_scene == self:
+		var toasts: Notifications = load("res://scenes/notifications.tscn").instantiate()
+		add_sibling.call_deferred(toasts)
+		message.connect(toasts.notify)
 
 
 ## Debug shortcuts (editor/debug builds only) to try the held-item system before the

@@ -64,8 +64,15 @@ func _get_prompt_text() -> String:
 func _on_chop() -> void:
 	if not is_chopping:
 		# E also opens the panel, in case the chef is at the board but still moving.
-		if _can_start_chopping() and _is_grounded():
-			_start_chopping()
+		if _can_start_chopping():
+			if _is_grounded():
+				_start_chopping()
+		elif not holder.is_empty():
+			message.emit("Your hands are full! You're carrying %s." % holder.describe())
+		elif ready_item != null:
+			message.emit("Pick up the chopped %s first (Q)." % ready_item.display_name)
+		else:
+			message.emit("Everything is already chopped!")
 		return
 	if _busy:
 		return
@@ -73,7 +80,14 @@ func _on_chop() -> void:
 
 
 func _on_grab_drop() -> void:
-	if is_chopping or ready_item == null:
+	if is_chopping:
+		message.emit("Finish chopping first!")
+		return
+	if ready_item == null:
+		if holder.is_empty():
+			message.emit("Nothing to pick up here.")
+		else:
+			message.emit("You can't put %s on the chopping board." % holder.describe())
 		return
 	var taken := ready_item
 	if holder.hold_ingredient(taken):
@@ -81,6 +95,8 @@ func _on_grab_drop() -> void:
 		_item_sprite.visible = false
 		ingredient_taken.emit(taken)
 		refresh_prompt()
+	else:
+		message.emit("Your hands are full!")
 
 
 func _can_start_chopping() -> bool:

@@ -38,6 +38,8 @@ func _on_grab_drop() -> void:
 			_dish_sprite.visible = false
 			dish_picked_up.emit(recipe)
 			refresh_prompt()
+		else:
+			message.emit("Your hands are full! You're carrying %s." % holder.describe())
 	elif holder.holds(ItemHolder.Kind.POT):
 		holder.drop()
 		has_dish = true
@@ -45,3 +47,7 @@ func _on_grab_drop() -> void:
 		_dish_sprite.visible = true
 		dish_plated.emit()
 		refresh_prompt()
+	elif holder.is_empty():
+		message.emit("Bring the cooked pot here to plate it.")
+	else:
+		message.emit("Only the cooked pot goes here, not %s." % holder.describe())
