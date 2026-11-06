@@ -1,0 +1,95 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/kitchen/chop_panel.gd" id="1_panel"]
+[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
+content_margin_left = 40.0
+content_margin_top = 28.0
+content_margin_right = 40.0
+content_margin_bottom = 32.0
+bg_color = Color(0.95, 0.66, 0.18, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(1, 0.97, 0.88, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Theme" id="Theme_panel"]
+default_font = ExtResource("2_font")
+default_font_size = 36
+Label/colors/font_color = Color(0.17, 0.09, 0.06, 1)
+
+[node name="ChopPanel" type="CanvasLayer"]
+layer = 6
+visible = false
+script = ExtResource("1_panel")
+
+[node name="Banner" type="PanelContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 40.0
+offset_right = 250.0
+grow_horizontal = 2
+mouse_filter = 2
+theme = SubResource("Theme_panel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Banner"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="Banner/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "CHOP"
+horizontal_alignment = 1
+
+[node name="Tile" type="PanelContainer" parent="Banner/VBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
+
+[node name="Item" type="TextureRect" parent="Banner/VBoxContainer/Tile"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StageLabel" type="Label" parent="Banner/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CHOPS 0/3"
+horizontal_alignment = 1
+
+[node name="HintLabel" type="Label" parent="Banner/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PRESS  E"
+horizontal_alignment = 1

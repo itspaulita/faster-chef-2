@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btb2xltvcvwa5"
-path="res://.godot/imported/monster_potato.png-18259d1278e4f8e9e194c55f7136dff3.ctex"
+uid="uid://bu86lijay0unw"
+path="res://.godot/imported/monster-potato2.png-0efd4798692f71eb11a979e8a62f09aa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/monsters/monster_potato.png"
-dest_files=["res://.godot/imported/monster_potato.png-18259d1278e4f8e9e194c55f7136dff3.ctex"]
+source_file="res://assets/images/monsters/monster-potato2.png"
+dest_files=["res://.godot/imported/monster-potato2.png-0efd4798692f71eb11a979e8a62f09aa.ctex"]
 
 [params]
 
