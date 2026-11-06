@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cgke6um3mcfa"]
+
+[ext_resource type="Texture2D" uid="uid://dpxq74u8rsqa7" path="res://assets/images/kitchen/Oven_Close4X.png" id="1_3x251"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vm5m1"]
+atlas = ExtResource("1_3x251")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vm5m1")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhv81"]
+size = Vector2(80, 84)
+
+[node name="cooking_stove" type="Area2D" unique_id=1903818716]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=712058443]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=114041515]
+shape = SubResource("RectangleShape2D_yhv81")
