@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bbhvf11340o6l" path="res://scripts/moving_microwave.gd" id="1_e7gk4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e7gk4"]
-size = Vector2(28, 26)
+size = Vector2(28, 24)
 
 [node name="moving_microwave" type="Node2D" unique_id=1371352868]
 script = ExtResource("1_e7gk4")
@@ -18,6 +18,8 @@ region_enabled = true
 region_rect = Rect2(321.7747, 0.6856499, 28.59375, 26.45103)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=247290698]
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_e7gk4")
+one_way_collision = true
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=61049562]

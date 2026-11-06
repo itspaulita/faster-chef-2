@@ -5,6 +5,8 @@ extends Node2D
 @export var screen_rows := 18.0
 ## The Phase 2-3 map this level leads to. Leave empty until it exists.
 @export_file("*.tscn") var next_phase_scene := ""
+## How many pieces of EACH ingredient open the exit wall (and show the Phase 2 popup).
+@export var min_pieces_per_ingredient := 2
 
 @onready var terrain: TileMapLayer = $TileMapLayer
 @onready var camera: Camera2D = $"Player 1/Camera2D"
@@ -20,6 +22,8 @@ signal ingredient_progress(type: String, have: int, total: int)
 
 const BASE_XP := 1
 const BONUS_XP := 3
+const FALL_PENALTY_XP := 1
+const FIRE_PENALTY_XP := 1
 ## After this percent of the level's pieces are collected, each extra piece gives BONUS_XP.
 const BONUS_PERCENT := 80
 
@@ -37,10 +41,20 @@ var total_by_type := {}       # e.g. { "salmon": 3, "cream": 3, "potato": 3 }
 var collected_by_type := {}   # e.g. { "salmon": 1, "cream": 0, "potato": 2 }
 var xp := 0
 
+# respawn character
+@onready var player: CharacterBody2D = $"Player 1"
+
+## How far below the bottom of the map the chef falls before respawning.
+const FALL_MARGIN := 200.0
+var respawn_point := Vector2.ZERO
+
+
 func _ready() -> void:
 	_fit_camera_to_map()
 	_setup_ingredients()
 	_setup_cats()
+	_setup_checkpoints()
+	_setup_fire_pits()
 	exit_zone.body_entered.connect(_on_exit_zone_entered)
 
 func _fit_camera_to_map() -> void:
@@ -83,27 +97,35 @@ func _on_ingredient_collected(type: String, spawn_position: Vector2) -> void:
 	var total: int = total_by_type[type]
 	var gained := BONUS_XP if have * 100 >= total * BONUS_PERCENT else BASE_XP
 	collected_pieces[type].append({ "position": spawn_position, "xp": gained })
-	xp += gained
-	xp_changed.emit(xp)
+	_add_xp(gained)
 	ingredient_progress.emit(type, have, total)
 	print("%s %d/%d  +%d XP  (total %d XP)" % [type, have, total, gained, xp])
 	_update_exit()
 
-
+func _add_xp(amount: int) -> void:
+	xp = maxi(xp + amount, 0)   # XP never goes below 0
+	xp_changed.emit(xp)
+	
 func _setup_cats() -> void:
 	for cat in cats.get_children():
 		if cat.has_signal("hit_chef"):
 			cat.hit_chef.connect(_on_cat_hit_chef)
 
+func _setup_fire_pits() -> void:
+	for pit in get_tree().get_nodes_in_group("fire_pit"):
+		pit.burned.connect(_on_fire_burned)
 
+func _on_fire_burned() -> void:
+	_add_xp(-FIRE_PENALTY_XP)
+	message.emit("Ouch, hot! -%d XP" % FIRE_PENALTY_XP)
+	
 func _on_cat_hit_chef(cat_name: String) -> void:
 	var type := _most_collected_type()
 	if type == "":
 		return  # Nothing collected yet, nothing to steal.
 	var stolen: Dictionary = collected_pieces[type].pop_back()
 	collected_by_type[type] -= 1
-	xp -= stolen.xp
-	xp_changed.emit(xp)
+	_add_xp(-stolen.xp)
 	ingredient_progress.emit(type, collected_by_type[type], total_by_type[type])
 	message.emit("Oh No %s steals %s!" % [cat_name, type.capitalize()])
 	_respawn_piece(type, stolen.position)
@@ -143,7 +165,8 @@ func _open_exit_wall() -> void:
 
 func _all_ingredients_at_minimum() -> bool:
 	for type in total_by_type:
-		if collected_by_type[type] * 100 < total_by_type[type] * BONUS_PERCENT:
+		# mini(): a level with fewer pieces than the minimum still needs all of them, not more
+		if collected_by_type[type] < mini(min_pieces_per_ingredient, total_by_type[type]):
 			return false
 	return true
 
@@ -156,3 +179,26 @@ func _on_exit_zone_entered(body: Node2D) -> void:
 		message.emit("You're missing ingredients! Go get them back first.")
 		return
 	phase_one_complete.emit(xp)
+	
+func _setup_checkpoints() -> void:
+	respawn_point = player.global_position          # no flag reached yet = start of the level
+	for flag in get_tree().get_nodes_in_group("checkpoint"):
+		flag.reached.connect(_on_checkpoint_reached)
+
+
+func _on_checkpoint_reached(spawn_position: Vector2) -> void:
+	respawn_point = spawn_position
+	message.emit("Checkpoint!")                     # shows in Paula's notifications
+
+
+func _physics_process(_delta: float) -> void:
+	if player.global_position.y > camera.limit_bottom + FALL_MARGIN:
+		_respawn_player()
+
+
+func _respawn_player() -> void:
+	player.global_position = respawn_point
+	player.velocity = Vector2.ZERO
+	camera.reset_smoothing()                        # jump the camera there, don't glide
+	_add_xp(-FALL_PENALTY_XP)
+	message.emit("Oops! -%d XP" % FALL_PENALTY_XP)

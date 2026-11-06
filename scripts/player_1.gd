@@ -66,6 +66,10 @@ func hit_by_cat() -> bool:
 	get_tree().create_timer(IMMUNE_TIME).timeout.connect(_end_immunity)
 	return true
 
+## Any hazard (cat, fire...) calls this. Returns true if the hit counted (not immune).
+func take_hit() -> bool:
+	return hit_by_cat()
+
 
 func _start_blink() -> void:
 	if blink_tween:
