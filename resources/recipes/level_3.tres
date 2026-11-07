@@ -4,12 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://chma8f38ds6y5" path="res://assets/images/food/5 dishes 60x60.png" id="2_tu27b"]
 [ext_resource type="Script" uid="uid://danhhq87duchw" path="res://scripts/data/ingredient_data.gd" id="3_ueitr"]
 [ext_resource type="Resource" uid="uid://b63xkk6smbsev" path="res://resources/ingredients/pumpkin.tres" id="4_bqikn"]
+[ext_resource type="Resource" path="res://resources/ingredients/cream.tres" id="5_5ww0v"]
+[ext_resource type="Resource" uid="uid://dok7td8t4fjpn" path="res://resources/ingredients/seasoning.tres" id="5_tfhk3"]
 [ext_resource type="Script" uid="uid://c7x6wqhunw0pb" path="res://scripts/data/recipe.gd" id="7_0fdbr"]
 
 [resource]
 script = ExtResource("7_0fdbr")
 dish_name = "Pumpkin soup"
-ingredients = Array[ExtResource("3_ueitr")]([ExtResource("4_bqikn"), null, null])
+ingredients = Array[ExtResource("3_ueitr")]([ExtResource("4_bqikn"), ExtResource("5_5ww0v"), ExtResource("5_tfhk3")])
 dish_sheet = ExtResource("2_tu27b")
 dish_frame = 1
 dish_image = ExtResource("1_tfhk3")
