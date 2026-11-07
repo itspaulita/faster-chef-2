@@ -1179,5 +1179,5 @@ position = Vector2(1955.6666, 313.33334)
 [node name="DeliveryZone" type="Area2D" parent="." unique_id=1052380064]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeliveryZone" unique_id=1861371302]
-position = Vector2(-8, 288)
+position = Vector2(0, 288)
 shape = SubResource("RectangleShape2D_yhv81")

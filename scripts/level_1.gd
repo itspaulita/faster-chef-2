@@ -254,7 +254,7 @@ func _start_phase_three() -> void:
 
 
 func _on_delivery_zone_entered(body: Node2D) -> void:
-	#if not running or body != player:
+	if delivered or body != player:
 		return
-	#running = false
-	#phase_three_complete.emit(time_left, xp)
+	delivered = true
+	phase_three_complete.emit(xp)
