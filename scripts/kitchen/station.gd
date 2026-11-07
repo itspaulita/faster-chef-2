@@ -14,7 +14,7 @@ const FONT := preload("res://assets/font/RetroGaming.ttf")
 
 @export var station_name := "Station"
 ## Where the prompt floats, relative to the station. High enough to clear the held item.
-@export var prompt_offset := Vector2(0, -100)
+@export var prompt_offset := Vector2(0, -108)
 
 var chef: Node2D
 var holder: ItemHolder
@@ -101,10 +101,10 @@ func _build_prompt() -> void:
 	style.border_color = Color(0.23, 0.12, 0.08)
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(3)
-	style.content_margin_left = 5
-	style.content_margin_right = 5
-	style.content_margin_top = 2
-	style.content_margin_bottom = 2
+	style.content_margin_left = 7
+	style.content_margin_right = 7
+	style.content_margin_top = 3
+	style.content_margin_bottom = 3
 
 	_prompt = PanelContainer.new()
 	_prompt.add_theme_stylebox_override("panel", style)
@@ -113,7 +113,7 @@ func _build_prompt() -> void:
 
 	_prompt_label = Label.new()
 	_prompt_label.add_theme_font_override("font", FONT)
-	_prompt_label.add_theme_font_size_override("font_size", 8)
+	_prompt_label.add_theme_font_size_override("font_size", 14)
 	_prompt_label.add_theme_color_override("font_color", Color(0.17, 0.09, 0.06))
 	_prompt_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_prompt.add_child(_prompt_label)
