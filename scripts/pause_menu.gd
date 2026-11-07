@@ -43,6 +43,7 @@ func open() -> void:
 		return
 	visible = true
 	get_tree().paused = true
+	Audio.sfx("pause")
 	_refresh_sound_text()
 	resume_button.grab_focus()
 	await get_tree().process_frame
@@ -56,6 +57,7 @@ func close() -> void:
 		return
 	visible = false
 	get_tree().paused = false
+	Audio.sfx("unpause")
 	resumed.emit()
 
 

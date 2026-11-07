@@ -20,6 +20,9 @@ var blink_tween: Tween
 # The chosen chef's own run speed (Princess Dish +15%, Legend of Lasagna -15%): see ChefStats.
 var chef_speed_scale := 1.0
 
+## Which footstep sound plays (see Audio.SOUNDS). The kitchen switches to the soft one.
+var footstep_sound := "walk"
+
 # Bubblegum (and any future slow zone): 1.0 = normal
 var speed_multiplier := 1.0
 var jump_multiplier := 1.0
@@ -27,6 +30,7 @@ var _gum_count := 0   # how many gum patches the chef is touching right now
 
 func _ready() -> void:
 	chef_speed_scale = ChefStats.speed_scale(GameState.selected_chef_name)
+	sprite.frame_changed.connect(_on_frame_changed)
 
 
 func _physics_process(delta: float) -> void:
@@ -74,6 +78,12 @@ func exit_gum() -> void:
 		speed_multiplier = 1.0
 		jump_multiplier = 1.0
 		sprite.speed_scale = 1.0
+
+## A footstep on every frame of the run cycle.
+func _on_frame_changed() -> void:
+	if sprite.animation == &"running" and is_on_floor():
+		Audio.sfx(footstep_sound)
+
 
 func _update_animation() -> void:
 	var carrying := _is_carrying()

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c5lrmwnwknm46"]
 
 [ext_resource type="Script" uid="uid://cuxtws6xv50va" path="res://scripts/main.gd" id="2_0wfyh"]
-[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="2_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://4tf0qdi1gu53" path="res://scenes/hud.tscn" id="2_jyhfs"]
 [ext_resource type="PackedScene" path="res://scenes/notifications.tscn" id="3_tbgi4"]
 [ext_resource type="PackedScene" path="res://scenes/modal_popup.tscn" id="4_tefeu"]
 

@@ -16,3 +16,6 @@ extends Resource
 @export var ingredient_types := PackedStringArray()
 ## Their pictures: frames on "ingredients 32x32.png" (6 columns, row-major).
 @export var ingredient_frames: Array[int] = []
+## Clock and star thresholds for Phase 1, 2 and 3 of this level, in that order. An empty or
+## missing entry uses the default for that phase (resources/timing/phase_N.tres).
+@export var phase_timings: Array[PhaseTiming] = []

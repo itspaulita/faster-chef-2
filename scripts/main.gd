@@ -44,6 +44,8 @@ func load_level(index: int) -> void:
 	carried_xp = 0
 	current_recipe = null
 	GameState.reset_run()
+	# One music track per level (level-1 ... level-3).
+	Audio.music("level-%d" % mini(index + 1, 3))
 	var info := Levels.info(index)
 	hud.set_ingredient_frames(info.ingredient_frames)
 	ingredient_rows = {}
@@ -78,9 +80,17 @@ func _show_scene(path: String, phase_three := false) -> void:
 	elif current_level.has_signal("phase_two_complete"):
 		current_phase = 2
 	if current_phase > 0:
-		hud.start_timer(PHASE_TIMINGS[current_phase])
+		hud.start_timer(_timing_for(current_phase))
 	else:
 		hud.hide_timer()
+
+
+## This level's own clock for a phase if its LevelInfo has one, else the default.
+func _timing_for(phase: int) -> PhaseTiming:
+	var own := Levels.info(level_index).phase_timings
+	if phase - 1 < own.size() and own[phase - 1] != null:
+		return own[phase - 1]
+	return PHASE_TIMINGS[phase]
 
 
 func _setup_ingredient_bars() -> void:
@@ -128,6 +138,7 @@ func _on_star_lost(stars_left: int) -> void:
 
 ## A phase ran out of time (0 stars): the whole level starts over.
 func _on_timed_out() -> void:
+	Audio.sfx("lose")
 	notifications.notify("Out of time! Restarting the level...", RESTART_DELAY)
 	var index := level_index
 	await get_tree().create_timer(RESTART_DELAY).timeout
@@ -170,6 +181,7 @@ func _on_phase_three_complete(final_xp: int) -> void:
 	add_child(delivery_cutscene)
 	await delivery_cutscene.finished
 	# The cutscene stays up behind the tally as its background.
+	Audio.sfx("win")
 	tally.show_tally(final_xp)
 
 

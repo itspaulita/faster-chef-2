@@ -7,7 +7,7 @@ static var nickname := ""
 static var selected_chef_name := ""
 static var selected_chef_texture: Texture2D
 ## Which level is being played (0-based, an index into Levels.ALL).
-static var level_index := 0
+static var level_index := 2
 
 # --- Stars and score for the current run of a level -------------------------------------
 const PHASE_COUNT := 3
