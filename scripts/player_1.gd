@@ -17,10 +17,17 @@ const BLINK_INTERVAL := 0.4
 var is_immune := false
 var blink_tween: Tween
 
+# The chosen chef's own run speed (Princess Dish +15%, Legend of Lasagna -15%): see ChefStats.
+var chef_speed_scale := 1.0
+
 # Bubblegum (and any future slow zone): 1.0 = normal
 var speed_multiplier := 1.0
 var jump_multiplier := 1.0
 var _gum_count := 0   # how many gum patches the chef is touching right now
+
+func _ready() -> void:
+	chef_speed_scale = ChefStats.speed_scale(GameState.selected_chef_name)
+
 
 func _physics_process(delta: float) -> void:
 	# Coyote time: refill while standing, count down while in the air.
@@ -46,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y *= 0.5
 
 	var direction := Input.get_axis("left", "right")
-	apply_horizontal_movement(delta, direction, SPEED * speed_multiplier)
+	apply_horizontal_movement(delta, direction, SPEED * chef_speed_scale * speed_multiplier)
 	if direction:
 		sprite.flip_h = direction < 0
 

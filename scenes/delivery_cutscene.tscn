@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/delivery_cutscene.gd" id="1_cut"]
+[ext_resource type="Script" path="res://scripts/idle_chef.gd" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/images/bg/blue wall.png" id="3_wall"]
+[ext_resource type="Texture2D" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-apple2.png" id="6_monster"]
+
+[node name="DeliveryCutscene" type="CanvasLayer"]
+layer = 9
+script = ExtResource("1_cut")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Wall" type="Sprite2D" parent="Root"]
+texture = ExtResource("3_wall")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="Root"]
+position = Vector2(0, 720)
+scale = Vector2(1.344, 1.344)
+texture = ExtResource("4_floor")
+centered = false
+
+[node name="Monster" type="Sprite2D" parent="Root"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(540, 656)
+scale = Vector2(4, 4)
+texture = ExtResource("6_monster")
+flip_h = true
+hframes = 2
+vframes = 2
+script = ExtResource("2_idle")
+frame_time = 0.3
+
+[node name="Chef" type="Sprite2D" parent="Root"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(2040, 830)
+scale = Vector2(2, 2)
+texture = ExtResource("5_chef")
+flip_h = true
+hframes = 8
+vframes = 4
+frame = 14
+script = ExtResource("2_idle")
+frame_time = 0.15
+
+[node name="Dish" type="Sprite2D" parent="Root/Chef"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, -52)
+scale = Vector2(0.6, 0.6)
+
+[node name="Reaction" type="Node2D" parent="Root"]
+unique_name_in_owner = true
+position = Vector2(540, 455)
+
+[node name="Emote" type="Sprite2D" parent="Root/Reaction"]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-40, -80)
+centered = false
+
+[node name="Fade" type="ColorRect" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -2.0
+offset_top = -1.0
+offset_right = 1918.0
+offset_bottom = 1079.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

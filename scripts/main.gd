@@ -160,10 +160,16 @@ func _on_time_penalty(seconds: float) -> void:
 	hud.phase_timer.advance(seconds)
 
 
-## The dish was delivered: record Phase 3's stars and show the tally of all 3 phases.
+## The dish was delivered: record Phase 3's stars, play the delivery cutscene
+## (monster reaction), then show the tally of all 3 phases.
 func _on_phase_three_complete(final_xp: int) -> void:
 	GameState.record_stars(3, hud.stop_timer())
 	carried_xp = final_xp
+	var cutscene: DeliveryCutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
+	if current_recipe:
+		cutscene.dish_texture = current_recipe.dish_texture()   # this level's dish, not always salmon
+	add_child(cutscene)
+	await cutscene.finished
 	tally.show_tally(final_xp)
 
 
