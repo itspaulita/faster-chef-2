@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
 [ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
 [ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
-[ext_resource type="Texture2D" uid="uid://doyjq155bduxu" path="res://assets/images/monsters/monster-apple2.png" id="6_monster"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-potato2.png" id="6_monster"]
 [ext_resource type="Texture2D" uid="uid://dis2lb7eo14l6" path="res://assets/images/misc/pixel-speech-bubble-right.png" id="7_bubble"]
 [ext_resource type="Texture2D" uid="uid://d0xoqp2255un8" path="res://assets/images/food/dish-salmon.png" id="8_dishes"]
 

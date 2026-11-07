@@ -15,7 +15,7 @@ const EMOTE_REGIONS := {
 const STAR_STEP := 0.3
 
 ## The monster shown with its reaction (first frame of its 2x2 sheet).
-@export var monster_texture: Texture2D = preload("res://assets/images/monsters/monster-apple2.png")
+@export var monster_texture: Texture2D = preload("res://assets/images/monsters/monster-potato2.png")
 
 @onready var banner: Control = %Banner
 @onready var monster: TextureRect = %Monster

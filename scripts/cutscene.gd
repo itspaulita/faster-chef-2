@@ -11,8 +11,8 @@ const MONSTER_FRAMES := [0, 1, 2, 3]
 const CHEF_EXIT_X := 2100.0
 
 ## Shown in the order banner: "<monster_name> ordered <dish_name>!"
-@export var monster_name := "Mr. Apple"
-@export var dish_name := "salmon soup"
+@export var monster_name := "Legend of Potato"
+@export var dish_name := "salmon soup with extra potatoes"
 @export var chef_stop_x := 960.0
 
 var _tween: Tween
