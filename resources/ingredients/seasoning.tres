@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dok7td8t4fjpn"]
+
+[ext_resource type="Script" uid="uid://danhhq87duchw" path="res://scripts/data/ingredient_data.gd" id="1_tgsr4"]
+[ext_resource type="Texture2D" uid="uid://c2xkig5dqkd4s" path="res://assets/images/food/ingredients sprite sheet 80x80.png" id="2_nhtiq"]
+
+[resource]
+script = ExtResource("1_tgsr4")
+id = &"seasoning"
+display_name = "Seasoning"
+sheet = ExtResource("2_nhtiq")
+stage_frames = PackedInt32Array(12, 13, 14)
