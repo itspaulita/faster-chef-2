@@ -14,6 +14,8 @@ extends Resource
 @export var dish_cell_size := Vector2i(60, 60)
 @export var dish_columns := 5
 @export var dish_frame := 0
+## This dish's own image (e.g. dish-salmon.png). When set, it's used instead of the old sheet.
+@export var dish_image: Texture2D
 
 
 func ingredient_count() -> int:
@@ -24,7 +26,10 @@ func ingredient_at(index: int) -> IngredientData:
 	return ingredients[index] if index >= 0 and index < ingredients.size() else null
 
 
-func dish_texture() -> AtlasTexture:
+func dish_texture() -> Texture2D:
+	if dish_image:
+		return dish_image
+	# Fallback: the old "5 dishes" sheet, for recipes that don't have their own image yet.
 	var atlas := AtlasTexture.new()
 	atlas.atlas = dish_sheet
 	atlas.region = Rect2(

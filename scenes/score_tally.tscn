@@ -1,0 +1,162 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/score_tally.gd" id="1_how"]
+[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
+content_margin_left = 48.0
+content_margin_top = 32.0
+content_margin_right = 48.0
+content_margin_bottom = 36.0
+bg_color = Color(1, 0.97, 0.88, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.91, 0.6, 0.17, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 40.0
+content_margin_right = 40.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.97, 0.71, 0.28, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 40.0
+content_margin_right = 40.0
+
+[sub_resource type="Theme" id="Theme_how"]
+default_font = ExtResource("2_font")
+default_font_size = 28
+Label/colors/font_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+Button/font_sizes/font_size = 36
+Button/styles/normal = SubResource("StyleBoxFlat_btn")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn")
+Button/styles/focus = SubResource("StyleBoxFlat_btn_hover")
+
+[node name="ScoreTally" type="CanvasLayer"]
+layer = 11
+script = ExtResource("1_how")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="Dim"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Banner" type="PanelContainer" parent="Dim/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1300, 0)
+layout_mode = 2
+theme = SubResource("Theme_how")
+theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
+
+[node name="V" type="VBoxContainer" parent="Dim/Center/Banner"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="Dim/Center/Banner/V"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.5, 0.1, 1)
+theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 60
+text = "ORDER DELIVERED!"
+horizontal_alignment = 1
+
+[node name="Body" type="HBoxContainer" parent="Dim/Center/Banner/V"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Left" type="Control" parent="Dim/Center/Banner/V/Body"]
+custom_minimum_size = Vector2(380, 380)
+layout_mode = 2
+
+[node name="Monster" type="TextureRect" parent="Dim/Center/Banner/V/Body/Left"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_left = 20.0
+offset_top = 100.0
+offset_right = 340.0
+offset_bottom = 380.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Emote" type="TextureRect" parent="Dim/Center/Banner/V/Body/Left"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_left = 190.0
+offset_top = 0.0
+offset_right = 370.0
+offset_bottom = 180.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Right" type="VBoxContainer" parent="Dim/Center/Banner/V/Body"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 14
+
+[node name="PhaseRows" type="VBoxContainer" parent="Dim/Center/Banner/V/Body/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TotalLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 40
+text = "0 STARS = x0"
+
+[node name="ScoreLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "0 XP x 0 = 0"
+
+[node name="ContinueButton" type="Button" parent="Dim/Center/Banner/V"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "CONTINUE"

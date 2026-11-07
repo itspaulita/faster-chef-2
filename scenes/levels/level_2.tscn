@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://c3sft8c1b2a8g"]
 
 [ext_resource type="Script" uid="uid://c25debtjygqjl" path="res://scripts/level_1.gd" id="1_brxtv"]
+[ext_resource type="Resource" uid="uid://b8yfl2bmjao6a" path="res://resources/recipes/level_2.tres" id="2_gw1l3"]
 [ext_resource type="Texture2D" uid="uid://dl3nqp70r3alr" path="res://assets/images/background/wall_2.png" id="2_tv7cl"]
 [ext_resource type="Texture2D" uid="uid://c44vqm0tk70o4" path="res://assets/images/tilemap/professional_kitchen_withshadows.png" id="3_1yj8c"]
 [ext_resource type="Texture2D" uid="uid://crxdba668f5jj" path="res://assets/images/tilemap/Terrain (16x16).png" id="3_r88tb"]
@@ -2133,6 +2134,7 @@ size = Vector2(17.666656, 98.33334)
 [node name="levelRoot" type="Node2D" unique_id=1095527320]
 scale = Vector2(3, 3)
 script = ExtResource("1_brxtv")
+recipe = ExtResource("2_gw1l3")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2146767168]
 texture_repeat = 2

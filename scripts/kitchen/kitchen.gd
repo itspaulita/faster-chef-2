@@ -62,15 +62,3 @@ func _on_exit_left_entered(body: Node2D) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not OS.is_debug_build() or not event is InputEventKey or not event.pressed or event.echo:
 		return
-	match event.keycode:
-		KEY_0:
-			holder.drop()
-		KEY_1, KEY_2, KEY_3:
-			holder.drop()
-			holder.hold_ingredient(recipe.ingredient_at(event.keycode - KEY_1))
-		KEY_4:
-			holder.drop()
-			holder.hold_pot()
-		KEY_5:
-			holder.drop()
-			holder.hold_dish(recipe)

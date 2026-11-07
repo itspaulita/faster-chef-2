@@ -3,6 +3,7 @@ extends Node2D
 ## The chef's hands: holds ONE item at a time (a chopped ingredient, the pot, or the dish)
 ## and draws it above the chef's head. Stations never change the item directly; they ask
 ## this node, and it says no if the hands are already full.
+const POT_TEXTURE := preload("res://assets/images/kitchen/Pot_Medium4X.png")
 
 signal changed
 
@@ -65,7 +66,7 @@ func hold_ingredient(data: IngredientData) -> bool:
 func hold_pot() -> bool:
 	if not is_empty():
 		return false
-	_set_item(Kind.POT, null)
+	_set_item(Kind.POT, POT_TEXTURE)
 	return true
 
 
@@ -105,16 +106,3 @@ func _set_item(new_kind: Kind, texture: Texture2D) -> void:
 	_sprite.visible = texture != null
 	queue_redraw()
 	changed.emit()
-
-
-# The pot has no art yet, so it's a simple placeholder drawing.
-func _draw() -> void:
-	if kind != Kind.POT:
-		return
-	var c := HEAD_OFFSET
-	var dark := Color(0.23, 0.12, 0.08)
-	draw_rect(Rect2(c + Vector2(-26, -4), Vector2(8, 5)), dark)   # left handle
-	draw_rect(Rect2(c + Vector2(18, -4), Vector2(8, 5)), dark)    # right handle
-	draw_rect(Rect2(c + Vector2(-20, -10), Vector2(40, 22)), dark)
-	draw_rect(Rect2(c + Vector2(-17, -7), Vector2(34, 16)), Color(0.55, 0.57, 0.6))
-	draw_rect(Rect2(c + Vector2(-17, -7), Vector2(34, 4)), Color(0.75, 0.77, 0.8))

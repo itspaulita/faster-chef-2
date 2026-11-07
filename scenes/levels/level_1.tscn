@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://crxdba668f5jj" path="res://assets/images/tilemap/Terrain (16x16).png" id="1_6iamk"]
 [ext_resource type="Script" uid="uid://c25debtjygqjl" path="res://scripts/level_1.gd" id="1_dnkej"]
+[ext_resource type="Resource" uid="uid://blyrk8y6rv0lv" path="res://resources/recipes/level_1.tres" id="2_mm8aj"]
 [ext_resource type="Texture2D" uid="uid://gcofjvyfat3h" path="res://assets/images/tilemap/professional_kitchen.png" id="2_nsrm0"]
 [ext_resource type="Texture2D" uid="uid://dl3nqp70r3alr" path="res://assets/images/background/wall_2.png" id="2_oc4kc"]
 [ext_resource type="PackedScene" uid="uid://kxgk2rptjesw" path="res://scenes/player_1.tscn" id="3_nsrm0"]
@@ -1088,6 +1089,7 @@ size = Vector2(16, 63.999992)
 scale = Vector2(3, 3)
 script = ExtResource("1_dnkej")
 next_phase_scene = "uid://88maxgjimur1"
+recipe = ExtResource("2_mm8aj")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2146767168]
 texture_repeat = 2

@@ -46,20 +46,16 @@ var xp := 0
 @onready var player: CharacterBody2D = $"Player 1"
 
 # ---- Phase 3: run back to the start with the dish ----
-signal countdown_changed(seconds_left: int)
-signal phase_three_complete(time_left: float, final_xp: int)
-signal phase_three_failed
-
-## Seconds for the Phase 3 run. L1 120, L2 110, L3 100, L4 90.
-@export var countdown_seconds := 120
+## A cat hit the chef in Phase 3: main.gd takes these seconds off the HUD clock.
+signal time_penalty(seconds: float)
+signal phase_three_complete(final_xp: int)
 
 # main.gd sets these BEFORE the level is added, so _ready() knows which phase it is.
 var is_phase_three := false
 var start_xp := 0
-var recipe: Recipe
-
-var time_left := 0.0
-var running := false
+## The dish this level cooks in the shared kitchen (and carries back in Phase 3).
+@export var recipe: Recipe
+var delivered := false
 
 @onready var phase3_start: Marker2D = get_node_or_null("Phase3Start")
 @onready var delivery_zone: Area2D = get_node_or_null("DeliveryZone")
@@ -144,9 +140,8 @@ func _on_fire_burned() -> void:
 	
 func _on_cat_hit_chef(cat_name: String) -> void:
 	if is_phase_three:
-		# Phase 3: nothing to steal, so the cat costs time instead.
-		time_left = maxf(time_left - CAT_TIME_PENALTY, 0.0)
-		countdown_changed.emit(ceili(time_left))
+		# Phase 3: nothing to steal, so the cat costs time on the HUD clock instead.
+		time_penalty.emit(CAT_TIME_PENALTY)
 		message.emit("%s slowed you down! -%d s" % [cat_name, CAT_TIME_PENALTY])
 		return
 	var type := _most_collected_type()
@@ -233,11 +228,9 @@ func _on_checkpoint_reached(spawn_position: Vector2) -> void:
 	respawn_point = spawn_position
 	message.emit("Checkpoint!")
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if player.global_position.y > camera.limit_bottom + FALL_MARGIN:
 		_respawn_player()
-	if running:
-		_tick_countdown(delta)
 
 
 func _respawn_player() -> void:
@@ -257,25 +250,11 @@ func _start_phase_three() -> void:
 		ItemHolder.get_or_create(player).hold_dish(recipe)   # dish floats above the chef
 	xp = start_xp                                # continue from the Phase 1 XP
 	xp_changed.emit(xp)
-	time_left = countdown_seconds
-	running = true
-	countdown_changed.emit(countdown_seconds)
 	delivery_zone.body_entered.connect(_on_delivery_zone_entered)
 
 
-func _tick_countdown(delta: float) -> void:
-	var shown_before := ceili(time_left)
-	time_left = maxf(time_left - delta, 0.0)
-	if ceili(time_left) != shown_before:
-		countdown_changed.emit(ceili(time_left))  # once per second, not every frame
-	if time_left <= 0.0:
-		running = false
-		player.set_physics_process(false)         # freeze the chef
-		phase_three_failed.emit()
-
-
 func _on_delivery_zone_entered(body: Node2D) -> void:
-	if not running or body != player:
+	#if not running or body != player:
 		return
-	running = false
-	phase_three_complete.emit(time_left, xp)
+	#running = false
+	#phase_three_complete.emit(time_left, xp)
