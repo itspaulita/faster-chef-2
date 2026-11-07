@@ -2450,7 +2450,7 @@ position = Vector2(2545.3335, 315.66666)
 move_offset = Vector2(65, 0)
 
 [node name="MovingPlatform18" parent="MovingPlatforms" unique_id=799818073 node_paths=PackedStringArray("meet_at") instance=ExtResource("11_o3ttr")]
-position = Vector2(2054.3333, 286)
+position = Vector2(2054.3333, 318.66666)
 meet_at = NodePath("../MicrowaveTop2")
 wait_at_start = 0.8
 wait_at_end = 1.5
