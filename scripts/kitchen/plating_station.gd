@@ -1,7 +1,7 @@
 class_name PlatingStation
 extends Station
-## Where the cooked pot is set down (B) and turned into the plated dish. The dish shows in a
-## popup (nothing on the counter) until the chef picks it up with B, which puts it in their
+## Where the cooked pot is set down (Q) and turned into the plated dish. The dish shows in a
+## popup (nothing on the counter) until the chef picks it up with Q, which puts it in their
 ## hands and is what starts Phase 3.
 
 signal dish_plated
@@ -28,8 +28,8 @@ func _get_prompt_text() -> String:
 	if holder == null:
 		return ""
 	if has_dish:
-		return "B  PICK UP DISH" if holder.is_empty() else ""
-	return "B  PLATE" if holder.holds(ItemHolder.Kind.POT) else ""
+		return "Q  PICK UP DISH" if holder.is_empty() else ""
+	return "Q  PLATE" if holder.holds(ItemHolder.Kind.POT) else ""
 
 
 func _on_grab_drop() -> void:

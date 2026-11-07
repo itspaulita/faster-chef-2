@@ -60,7 +60,7 @@ func show_tally(xp: int) -> void:
 			Audio.sfx("score")
 			score_label.modulate.a = 1.0)
 	tween.tween_method(func(v: float) -> void:
-			score_label.text = "%d XP x %d = %d" % [xp, multiplier, int(round(v))],
+			score_label.text = "%d PTS x %d = %d" % [xp, multiplier, int(round(v))],
 			0.0, float(score), 0.8)
 	tween.tween_interval(0.3)
 	tween.tween_callback(func() -> void:

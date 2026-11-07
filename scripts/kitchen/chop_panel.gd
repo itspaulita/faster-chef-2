@@ -3,7 +3,7 @@ extends CanvasLayer
 ## The popup of the chopping board and the plating station. While chopping it shows the
 ## ingredient whole, then in 2 and 3 pieces as chops land (open / chopped). Afterwards it
 ## keeps showing the finished ingredient or dish (show_result) until the chef takes it
-## with B; nothing is drawn on the counter. The station closes it (close).
+## with Q; nothing is drawn on the counter. The station closes it (close).
 
 @onready var banner: Control = $Banner
 @onready var title_label: Label = %TitleLabel
@@ -25,18 +25,18 @@ func open(ingredient: IngredientData, chops_done: int, chops_total: int) -> void
 	_ingredient = ingredient
 	_chops_total = chops_total
 	title_label.text = "CHOP %s" % ingredient.display_name.to_upper()
-	hint_label.text = "PRESS  C"
+	hint_label.text = "PRESS  E"
 	_show_stage(chops_done, false)
 	_pop_in()
 
 
-## Shows a finished thing (a chopped ingredient, the plated dish) that waits for B.
+## Shows a finished thing (a chopped ingredient, the plated dish) that waits for Q.
 func show_result(title: String, texture: Texture2D, caption: String) -> void:
 	_ingredient = null
 	title_label.text = title
 	item.texture = texture
 	stage_label.text = caption
-	hint_label.text = "PRESS  B"
+	hint_label.text = "PRESS  Q"
 	_pop_in()
 
 

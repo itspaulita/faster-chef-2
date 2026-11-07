@@ -23,8 +23,35 @@ enum Mood { SAD, NEUTRAL, HAPPY }
 static var phase_stars := {}
 
 
+## The finished levels of this game, for the game over screen: level index ->
+## { "stars": int, "points": int, "score": int }. Replaying a level replaces its entry.
+static var level_results := {}
+
+
 static func reset_run() -> void:
 	phase_stars = {}
+
+
+## A new game starts: forget the levels of the last one.
+static func reset_game() -> void:
+	level_results = {}
+	reset_run()
+
+
+## Call when a level's tally is shown, while its stars are still in `phase_stars`.
+static func record_level_result(level: int, points: int) -> void:
+	level_results[level] = {
+		"stars": total_stars(),
+		"points": points,
+		"score": final_score(points),
+	}
+
+
+static func game_score() -> int:
+	var total := 0
+	for result in level_results.values():
+		total += result.score
+	return total
 
 
 static func record_stars(phase: int, stars: int) -> void:

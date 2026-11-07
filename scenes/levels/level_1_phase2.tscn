@@ -1389,6 +1389,7 @@ shape = SubResource("RectangleShape2D_ejf1h")
 position = Vector2(150, 305)
 script = ExtResource("6_nv83i")
 station_name = "Chopping board"
+prompt_offset = Vector2(0, -46)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stations/ChoppingBoard" unique_id=1722402071]
 position = Vector2(0, 32)
@@ -1401,6 +1402,7 @@ position = Vector2(0, 12)
 position = Vector2(320, 305)
 script = ExtResource("8_ktli7")
 station_name = "Pot"
+prompt_offset = Vector2(0, -52)
 
 [node name="cooking_stove" parent="Stations/Pot" unique_id=1971927405 instance=ExtResource("19_3q2bk")]
 position = Vector2(0, 6.0000205)
@@ -1413,6 +1415,7 @@ shape = SubResource("RectangleShape2D_5j4t3")
 position = Vector2(490, 305)
 script = ExtResource("9_h5csf")
 station_name = "Plating station"
+prompt_offset = Vector2(0, -58)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stations/PlatingStation" unique_id=1575740185]
 position = Vector2(0, 24.333336)

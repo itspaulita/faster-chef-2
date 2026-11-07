@@ -27,10 +27,55 @@ func _ready() -> void:
 	nickname_edit.text = GameState.nickname
 	# Enter confirms the name, so the keyboard goes back to the screen.
 	nickname_edit.text_changed.connect(func(_text: String) -> void: prompt_label.text = DEFAULT_PROMPT)
-	nickname_edit.text_submitted.connect(func(_text: String) -> void: nickname_edit.release_focus())
+	nickname_edit.text_submitted.connect(_on_nickname_submitted)
+
+
+## Enter confirms the name and picks the first chef (if none is picked yet), so the rest can be
+## done with the keyboard: Left / Right (or A / D) switch chef, Enter starts.
+func _on_nickname_submitted(text: String) -> void:
+	if text.strip_edges().is_empty():
+		Audio.sfx("wrong")
+		prompt_label.text = NICKNAME_PROMPT
+		_flash(prompt_label)
+		_flash(nickname_edit)
+		return
+	nickname_edit.release_focus()
+	if _selected == null:
+		_select(chefs[0])
+
+
+func _move_selection(step: int) -> void:
+	var index := chefs.find(_selected)
+	if index < 0:
+		index = 0 if step > 0 else chefs.size() - 1
+	else:
+		index = wrapi(index + step, 0, chefs.size())
+	_select(chefs[index])
+
+
+## Returns true if the key was used.
+func _handle_key(event: InputEventKey) -> bool:
+	if nickname_edit.has_focus():
+		return false   # typing; Enter is handled by the name field itself
+	if event.is_action_pressed("ui_accept", false, true):
+		_on_play_pressed()
+		return true
+	if event.is_action_pressed("ui_left", false, true) or event.is_action_pressed("left", false, true):
+		_move_selection(-1)
+		return true
+	if event.is_action_pressed("ui_right", false, true) or event.is_action_pressed("right", false, true):
+		_move_selection(1)
+		return true
+	return false
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		# Grab the viewport first: starting the game changes the scene, which removes this node.
+		var viewport := get_viewport()
+		if _handle_key(event):
+			viewport.set_input_as_handled()
+			return
 	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		return
 	# Clicking anywhere but the name field leaves it.
@@ -64,9 +109,11 @@ func _show_stats(chef: Sprite2D) -> void:
 	stats_popup.visible = true
 	stats_popup.size = Vector2(stats_popup.custom_minimum_size.x, 0.0)
 	await get_tree().process_frame
+	if not is_inside_tree():
+		return   # the game already started
 	stats_popup.reset_size()
 	await get_tree().process_frame
-	if _selected != chef:
+	if not is_inside_tree() or _selected != chef:
 		return
 	stats_popup.position = Vector2(chef.position.x - stats_popup.size.x / 2.0, POPUP_BOTTOM - stats_popup.size.y)
 	stats_popup.modulate.a = 1.0
@@ -88,6 +135,7 @@ func _on_play_pressed() -> void:
 		return
 	GameState.nickname = nickname_edit.text.strip_edges()
 	GameState.level_index = 0   # a new game starts at level 1
+	GameState.reset_game()
 	GameState.selected_chef_name = _selected.name
 	GameState.selected_chef_texture = _selected.texture
 	if ResourceLoader.exists(NEXT_SCENE):

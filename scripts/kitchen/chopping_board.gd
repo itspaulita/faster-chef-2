@@ -1,15 +1,15 @@
 class_name ChoppingBoard
 extends Station
 ## Where the chef chops. Standing still at the board turns the chef to the wall and opens
-## the chop panel. Each C is one chop (whole -> 2 pieces -> 3 pieces -> done). When the
+## the chop panel. Each E is one chop (whole -> 2 pieces -> 3 pieces -> done). When the
 ## 3rd chop lands the panel keeps showing the chopped ingredient (nothing is drawn on the
-## counter) until the chef picks it up with B, which puts it in their hands. Ingredients are chopped in the recipe's order.
+## counter) until the chef picks it up with Q, which puts it in their hands. Ingredients are chopped in the recipe's order.
 
 signal chopped(ingredient: IngredientData)
 signal ingredient_taken(ingredient: IngredientData)
 
 const PANEL_SCENE := preload("res://scenes/chop_panel.tscn")
-## Seconds a chop takes. Presses during it are ignored, so mashing C can't skip stages.
+## Seconds a chop takes. Presses during it are ignored, so mashing E can't skip stages.
 const CHOP_TIME := 0.25
 ### Seconds the chef must stand still in the zone before the panel opens by itself.
 #const STAND_TIME := 0.15
@@ -53,8 +53,8 @@ func _get_prompt_text() -> String:
 	if holder == null or is_chopping:
 		return ""
 	if ready_item != null:
-		return "B  PICK UP" if holder.is_empty() else ""
-	return "C  CHOP" if _can_start_chopping() else ""
+		return "Q  PICK UP" if holder.is_empty() else ""
+	return "E  CHOP" if _can_start_chopping() else ""
 
 
 func _on_chop() -> void:
@@ -63,7 +63,7 @@ func _on_chop() -> void:
 			if not holder.is_empty():
 				message.emit("Your hands are full! You're carrying %s." % holder.describe())
 			elif ready_item != null:
-				message.emit("Pick up the chopped %s first (B)." % ready_item.display_name)
+				message.emit("Pick up the chopped %s first (Q)." % ready_item.display_name)
 			else:
 				message.emit("Everything is already chopped!")
 			return
@@ -123,7 +123,7 @@ func _chop() -> void:
 	_busy = true
 	Audio.sfx("chop", chops - 1)   # chop 1, 2, 3 each have their own sound
 	_panel.chopped(chops)
-	# Ignore C until the chop animation is over; the last chop then closes the panel.
+	# Ignore E until the chop animation is over; the last chop then closes the panel.
 	var session := _session
 	create_tween().tween_interval(CHOP_TIME).finished.connect(func() -> void:
 		if session == _session:

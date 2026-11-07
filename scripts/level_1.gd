@@ -132,7 +132,7 @@ func _on_ingredient_collected(type: String, spawn_position: Vector2) -> void:
 	collected_pieces[type].append({ "position": spawn_position, "xp": gained })
 	_add_xp(gained)
 	ingredient_progress.emit(type, have, total)
-	print("%s %d/%d  +%d XP  (total %d XP)" % [type, have, total, gained, xp])
+	print("%s %d/%d  +%d pts  (total %d pts)" % [type, have, total, gained, xp])
 	_update_exit()
 
 func _add_xp(amount: int) -> void:
@@ -181,7 +181,7 @@ func _setup_fire_pits() -> void:
 
 func _on_fire_burned() -> void:
 	_add_xp(-FIRE_PENALTY_XP)
-	message.emit("Ouch, hot! -%d XP" % FIRE_PENALTY_XP)
+	message.emit("Ouch, hot! -%d pts" % FIRE_PENALTY_XP)
 	
 func _on_cat_hit_chef(cat_name: String) -> void:
 	if is_phase_three:
@@ -285,7 +285,7 @@ func _respawn_player() -> void:
 	player.velocity = Vector2.ZERO
 	camera.reset_smoothing()                        # jump the camera there, don't glide
 	_add_xp(-FALL_PENALTY_XP)
-	message.emit("Oops! -%d XP" % FALL_PENALTY_XP)
+	message.emit("Oops! -%d pts" % FALL_PENALTY_XP)
 	
 func _start_phase_three() -> void:
 	ingredients.queue_free()                     # nothing to collect on the way back

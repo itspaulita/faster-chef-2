@@ -2,7 +2,7 @@ class_name Station
 extends Area2D
 ## Base for the kitchen's interaction zones (chopping board, pot, plating station).
 ## Tracks the chef standing in the zone, shows a key prompt above the station, and routes
-## C (chop) and B (grab/drop) to the station the chef is standing at. Away from every
+## E (chop) and Q (grab/drop) to the station the chef is standing at. Away from every
 ## station, nothing listens, so the keys do nothing.
 
 signal chef_entered(chef: Node2D)
@@ -14,10 +14,14 @@ const FONT := preload("res://assets/font/RetroGaming.ttf")
 
 @export var station_name := "Station"
 ## Where the prompt floats, relative to the station. High enough to clear the held item.
-@export var prompt_offset := Vector2(0, -100)
+@export var prompt_offset := Vector2(0, -108)
 
 var chef: Node2D
 var holder: ItemHolder
+var _blink: Tween
+
+const OUTLINE_SHADER := preload("res://shaders/outline.gdshader")
+const BLINK_TIME := 0.45
 
 var _prompt: PanelContainer
 var _prompt_label: Label
@@ -30,11 +34,37 @@ func _ready() -> void:
 	refresh_prompt()
 
 
+## Blinks a yellow outline around the station's picture to show it is the next thing to do.
+func set_highlight(on: bool) -> void:
+	if on == (_blink != null):
+		return
+	# The station's picture is the AnimatedSprite2D inside its art scene (chopping_spot, ...).
+	var sprites := find_children("*", "AnimatedSprite2D", true, false)
+	if sprites.is_empty():
+		return
+	var art := sprites[0] as CanvasItem
+	if _blink:
+		_blink.kill()
+		_blink = null
+	if not on:
+		art.material = null
+		return
+	var material := ShaderMaterial.new()
+	material.shader = OUTLINE_SHADER
+	material.set_shader_parameter("width", 3.0)
+	art.material = material
+	_blink = create_tween().set_loops()
+	_blink.tween_method(func(a: float) -> void:
+		material.set_shader_parameter("outline_color", Color(1.0, 0.85, 0.2, a)), 1.0, 0.1, BLINK_TIME)
+	_blink.tween_method(func(a: float) -> void:
+		material.set_shader_parameter("outline_color", Color(1.0, 0.85, 0.2, a)), 0.1, 1.0, BLINK_TIME)
+
+
 func is_chef_near() -> bool:
 	return chef != null
 
 
-## Subclasses return the prompt, e.g. "C  CHOP". An empty string hides it.
+## Subclasses return the prompt, e.g. "E  CHOP". An empty string hides it.
 func _get_prompt_text() -> String:
 	return ""
 
@@ -101,10 +131,10 @@ func _build_prompt() -> void:
 	style.border_color = Color(0.23, 0.12, 0.08)
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(3)
-	style.content_margin_left = 5
-	style.content_margin_right = 5
-	style.content_margin_top = 2
-	style.content_margin_bottom = 2
+	style.content_margin_left = 7
+	style.content_margin_right = 7
+	style.content_margin_top = 3
+	style.content_margin_bottom = 3
 
 	_prompt = PanelContainer.new()
 	_prompt.add_theme_stylebox_override("panel", style)
@@ -113,7 +143,7 @@ func _build_prompt() -> void:
 
 	_prompt_label = Label.new()
 	_prompt_label.add_theme_font_override("font", FONT)
-	_prompt_label.add_theme_font_size_override("font_size", 8)
+	_prompt_label.add_theme_font_size_override("font_size", 14)
 	_prompt_label.add_theme_color_override("font_color", Color(0.17, 0.09, 0.06))
 	_prompt_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_prompt.add_child(_prompt_label)

@@ -9,6 +9,7 @@ const PHASE_TIMINGS := {
 	3: preload("res://resources/timing/phase_3.tres"),
 }
 const TITLE_SCENE := "res://scenes/title_screen.tscn"
+const GAME_OVER_SCENE := "res://scenes/game_over.tscn"
 ## Seconds the "too slow" message shows before the level restarts.
 const RESTART_DELAY := 2.0
 
@@ -128,7 +129,7 @@ func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
 
 
 func _on_exit_opened() -> void:
-	popup.open("The wall is open!\nWalk out to the right for Phase 2,\nor keep collecting for bonus XP.", [], false, 5.0)
+	popup.open("The wall is open!\nWalk out to the right for Phase 2,\nor keep collecting for bonus pts.", [], false, 5.0)
 
 
 func _on_star_lost(stars_left: int) -> void:
@@ -156,7 +157,7 @@ func _on_phase_one_complete(final_xp: int) -> void:
 		_show_scene.call_deferred(next)
 	else:
 		# No Phase 2-3 map yet: just show the result for a few seconds.
-		popup.open("Phase 1 complete!\nXP: %d   Stars: %d\n\nPhase 2 coming soon..." % [final_xp, GameState.phase_stars[1]], [], false, 5.0)
+		popup.open("Phase 1 complete!\nPoints: %d   Stars: %d\n\nPhase 2 coming soon..." % [final_xp, GameState.phase_stars[1]], [], false, 5.0)
 
 
 ## The chef left the kitchen with the dish: back to this level's map, in Phase 3 mode.
@@ -175,6 +176,7 @@ func _on_time_penalty(seconds: float) -> void:
 ## (monster reaction), then show the tally of all 3 phases on top of it.
 func _on_phase_three_complete(final_xp: int) -> void:
 	GameState.record_stars(3, hud.stop_timer())
+	GameState.record_level_result(level_index, final_xp)
 	carried_xp = final_xp
 	# The cutscene picks this level's monsters and dish from its LevelInfo by itself.
 	delivery_cutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
@@ -192,5 +194,6 @@ func _on_tally_continue() -> void:
 		# Next level: its order cutscene first, then main loads the level.
 		GameState.level_index = level_index + 1
 		get_tree().change_scene_to_file(ORDER_CUTSCENE)
-	elif ResourceLoader.exists(TITLE_SCENE):
-		get_tree().change_scene_to_file(TITLE_SCENE)
+	else:
+		# That was the last level: the game over screen adds up every level, then the title.
+		get_tree().change_scene_to_file(GAME_OVER_SCENE)
