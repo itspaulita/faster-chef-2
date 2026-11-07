@@ -64,6 +64,19 @@ var delivered := false
 const FALL_MARGIN := 200.0
 var respawn_point := Vector2.ZERO
 
+# ---- Pastatouille's weakness: cats near her get excited and hop in place ----
+## How close (screen pixels) the chef must be for a cat to start hopping.
+const CAT_EXCITE_DISTANCE := 250.0
+## A bit further to calm down again, so a cat on the edge doesn't flicker on/off.
+const CAT_CALM_DISTANCE := 300.0
+## Hop height in the level's units (levelRoot is scaled x3, so 12 = 36 px on screen).
+const CAT_HOP_HEIGHT := 24.0
+## Seconds going up (and again coming down).
+const CAT_HOP_TIME := 0.22
+
+var cats_hop_near_chef := false
+var _hop_tweens := {}   # cat -> its looping hop Tween, while it's hopping
+
 
 func _ready() -> void:
 	_fit_camera_to_map()
@@ -127,10 +140,41 @@ func _add_xp(amount: int) -> void:
 	xp_changed.emit(xp)
 	
 func _setup_cats() -> void:
+	cats_hop_near_chef = ChefStats.mine("cats_hop", false)   # Pastatouille
 	for cat in cats.get_children():
 		if cat.has_signal("hit_chef"):
 			cat.hit_chef.connect(_on_cat_hit_chef)
 
+## Starts or stops each cat's hopping depending on how close the chef is.
+func _update_cat_hops() -> void:
+	for cat in cats.get_children():
+		if not "direction" in cat:
+			continue
+		var distance: float = cat.global_position.distance_to(player.global_position)
+		if not _hop_tweens.has(cat) and distance < CAT_EXCITE_DISTANCE:
+			_start_cat_hop(cat)
+		elif _hop_tweens.has(cat) and distance > CAT_CALM_DISTANCE:
+			_stop_cat_hop(cat)
+
+
+## The cat keeps patrolling (its own _process moves x); the tween only moves y.
+func _start_cat_hop(cat: Node2D) -> void:
+	var ground_y: float = cat.position.y
+	cat.set_meta("ground_y", ground_y)
+	var tween := create_tween().set_loops()
+	tween.tween_property(cat, "position:y", ground_y - CAT_HOP_HEIGHT, CAT_HOP_TIME) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(cat, "position:y", ground_y, CAT_HOP_TIME) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_hop_tweens[cat] = tween
+
+
+func _stop_cat_hop(cat: Node2D) -> void:
+	_hop_tweens[cat].kill()
+	_hop_tweens.erase(cat)
+	cat.position.y = cat.get_meta("ground_y")    # land exactly on the ground
+	
+	
 func _setup_fire_pits() -> void:
 	for pit in get_tree().get_nodes_in_group("fire_pit"):
 		pit.burned.connect(_on_fire_burned)
@@ -232,6 +276,8 @@ func _on_checkpoint_reached(spawn_position: Vector2) -> void:
 func _physics_process(_delta: float) -> void:
 	if player.global_position.y > camera.limit_bottom + FALL_MARGIN:
 		_respawn_player()
+	if cats_hop_near_chef:
+		_update_cat_hops()
 
 
 func _respawn_player() -> void:
