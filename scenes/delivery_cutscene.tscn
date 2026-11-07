@@ -1,17 +1,17 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dw0w0ovsxomcn"]
 
-[ext_resource type="Script" path="res://scripts/delivery_cutscene.gd" id="1_cut"]
-[ext_resource type="Script" path="res://scripts/idle_chef.gd" id="2_idle"]
-[ext_resource type="Texture2D" path="res://assets/images/bg/blue wall.png" id="3_wall"]
-[ext_resource type="Texture2D" path="res://assets/images/bg/floor.png" id="4_floor"]
-[ext_resource type="Texture2D" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
-[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-apple2.png" id="6_monster"]
+[ext_resource type="Script" uid="uid://c0yyfkq26f5i" path="res://scripts/delivery_cutscene.gd" id="1_cut"]
+[ext_resource type="Script" uid="uid://bqu3hk326euye" path="res://scripts/idle_chef.gd" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
+[ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" uid="uid://bfeidd182ogx2" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
+[ext_resource type="Texture2D" uid="uid://doyjq155bduxu" path="res://assets/images/monsters/monster-apple2.png" id="6_monster"]
 
-[node name="DeliveryCutscene" type="CanvasLayer"]
+[node name="DeliveryCutscene" type="CanvasLayer" unique_id=1398457073]
 layer = 9
 script = ExtResource("1_cut")
 
-[node name="Root" type="Control" parent="."]
+[node name="Root" type="Control" parent="." unique_id=729480836]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,17 +19,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Wall" type="Sprite2D" parent="Root"]
+[node name="Wall" type="Sprite2D" parent="Root" unique_id=2118977217]
 texture = ExtResource("3_wall")
 centered = false
 
-[node name="Floor" type="Sprite2D" parent="Root"]
+[node name="Floor" type="Sprite2D" parent="Root" unique_id=1251121145]
 position = Vector2(0, 720)
 scale = Vector2(1.344, 1.344)
 texture = ExtResource("4_floor")
 centered = false
 
-[node name="Monster" type="Sprite2D" parent="Root"]
+[node name="Monster" type="Sprite2D" parent="Root" unique_id=473484268]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(540, 656)
@@ -41,36 +41,36 @@ vframes = 2
 script = ExtResource("2_idle")
 frame_time = 0.3
 
-[node name="Chef" type="Sprite2D" parent="Root"]
+[node name="Chef" type="Sprite2D" parent="Root" unique_id=1617570146]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(2040, 830)
 scale = Vector2(2, 2)
 texture = ExtResource("5_chef")
-flip_h = true
 hframes = 8
 vframes = 4
 frame = 14
 script = ExtResource("2_idle")
 frame_time = 0.15
 
-[node name="Dish" type="Sprite2D" parent="Root/Chef"]
+[node name="Dish" type="Sprite2D" parent="Root/Chef" unique_id=364363712]
 unique_name_in_owner = true
 texture_filter = 1
-position = Vector2(0, -52)
+position = Vector2(-40, 25)
 scale = Vector2(0.6, 0.6)
+flip_h = true
 
-[node name="Reaction" type="Node2D" parent="Root"]
+[node name="Reaction" type="Node2D" parent="Root" unique_id=352966913]
 unique_name_in_owner = true
 position = Vector2(540, 455)
 
-[node name="Emote" type="Sprite2D" parent="Root/Reaction"]
+[node name="Emote" type="Sprite2D" parent="Root/Reaction" unique_id=1387790931]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-40, -80)
 centered = false
 
-[node name="Fade" type="ColorRect" parent="Root"]
+[node name="Fade" type="ColorRect" parent="Root" unique_id=1984644687]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -2.0
