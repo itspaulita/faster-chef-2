@@ -21,7 +21,9 @@ const ICON_SIZE := 32
 var phase_timer := PhaseTimer.new()
 var star_icons: Array[StarIcon] = []
 
-var _full_tile_style: StyleBoxFlat
+# Ingredient tile looks: grey at 0 collected, blue while collecting, yellow once complete.
+var _empty_tile_style: StyleBoxFlat
+var _done_tile_style: StyleBoxFlat
 var _normal_tile_style: StyleBox
 
 @onready var points_panel: PanelContainer = $PointsPanel
@@ -40,8 +42,10 @@ var _normal_tile_style: StyleBox
 
 func _ready() -> void:
 	_normal_tile_style = rows[0].get_node("IconTile").get_theme_stylebox("panel")
-	_full_tile_style = _normal_tile_style.duplicate()
-	_full_tile_style.bg_color = Color(0.7, 0.92, 0.7)
+	_empty_tile_style = _normal_tile_style.duplicate()
+	_empty_tile_style.bg_color = Color(0.72, 0.74, 0.78)
+	_done_tile_style = _normal_tile_style.duplicate()
+	_done_tile_style.bg_color = Color(1.0, 0.86, 0.3)
 	for i in rows.size():
 		var icon := AtlasTexture.new()
 		icon.atlas = sheet
@@ -68,8 +72,14 @@ func set_ingredient(index: int, count: int, animate := true) -> void:
 	var label: Label = slot.get_node("CountLabel")
 	var tile: PanelContainer = slot.get_node("IconTile")
 	label.text = "%d/%d" % [count, goal]
-	var full := count >= goal
-	tile.add_theme_stylebox_override("panel", _full_tile_style if full else _normal_tile_style)
+	var style := _normal_tile_style
+	if count <= 0:
+		style = _empty_tile_style
+	elif count >= goal:
+		style = _done_tile_style
+	tile.add_theme_stylebox_override("panel", style)
+	# The picture is dimmed to grey too while nothing has been collected.
+	slot.get_node("IconTile/Icon").modulate = Color(0.45, 0.45, 0.5, 0.8) if count <= 0 else Color.WHITE
 	if animate:
 		tile.pivot_offset = tile.size / 2.0
 		create_tween().tween_property(tile, "scale", Vector2.ONE, 0.2) \
