@@ -21,6 +21,7 @@ var contents: Array[IngredientData] = []
 ## Seconds cooked so far. Driven by _process, so pausing the game pauses the pot.
 var cook_progress := 0.0
 
+var _boil_sound: AudioStreamPlayer
 var _bar_back: ColorRect
 var _bar_fill: ColorRect
 var _count_label: Label
@@ -29,6 +30,10 @@ var _count_label: Label
 func _ready() -> void:
 	super()
 	_build_ui()
+	# The pot's own player: it freezes when the game is paused and stops with the pot.
+	_boil_sound = AudioStreamPlayer.new()
+	_boil_sound.stream = Audio.looping_stream("boiling")
+	add_child(_boil_sound)
 	_update_visuals()
 
 
@@ -39,6 +44,8 @@ func _process(delta: float) -> void:
 	_update_visuals()
 	if cook_progress >= recipe.cook_time:
 		state = State.DONE
+		_boil_sound.stop()
+		Audio.sfx("cooked")
 		_update_visuals()
 		refresh_prompt()
 		cooked.emit()
@@ -67,6 +74,7 @@ func _on_grab_drop() -> void:
 			message.emit("Still cooking!")
 		State.DONE:
 			if holder.hold_pot():
+				Audio.sfx("pickup")
 				state = State.TAKEN
 				_update_visuals()
 				pot_taken.emit()
@@ -88,10 +96,12 @@ func _try_add(ingredient: IngredientData) -> void:
 		message.emit("Not yet! The pot needs %s next." % expected.display_name)
 		return
 	holder.drop()
+	Audio.sfx("drop")
 	contents.append(ingredient)
 	ingredient_added.emit(ingredient, contents.size())
 	if contents.size() >= recipe.ingredient_count():
 		state = State.COOKING
+		_boil_sound.play()
 		cooking_started.emit()
 	_update_visuals()
 	refresh_prompt()

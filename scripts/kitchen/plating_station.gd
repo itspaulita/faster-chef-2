@@ -34,6 +34,7 @@ func _get_prompt_text() -> String:
 func _on_grab_drop() -> void:
 	if has_dish:
 		if holder.hold_dish(recipe):
+			Audio.sfx("pickup")
 			has_dish = false
 			_dish_sprite.visible = false
 			dish_picked_up.emit(recipe)
@@ -42,6 +43,8 @@ func _on_grab_drop() -> void:
 			message.emit("Your hands are full! You're carrying %s." % holder.describe())
 	elif holder.holds(ItemHolder.Kind.POT):
 		holder.drop()
+		Audio.sfx("drop_plate")
+		Audio.sfx("plated")
 		has_dish = true
 		_dish_sprite.texture = recipe.dish_texture()
 		_dish_sprite.visible = true

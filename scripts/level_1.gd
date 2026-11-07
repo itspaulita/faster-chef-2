@@ -92,6 +92,7 @@ func _connect_piece(piece: Node2D, type: String) -> void:
 
 
 func _on_ingredient_collected(type: String, spawn_position: Vector2) -> void:
+	Audio.sfx("pickup")
 	collected_by_type[type] += 1
 	var have: int = collected_by_type[type]
 	var total: int = total_by_type[type]

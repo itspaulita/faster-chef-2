@@ -41,6 +41,8 @@ func load_level(index: int) -> void:
 	GameState.level_index = index
 	carried_xp = 0
 	GameState.reset_run()
+	# One music track per level (level-1 ... level-3).
+	Audio.music("level-%d" % mini(index + 1, 3))
 	var info := Levels.info(index)
 	hud.set_ingredient_frames(info.ingredient_frames)
 	ingredient_rows = {}
@@ -105,6 +107,7 @@ func _on_phase_two_complete(_recipe: Recipe) -> void:
 	add_child(delivery_cutscene)
 	await delivery_cutscene.finished
 	# The cutscene stays up behind the tally as its background.
+	Audio.sfx("win")
 	tally.show_tally(carried_xp)
 
 
@@ -135,6 +138,7 @@ func _on_star_lost(stars_left: int) -> void:
 
 ## A phase ran out of time (0 stars): the whole level starts over.
 func _on_timed_out() -> void:
+	Audio.sfx("lose")
 	notifications.notify("Out of time! Restarting the level...", RESTART_DELAY)
 	var index := level_index
 	await get_tree().create_timer(RESTART_DELAY).timeout

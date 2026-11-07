@@ -22,6 +22,7 @@ var _selected: Sprite2D
 
 
 func _ready() -> void:
+	Audio.music("intro")
 	play_button.pressed.connect(_on_play_pressed)
 	nickname_edit.text = GameState.nickname
 	# Enter confirms the name, so the keyboard goes back to the screen.
@@ -74,12 +75,14 @@ func _show_stats(chef: Sprite2D) -> void:
 func _on_play_pressed() -> void:
 	# The nickname is required (it will be the name on the scoreboard).
 	if nickname_edit.text.strip_edges().is_empty():
+		Audio.sfx("wrong")
 		prompt_label.text = NICKNAME_PROMPT
 		_flash(prompt_label)
 		_flash(nickname_edit)
 		nickname_edit.grab_focus()
 		return
 	if _selected == null:
+		Audio.sfx("wrong")
 		prompt_label.text = DEFAULT_PROMPT
 		_flash(prompt_label)
 		return

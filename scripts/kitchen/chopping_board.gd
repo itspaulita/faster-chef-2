@@ -91,6 +91,7 @@ func _on_grab_drop() -> void:
 		return
 	var taken := ready_item
 	if holder.hold_ingredient(taken):
+		Audio.sfx("pickup")
 		ready_item = null
 		_item_sprite.visible = false
 		ingredient_taken.emit(taken)
@@ -117,6 +118,7 @@ func _is_standing() -> bool:
 func _start_chopping() -> void:
 	is_chopping = true
 	_still_time = 0.0
+	Audio.sfx("minigame_open")
 	_lock_chef()
 	_panel.open(recipe.ingredient_at(next_index), chops, recipe.chops_per_ingredient)
 	refresh_prompt()
@@ -125,6 +127,7 @@ func _start_chopping() -> void:
 func _chop() -> void:
 	chops += 1
 	_busy = true
+	Audio.sfx("chop", chops - 1)   # chop 1, 2, 3 each have their own sound
 	_panel.chopped(chops)
 	# Ignore E until the chop animation is over; the last chop then closes the panel.
 	create_tween().tween_interval(CHOP_TIME).finished.connect(_after_chop)
@@ -138,6 +141,7 @@ func _after_chop() -> void:
 
 
 func _finish_chopping() -> void:
+	Audio.sfx("all_chopped")
 	ready_item = recipe.ingredient_at(next_index)
 	next_index += 1
 	chops = 0
