@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b80hoxdx32g1e"
-path="res://.godot/imported/Pastatouille 110x80.png-db3ff3154914171852284c90fb959871.ctex"
+uid="uid://d27h60abxqm8p"
+path="res://.godot/imported/legend of lasagna.png-57ee79adf65b26b5aa5d81d7bdc12786.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/player/Pastatouille 110x80.png"
-dest_files=["res://.godot/imported/Pastatouille 110x80.png-db3ff3154914171852284c90fb959871.ctex"]
+source_file="res://assets/images/player/legend of lasagna.png"
+dest_files=["res://.godot/imported/legend of lasagna.png-57ee79adf65b26b5aa5d81d7bdc12786.ctex"]
 
 [params]
 

@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/idle_chef.gd" id="2_idle"]
 [ext_resource type="Texture2D" path="res://assets/images/bg/blue wall.png" id="3_wall"]
 [ext_resource type="Texture2D" path="res://assets/images/bg/floor.png" id="4_floor"]
-[ext_resource type="Texture2D" path="res://assets/images/player/Legend of Lasagna 110x80.png" id="5_chef"]
+[ext_resource type="Texture2D" path="res://assets/images/player/legend of lasagna.png" id="5_chef"]
 [ext_resource type="Texture2D" path="res://assets/images/monsters/monster-potato2.png" id="6_monster"]
 
 [node name="DeliveryCutscene" type="CanvasLayer" unique_id=1398457073]

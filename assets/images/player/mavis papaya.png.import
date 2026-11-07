@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3g4ls31mmqjr"
-path="res://.godot/imported/Mavis Papaya 110x80.png-484e3f0ab027073c4e502d7c798d688e.ctex"
+uid="uid://dmy73jutvpil1"
+path="res://.godot/imported/mavis papaya.png-e0a5c34aced56ad3fa1e428fbf8d50f9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/player/Mavis Papaya 110x80.png"
-dest_files=["res://.godot/imported/Mavis Papaya 110x80.png-484e3f0ab027073c4e502d7c798d688e.ctex"]
+source_file="res://assets/images/player/mavis papaya.png"
+dest_files=["res://.godot/imported/mavis papaya.png-e0a5c34aced56ad3fa1e428fbf8d50f9.ctex"]
 
 [params]
 
