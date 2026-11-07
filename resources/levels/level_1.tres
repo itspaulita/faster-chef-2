@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/level_info.gd" id="1_info"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-potato2.png" id="2_m1"]
+[ext_resource type="Texture2D" path="res://assets/images/food/dish-salmon.png" id="9_dish"]
+
+[resource]
+script = ExtResource("1_info")
+level_scene = "res://scenes/levels/level_1.tscn"
+monsters = Array[Texture2D]([ExtResource("2_m1")])
+order_text = "Legend of Potato ordered salmon soup with extra potatoes!"
+dish_icon = ExtResource("9_dish")
+ingredient_types = PackedStringArray("salmon", "cream", "potato")
+ingredient_frames = Array[int]([3, 6, 2])

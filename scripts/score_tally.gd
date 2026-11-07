@@ -1,7 +1,8 @@
 class_name ScoreTally
 extends CanvasLayer
-## Shown after the dish is delivered: the stars from each phase, the multiplier, the final
-## score, and the monster's reaction (heart = happy, smiley = neutral, sad face = poor).
+## Shown after the dish is delivered, over the final picture of the delivery cutscene (the
+## monster and its reaction stay visible behind it): the stars from each phase, the
+## multiplier and the final score.
 
 signal continue_pressed
 
@@ -14,12 +15,7 @@ const EMOTE_REGIONS := {
 }
 const STAR_STEP := 0.3
 
-## The monster shown with its reaction (first frame of its 2x2 sheet).
-@export var monster_texture: Texture2D = preload("res://assets/images/monsters/monster-apple2.png")
-
 @onready var banner: Control = %Banner
-@onready var monster: TextureRect = %Monster
-@onready var emote: TextureRect = %Emote
 @onready var phase_rows: VBoxContainer = %PhaseRows
 @onready var total_label: Label = %TotalLabel
 @onready var score_label: Label = %ScoreLabel
@@ -30,26 +26,15 @@ func _ready() -> void:
 	hide()
 	continue_button.pressed.connect(_on_continue)
 	banner.resized.connect(func(): banner.pivot_offset = banner.size / 2.0)
-	emote.resized.connect(func(): emote.pivot_offset = emote.size / 2.0)
 
 
 ## Reads the stars from GameState and plays the tally for `xp` base points.
 func show_tally(xp: int) -> void:
-	var atlas := AtlasTexture.new()
-	atlas.atlas = monster_texture
-	atlas.region = Rect2(Vector2.ZERO, monster_texture.get_size() / 2.0)
-	monster.texture = atlas
-	var emote_atlas := AtlasTexture.new()
-	emote_atlas.atlas = EMOTES
-	emote_atlas.region = EMOTE_REGIONS[GameState.mood()]
-	emote.texture = emote_atlas
-
 	for child in phase_rows.get_children():
 		child.queue_free()
 	total_label.modulate.a = 0.0
 	score_label.modulate.a = 0.0
 	score_label.text = ""
-	emote.modulate.a = 0.0
 	continue_button.disabled = true
 
 	show()
@@ -76,7 +61,6 @@ func show_tally(xp: int) -> void:
 			score_label.text = "%d XP x %d = %d" % [xp, multiplier, int(round(v))],
 			0.0, float(score), 0.8)
 	tween.tween_interval(0.3)
-	tween.tween_callback(_pop_emote)
 	tween.tween_callback(func() -> void:
 			continue_button.disabled = false
 			continue_button.grab_focus())
@@ -105,12 +89,6 @@ func _reveal_stars(icons: Array[StarIcon], stars: int) -> void:
 		get_tree().create_timer(i * STAR_STEP).timeout.connect(func() -> void:
 			icons[i].set_earned(true)
 			icons[i].play_sparkle())
-
-
-func _pop_emote() -> void:
-	emote.modulate.a = 1.0
-	create_tween().tween_property(emote, "scale", Vector2.ONE, 0.35) \
-			.from(Vector2.ZERO).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 func _on_continue() -> void:

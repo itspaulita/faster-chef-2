@@ -71,19 +71,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
+color = Color(0, 0, 0, 0)
 
 [node name="Center" type="CenterContainer" parent="Dim"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 960.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Banner" type="PanelContainer" parent="Dim/Center"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1300, 0)
 layout_mode = 2
 theme = SubResource("Theme_how")
 theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
@@ -105,32 +105,6 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
-
-[node name="Left" type="Control" parent="Dim/Center/Banner/V/Body"]
-custom_minimum_size = Vector2(380, 380)
-layout_mode = 2
-
-[node name="Monster" type="TextureRect" parent="Dim/Center/Banner/V/Body/Left"]
-unique_name_in_owner = true
-texture_filter = 1
-layout_mode = 0
-offset_left = 20.0
-offset_top = 100.0
-offset_right = 340.0
-offset_bottom = 380.0
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Emote" type="TextureRect" parent="Dim/Center/Banner/V/Body/Left"]
-unique_name_in_owner = true
-texture_filter = 1
-layout_mode = 0
-offset_left = 190.0
-offset_top = 0.0
-offset_right = 370.0
-offset_bottom = 180.0
-expand_mode = 1
-stretch_mode = 5
 
 [node name="Right" type="VBoxContainer" parent="Dim/Center/Banner/V/Body"]
 layout_mode = 2
