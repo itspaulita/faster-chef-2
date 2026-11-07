@@ -2,6 +2,8 @@ class_name GameState
 extends RefCounted
 ## Values that need to survive scene changes.
 
+## The player's name from the choose-chef screen (empty if they left it blank).
+static var nickname := ""
 static var selected_chef_name := ""
 static var selected_chef_texture: Texture2D
 

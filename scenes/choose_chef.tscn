@@ -175,13 +175,48 @@ theme_override_font_sizes/font_size = 34
 text = "Weakness:"
 autowrap_mode = 3
 
+[node name="NicknameRow" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 360.0
+offset_top = 205.0
+offset_right = 1560.0
+offset_bottom = 295.0
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="NicknameLabel" type="Label" parent="NicknameRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 48
+text = "NICKNAME:"
+vertical_alignment = 1
+
+[node name="NicknameEdit" type="LineEdit" parent="NicknameRow"]
+custom_minimum_size = Vector2(560, 80)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/caret_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_placeholder_color = Color(0.23, 0.12, 0.08, 0.4)
+theme_override_fonts/font = ExtResource("9_font")
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("StyleBoxFlat_popup")
+theme_override_styles/focus = SubResource("StyleBoxFlat_popup")
+placeholder_text = "type your name"
+max_length = 12
+alignment = 1
+caret_blink = true
+
 [node name="PromptLabel" type="Label" parent="." unique_id=2060700668]
 layout_mode = 0
 offset_left = 259.0
-offset_top = 175.0
+offset_top = 310.0
 offset_right = 1659.0
-offset_bottom = 265.0
-theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+offset_bottom = 390.0
+theme_override_colors/font_color = Color(1, 0.97, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 12
 theme_override_fonts/font = ExtResource("9_font")
 theme_override_font_sizes/font_size = 48
 text = "Select a chef and press play"
