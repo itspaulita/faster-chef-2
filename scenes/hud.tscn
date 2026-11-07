@@ -80,27 +80,35 @@ offset_left = 24.0
 offset_top = 24.0
 theme_override_constants/separation = 16
 
-[node name="TimerBox" type="VBoxContainer" parent="TopLeft" unique_id=396912344]
+[node name="TimerBox" type="PanelContainer" parent="TopLeft" unique_id=871254405]
 visible = false
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="StarsRow" type="HBoxContainer" parent="TopLeft/TimerBox" unique_id=1161000811]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 10
-
-[node name="TimerPanel" type="PanelContainer" parent="TopLeft/TimerBox" unique_id=1152537494]
-custom_minimum_size = Vector2(320, 76)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_points")
 
-[node name="TimerLabel" type="Label" parent="TopLeft/TimerBox/TimerPanel" unique_id=1445952068]
+[node name="Box" type="VBoxContainer" parent="TopLeft/TimerBox" unique_id=1525463348]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BarArea" type="Control" parent="TopLeft/TimerBox/Box" unique_id=433183121]
+custom_minimum_size = Vector2(420, 60)
+layout_mode = 2
+
+[node name="Bar" type="ProgressBar" parent="TopLeft/TimerBox/Box/BarArea" unique_id=2014307651]
+layout_mode = 0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 44.0
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="TimerLabel" type="Label" parent="TopLeft/TimerBox/Box" unique_id=63144125]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 52
-text = "1:30"
+text = "2:30"
 horizontal_alignment = 1
 vertical_alignment = 1
 

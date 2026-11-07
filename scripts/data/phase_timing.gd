@@ -19,3 +19,20 @@ func stars_for(time_left: float) -> int:
 	if time_left < two_star_below:
 		return 2
 	return 3
+
+
+## Where the countdown bar's edge sits, 0..1: full at the start, draining evenly to empty
+## at 0:00, so a position on the bar is a point in time.
+func bar_fraction(time_left: float) -> float:
+	return clampf(time_left / maxf(duration, 0.001), 0.0, 1.0)
+
+
+## Where star `star` (1-3) sits on the bar (0..1): the point where it is lost, so the star
+## dims just as the bar's edge drains past it. Star 1 is lost at 0:00, so it sits at the end.
+func star_fraction(star: int) -> float:
+	match star:
+		3:
+			return bar_fraction(two_star_below)
+		2:
+			return bar_fraction(one_star_below)
+	return 0.0
