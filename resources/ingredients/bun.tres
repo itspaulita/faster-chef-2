@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dhnr4xj1rbawa"]
+
+[ext_resource type="Script" uid="uid://danhhq87duchw" path="res://scripts/data/ingredient_data.gd" id="1_tgsr4"]
+[ext_resource type="Texture2D" uid="uid://c2xkig5dqkd4s" path="res://assets/images/food/ingredients sprite sheet 80x80.png" id="2_nhtiq"]
+
+[resource]
+script = ExtResource("1_tgsr4")
+id = &"bun"
+display_name = "Bun"
+sheet = ExtResource("2_nhtiq")
+stage_frames = PackedInt32Array(23, 27, 28)

@@ -18,7 +18,6 @@
 [ext_resource type="PackedScene" uid="uid://b78dclmajmf1j" path="res://scenes/cat_2.tscn" id="10_5f5xw"]
 [ext_resource type="PackedScene" uid="uid://huj2u5lq8uj4" path="res://scenes/cat_3.tscn" id="11_n6eey"]
 [ext_resource type="PackedScene" uid="uid://b3fs82ymxhtgv" path="res://scenes/moving_platform_up.tscn" id="11_o3ttr"]
-[ext_resource type="PackedScene" uid="uid://qtlhtl8eqi2a" path="res://scenes/moving_microwave.tscn" id="12_kdsi4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x42e6"]
 texture = ExtResource("3_t4txi")
@@ -2177,9 +2176,14 @@ sources/1 = SubResource("TileSetAtlasSource_lgrx1")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ejf1h"]
 size = Vector2(17.666656, 98.33334)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vmg1d"]
+size = Vector2(16, 63.999992)
+
 [node name="levelRoot" type="Node2D" unique_id=1095527320]
 scale = Vector2(3, 3)
 script = ExtResource("1_qi5uv")
+next_phase_scene = "uid://88maxgjimur1"
+min_pieces_per_ingredient = 3
 recipe = ExtResource("2_vmg1d")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=925160025]
@@ -2313,7 +2317,7 @@ position = Vector2(1741.3334, 33.333332)
 position = Vector2(2542, 64.333336)
 
 [node name="pumpkin3" parent="ingredients" unique_id=2047648750 instance=ExtResource("5_lgrx1")]
-position = Vector2(3614.6665, 64.666664)
+position = Vector2(3614.6665, 128)
 
 [node name="pumpkin4" parent="ingredients" unique_id=526474718 instance=ExtResource("5_lgrx1")]
 position = Vector2(4791, 126.333336)
@@ -2406,6 +2410,17 @@ position = Vector2(5360.3335, 326)
 [node name="checkpointFlag2" parent="Checkpoints" unique_id=641195363 instance=ExtResource("5_ugcn1")]
 position = Vector2(56.333336, 309)
 
+[node name="CheckpointsPhase3" type="Node2D" parent="." unique_id=455735890]
+
+[node name="checkpointFlag2" parent="CheckpointsPhase3" unique_id=903267804 instance=ExtResource("5_ugcn1")]
+position = Vector2(7103.3335, 318.33334)
+
+[node name="checkpointFlag3" parent="CheckpointsPhase3" unique_id=1508774123 instance=ExtResource("5_ugcn1")]
+position = Vector2(6216, 247)
+
+[node name="checkpointFlag4" parent="CheckpointsPhase3" unique_id=1873706094 instance=ExtResource("5_ugcn1")]
+position = Vector2(2771, 327.3333)
+
 [node name="Decorations" type="Node2D" parent="." unique_id=978852417]
 
 [node name="decoration1" parent="Decorations" unique_id=231289653 instance=ExtResource("7_t4txi")]
@@ -2430,34 +2445,28 @@ position = Vector2(917, 323.66666)
 wait_at_start = 0.6
 wait_at_end = 0.4
 
-[node name="moving_microwave" parent="MovingPlatforms" unique_id=1371352868 instance=ExtResource("12_kdsi4")]
-position = Vector2(3107, 307.33334)
-wait_at_start = 0.5
-wait_at_end = 1.5
-
-[node name="moving_microwave4" parent="MovingPlatforms" unique_id=12951931 instance=ExtResource("12_kdsi4")]
-position = Vector2(3135.3333, 307.33334)
-wait_at_start = 0.5
-wait_at_end = 1.5
-
-[node name="moving_microwave5" parent="MovingPlatforms" unique_id=1369915169 instance=ExtResource("12_kdsi4")]
-position = Vector2(3078.6665, 307.33334)
-wait_at_start = 0.5
-wait_at_end = 1.5
-
-[node name="moving_microwave6" parent="MovingPlatforms" unique_id=1374334094 node_paths=PackedStringArray("meet_at") instance=ExtResource("12_kdsi4")]
-position = Vector2(2054.3333, 288.33334)
-meet_at = NodePath("../MicrowaveTop2")
-wait_at_start = 0.8
-wait_at_end = 1.5
-
 [node name="MovingPlatform2" parent="MovingPlatforms" unique_id=1735132799 instance=ExtResource("11_o3ttr")]
 position = Vector2(2545.3335, 315.66666)
 move_offset = Vector2(65, 0)
 
+[node name="MovingPlatform18" parent="MovingPlatforms" unique_id=799818073 node_paths=PackedStringArray("meet_at") instance=ExtResource("11_o3ttr")]
+position = Vector2(2054.3333, 286)
+meet_at = NodePath("../MicrowaveTop2")
+wait_at_start = 0.8
+wait_at_end = 1.5
+
 [node name="MovingPlatform7" parent="MovingPlatforms" unique_id=303988931 instance=ExtResource("11_o3ttr")]
 position = Vector2(2714, 315.66666)
 move_offset = Vector2(-65, 0)
+
+[node name="MovingPlatform10" parent="MovingPlatforms" unique_id=746701394 instance=ExtResource("11_o3ttr")]
+position = Vector2(3079, 305)
+
+[node name="MovingPlatform11" parent="MovingPlatforms" unique_id=1128123906 instance=ExtResource("11_o3ttr")]
+position = Vector2(3109, 305)
+
+[node name="MovingPlatform12" parent="MovingPlatforms" unique_id=1704784022 instance=ExtResource("11_o3ttr")]
+position = Vector2(3138.3333, 305)
 
 [node name="MovingPlatform9" parent="MovingPlatforms" unique_id=1670721826 instance=ExtResource("11_o3ttr")]
 position = Vector2(3839.9998, 249.33334)
@@ -2466,36 +2475,24 @@ move_time = 1.5
 wait_at_start = 0.5
 wait_at_end = 0.5
 
+[node name="MovingPlatform13" parent="MovingPlatforms" unique_id=1566498193 instance=ExtResource("11_o3ttr")]
+position = Vector2(3922.6667, 312)
+move_offset = Vector2(0, -200)
+wait_at_start = 0.5
+wait_at_end = 1.5
+
+[node name="MovingPlatform14" parent="MovingPlatforms" unique_id=1349012557 instance=ExtResource("11_o3ttr")]
+position = Vector2(3952, 312)
+move_offset = Vector2(0, -200)
+wait_at_start = 0.5
+wait_at_end = 1.5
+
 [node name="MovingPlatform8" parent="MovingPlatforms" unique_id=1534000118 instance=ExtResource("11_o3ttr")]
 position = Vector2(4587.6665, 305.66666)
 move_offset = Vector2(-65, 0)
 
-[node name="moving_microwave2" parent="MovingPlatforms" unique_id=171400821 node_paths=PackedStringArray("meet_at") instance=ExtResource("12_kdsi4")]
-position = Vector2(3923, 314.33334)
-meet_at = NodePath("../MicrowaveTop")
-wait_at_start = 0.5
-wait_at_end = 1.5
-
-[node name="moving_microwave7" parent="MovingPlatforms" unique_id=999136598 node_paths=PackedStringArray("meet_at") instance=ExtResource("12_kdsi4")]
-position = Vector2(3951.3333, 314.33334)
-meet_at = NodePath("../MicrowaveTop")
-wait_at_start = 0.5
-wait_at_end = 1.5
-
-[node name="moving_microwave8" parent="MovingPlatforms" unique_id=487409943 instance=ExtResource("12_kdsi4")]
-position = Vector2(6697.3335, 316.6667)
-move_offset = Vector2(0, -75)
-wait_at_start = 0.5
-wait_at_end = 1.0
-
-[node name="moving_microwave9" parent="MovingPlatforms" unique_id=2018972763 instance=ExtResource("12_kdsi4")]
-position = Vector2(6872.3335, 299.66666)
-move_offset = Vector2(0, -75)
-wait_at_start = 1.0
-wait_at_end = 1.5
-
-[node name="moving_microwave3" parent="MovingPlatforms" unique_id=1785655638 instance=ExtResource("12_kdsi4")]
-position = Vector2(5005, 309.33334)
+[node name="MovingPlatform17" parent="MovingPlatforms" unique_id=814135733 instance=ExtResource("11_o3ttr")]
+position = Vector2(5004.333, 306.66666)
 wait_at_start = 0.5
 wait_at_end = 1.5
 
@@ -2503,6 +2500,18 @@ wait_at_end = 1.5
 position = Vector2(5681.333, 237.66669)
 move_offset = Vector2(480, 0)
 move_time = 7.0
+
+[node name="MovingPlatform15" parent="MovingPlatforms" unique_id=167305041 instance=ExtResource("11_o3ttr")]
+position = Vector2(6697.6665, 314.33334)
+move_offset = Vector2(0, -75)
+wait_at_start = 0.5
+wait_at_end = 1.0
+
+[node name="MovingPlatform16" parent="MovingPlatforms" unique_id=150304627 instance=ExtResource("11_o3ttr")]
+position = Vector2(6872.333, 297.6667)
+move_offset = Vector2(0, -75)
+wait_at_start = 1.0
+wait_at_end = 1.5
 
 [node name="MovingPlatform4" parent="MovingPlatforms" unique_id=629691448 instance=ExtResource("11_o3ttr")]
 position = Vector2(970.3334, 284.6667)
@@ -2519,7 +2528,7 @@ position = Vector2(3941.3335, 126.66667)
 position = Vector2(2053.3333, 168)
 
 [node name="Player 1" parent="." unique_id=697734632 instance=ExtResource("8_vmg1d")]
-position = Vector2(3610.3335, 92.33333)
+position = Vector2(56, 299)
 
 [node name="cats" type="Node2D" parent="." unique_id=1801766643]
 
@@ -2554,5 +2563,14 @@ scale = Vector2(0.125, 0.125)
 [node name="ExitZone" type="Area2D" parent="." unique_id=1986562355]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitZone" unique_id=433635246]
-position = Vector2(7158.0005, 300.6667)
+position = Vector2(7157.333, 304.66666)
 shape = SubResource("RectangleShape2D_ejf1h")
+
+[node name="Phase3Start" type="Marker2D" parent="." unique_id=874461332]
+position = Vector2(7123, 321.66666)
+
+[node name="DeliveryZone" type="Area2D" parent="." unique_id=233666213]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeliveryZone" unique_id=1345927222]
+position = Vector2(0, 304.33334)
+shape = SubResource("RectangleShape2D_vmg1d")
