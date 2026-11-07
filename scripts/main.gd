@@ -1,11 +1,7 @@
 extends Node2D
 ## Holds the current level and connects it to the HUD, notifications and popup.
 
-const LEVELS: Array[String] = [
-	"res://scenes/levels/level_1.tscn",
-	# Add level_2, level_3, level_4 here later.
-]
-## Which HUD row shows which ingredient. Must match the Hud's Ingredient Frames order.
+const ORDER_CUTSCENE := "res://scenes/cutscene.tscn"
 ## Clock and star thresholds per phase (edit the .tres files to tune them).
 const PHASE_TIMINGS := {
 	1: preload("res://resources/timing/phase_1.tres"),
@@ -14,13 +10,15 @@ const PHASE_TIMINGS := {
 const TITLE_SCENE := "res://scenes/title_screen.tscn"
 ## Seconds the "too slow" message shows before the level restarts.
 const RESTART_DELAY := 2.0
-const INGREDIENT_ROWS := { "salmon": 0, "cream": 1, "potato": 2 }
 
 @onready var hud: Hud = $Hud
 @onready var notifications: Notifications = $Notifications
 @onready var popup: ModalPopup = $ModalPopup
 
 var tally: ScoreTally
+var delivery_cutscene: DeliveryCutscene
+## Which HUD row shows which ingredient, from the level's LevelInfo: { "beef": 0, ... }.
+var ingredient_rows := {}
 var level_index := 0
 var current_phase := 0   # 1 or 2 while a timed phase is showing, 0 otherwise
 var current_level: Node
@@ -31,21 +29,24 @@ func _ready() -> void:
 	hud.star_lost.connect(_on_star_lost)
 	hud.timed_out.connect(_on_timed_out)
 	tally = preload("res://scenes/score_tally.tscn").instantiate()
+	# The tally shows over the (paused) delivery cutscene, so it has to keep running.
+	tally.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(tally)
 	tally.continue_pressed.connect(_on_tally_continue)
-	load_level(0)
+	load_level(GameState.level_index)
 
 
 func load_level(index: int) -> void:
 	level_index = index
+	GameState.level_index = index
 	carried_xp = 0
 	GameState.reset_run()
-	_show_scene(LEVELS[index])
-
-
-func next_level() -> void:
-	if level_index + 1 < LEVELS.size():
-		load_level(level_index + 1)
+	var info := Levels.info(index)
+	hud.set_ingredient_frames(info.ingredient_frames)
+	ingredient_rows = {}
+	for row in info.ingredient_types.size():
+		ingredient_rows[info.ingredient_types[row]] = row
+	_show_scene(info.level_scene)
 
 
 func _show_scene(path: String) -> void:
@@ -74,8 +75,8 @@ func _setup_ingredient_bars() -> void:
 	if not "total_by_type" in current_level:
 		return
 	# A full bar = every piece of that ingredient in this level.
-	for type in INGREDIENT_ROWS:
-		var row: int = INGREDIENT_ROWS[type]
+	for type in ingredient_rows:
+		var row: int = ingredient_rows[type]
 		hud.ingredient_goals[row] = current_level.total_by_type.get(type, 0)
 		hud.set_ingredient(row, 0, false)
 
@@ -100,22 +101,27 @@ func _connect_level_signals() -> void:
 func _on_phase_two_complete(_recipe: Recipe) -> void:
 	GameState.record_stars(2, hud.stop_timer())
 	# The delivery cutscene shows the monster's reaction first, then the score tally.
-	var cutscene: DeliveryCutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
-	add_child(cutscene)
-	await cutscene.finished
+	delivery_cutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
+	add_child(delivery_cutscene)
+	await delivery_cutscene.finished
+	# The cutscene stays up behind the tally as its background.
 	tally.show_tally(carried_xp)
 
 
 func _on_tally_continue() -> void:
-	if level_index + 1 < LEVELS.size():
-		next_level()
+	if is_instance_valid(delivery_cutscene):
+		delivery_cutscene.close()
+	if level_index + 1 < Levels.count():
+		# Next level: its order cutscene first, then main loads the level.
+		GameState.level_index = level_index + 1
+		get_tree().change_scene_to_file(ORDER_CUTSCENE)
 	elif ResourceLoader.exists(TITLE_SCENE):
 		get_tree().change_scene_to_file(TITLE_SCENE)
 
 
 func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
-	if INGREDIENT_ROWS.has(type):
-		hud.set_ingredient(INGREDIENT_ROWS[type], have)
+	if ingredient_rows.has(type):
+		hud.set_ingredient(ingredient_rows[type], have)
 
 
 func _on_exit_opened() -> void:

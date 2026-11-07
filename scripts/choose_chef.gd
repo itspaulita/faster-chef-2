@@ -84,6 +84,7 @@ func _on_play_pressed() -> void:
 		_flash(prompt_label)
 		return
 	GameState.nickname = nickname_edit.text.strip_edges()
+	GameState.level_index = 0   # a new game starts at level 1
 	GameState.selected_chef_name = _selected.name
 	GameState.selected_chef_texture = _selected.texture
 	if ResourceLoader.exists(NEXT_SCENE):

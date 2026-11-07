@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/level_info.gd" id="1_info"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-pineapple2.png" id="2_m1"]
+[ext_resource type="Texture2D" path="res://assets/images/food/dish-burger.png" id="9_dish"]
+
+[resource]
+script = ExtResource("1_info")
+level_scene = "res://scenes/levels/level_2.tscn"
+monsters = Array[Texture2D]([ExtResource("2_m1")])
+order_text = "JGPiNE ordered a Hamburger!"
+dish_icon = ExtResource("9_dish")
+ingredient_types = PackedStringArray("beef", "lettuce", "bun")
+ingredient_frames = Array[int]([4, 7, 8])

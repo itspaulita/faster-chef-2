@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LevelInfo" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/level_info.gd" id="1_info"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-apple2.png" id="2_m1"]
+[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-tomato2.png" id="3_m2"]
+[ext_resource type="Texture2D" path="res://assets/images/food/dish-pumpkin.png" id="9_dish"]
+
+[resource]
+script = ExtResource("1_info")
+level_scene = "res://scenes/levels/level_3.tscn"
+monsters = Array[Texture2D]([ExtResource("2_m1"), ExtResource("3_m2")])
+order_text = "Mishapple and Tomate-o ordered Pumpkin soup!"
+dish_icon = ExtResource("9_dish")
+ingredient_types = PackedStringArray("pumpkin", "cream", "seasoning")
+ingredient_frames = Array[int]([1, 6, 9])
