@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://d2cw28ilmrb2h"]
+
+[ext_resource type="Texture2D" uid="uid://gcofjvyfat3h" path="res://assets/images/tilemap/professional_kitchen.png" id="1_f20pf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cxv8c"]
+atlas = ExtResource("1_f20pf")
+region = Rect2(336, 32, 48, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cxv8c")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ejf1h"]
+size = Vector2(187, 125)
+
+[node name="decoration1" type="Area2D" unique_id=231289653]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=232556272]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1606885124]
+position = Vector2(1.5, -0.5)
+shape = SubResource("RectangleShape2D_ejf1h")

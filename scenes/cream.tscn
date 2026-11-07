@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgcrfgvthgvgg"]
 
-[ext_resource type="Script" uid="uid://cyc8kosk7qe7i" path="res://scenes/cream.gd" id="1_pk8t1"]
+[ext_resource type="Script" uid="uid://cyc8kosk7qe7i" path="res://scripts/cream.gd" id="1_pk8t1"]
 [ext_resource type="Texture2D" uid="uid://bk5rihs6mjmis" path="res://assets/images/collected sprites/30.png" id="1_th3xg"]
 [ext_resource type="Texture2D" uid="uid://66tmubxknpop" path="res://assets/images/ingredients/ingredients 32x32.png" id="2_pk8t1"]
 

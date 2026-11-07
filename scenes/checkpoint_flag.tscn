@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bngigc2jrbadb"]
+
+[ext_resource type="Script" uid="uid://c78300ajsd0ng" path="res://scripts/checkpoint_flag.gd" id="1_sj8yo"]
+[ext_resource type="Texture2D" uid="uid://bvmbmododrfgn" path="res://assets/images/collected sprites/delivery arrow spritesheet.png" id="2_4eoee"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7unqa"]
+atlas = ExtResource("2_4eoee")
+region = Rect2(0, 0, 60, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucs6k"]
+atlas = ExtResource("2_4eoee")
+region = Rect2(60, 0, 60, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7unqa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucs6k")
+}],
+"loop": 1,
+"name": &"checkpoint",
+"speed": 1.5
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhv81"]
+size = Vector2(52, 58)
+
+[node name="checkpointFlag" type="Area2D" unique_id=1100763472]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_sj8yo")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=841198595]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+animation = &"checkpoint"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1856556159]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_yhv81")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://kxgk2rptjesw"]
 
 [ext_resource type="Script" uid="uid://q8cvoxv6shnv" path="res://scripts/player_1.gd" id="1_gneq0"]
-[ext_resource type="Texture2D" uid="uid://besun716hsljr" path="res://assets/images/player/Princess Dish 110x80.png" id="1_squ5q"]
+[ext_resource type="Texture2D" uid="uid://ci6jg0ujhn7rp" path="res://assets/images/player/Princess Dish 110x80.png" id="1_squ5q"]
 [ext_resource type="Texture2D" uid="uid://wys3d8eo11sy" path="res://assets/images/player/princess dish 2_2.png" id="3_f7tsm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bxx23"]
@@ -105,7 +105,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6u4hi"]
-size = Vector2(36, 99)
+size = Vector2(34, 88)
 
 [node name="Player 1" type="CharacterBody2D" unique_id=697734632]
 scale = Vector2(0.5, 0.5)
@@ -118,7 +118,7 @@ animation = &"jumping"
 autoplay = "idle_side"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2143044411]
-position = Vector2(2, 5.5)
+position = Vector2(2, 10)
 shape = SubResource("RectangleShape2D_6u4hi")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1518106743]
