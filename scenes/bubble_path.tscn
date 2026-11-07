@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bvffhvgyp7yj6"]
+
+[ext_resource type="Script" uid="uid://8oayxbxkgxn4" path="res://scripts/bubble_path.gd" id="1_sd7iv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ejf1h"]
+size = Vector2(48, 16)
+
+[node name="bubble_path" type="Area2D" unique_id=1958570]
+script = ExtResource("1_sd7iv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1974560732]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_ejf1h")

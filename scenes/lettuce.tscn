@@ -1,0 +1,169 @@
+[gd_scene format=3 uid="uid://db0ahaji2dc5"]
+
+[ext_resource type="Script" uid="uid://b1aue0flvgc8p" path="res://scripts/salmon.gd" id="1_3w0q0"]
+[ext_resource type="Texture2D" uid="uid://bk5rihs6mjmis" path="res://assets/images/collected sprites/30.png" id="2_hew5g"]
+[ext_resource type="Texture2D" uid="uid://cubvlvgb6lfrk" path="res://assets/images/food/ingredients 32x32.png" id="3_5eot2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0nl8"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dtnr"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c33a7"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqxq1"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l08u0"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nrb8d"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0hmu"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gc2bs"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kucti"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wam52"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_njl78"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4j6d"]
+atlas = ExtResource("2_hew5g")
+region = Rect2(160, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w0q0"]
+atlas = ExtResource("3_5eot2")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0nl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dtnr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c33a7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqxq1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l08u0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nrb8d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0hmu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gc2bs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kucti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wam52")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_njl78")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4j6d")
+}],
+"loop": 0,
+"name": &"collected",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3w0q0")
+}],
+"loop": 1,
+"name": &"salmon",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_janmx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l10qr"]
+resource_name = "move"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -3), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6u4hi"]
+_data = {
+&"RESET": SubResource("Animation_janmx"),
+&"move": SubResource("Animation_l10qr")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhv81"]
+size = Vector2(28, 32)
+
+[node name="lettuce" type="Area2D" unique_id=619498502]
+script = ExtResource("1_3w0q0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=995388578]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+animation = &"salmon"
+autoplay = "salmon"
+offset = Vector2(2, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D" unique_id=1148066028]
+libraries/ = SubResource("AnimationLibrary_6u4hi")
+autoplay = &"move"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1241550041]
+shape = SubResource("RectangleShape2D_yhv81")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
