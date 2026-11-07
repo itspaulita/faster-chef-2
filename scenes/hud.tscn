@@ -4,46 +4,6 @@
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="3_pause"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
-bg_color = Color(0.84, 0.93, 1, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(1, 0.97, 0.88, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
-bg_color = Color(0.91, 0.6, 0.17, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_points"]
 content_margin_left = 32.0
 content_margin_top = 12.0
@@ -59,6 +19,22 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.84, 0.93, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause"]
 bg_color = Color(1, 0.97, 0.88, 1)
@@ -99,27 +75,27 @@ corner_radius_bottom_left = 16
 [node name="Hud" type="CanvasLayer" unique_id=1055163784]
 script = ExtResource("1_hud")
 
-[node name="TopLeft" type="VBoxContainer" parent="."]
+[node name="TopLeft" type="VBoxContainer" parent="." unique_id=377290021]
 offset_left = 24.0
 offset_top = 24.0
 theme_override_constants/separation = 16
 
-[node name="TimerBox" type="VBoxContainer" parent="TopLeft"]
+[node name="TimerBox" type="VBoxContainer" parent="TopLeft" unique_id=396912344]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="StarsRow" type="HBoxContainer" parent="TopLeft/TimerBox"]
+[node name="StarsRow" type="HBoxContainer" parent="TopLeft/TimerBox" unique_id=1161000811]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 10
 
-[node name="TimerPanel" type="PanelContainer" parent="TopLeft/TimerBox"]
+[node name="TimerPanel" type="PanelContainer" parent="TopLeft/TimerBox" unique_id=1152537494]
 custom_minimum_size = Vector2(320, 76)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_points")
 
-[node name="TimerLabel" type="Label" parent="TopLeft/TimerBox/TimerPanel"]
+[node name="TimerLabel" type="Label" parent="TopLeft/TimerBox/TimerPanel" unique_id=1445952068]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -128,26 +104,26 @@ text = "1:30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Ingredients" type="HBoxContainer" parent="TopLeft"]
+[node name="Ingredients" type="HBoxContainer" parent="TopLeft" unique_id=431021962]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Slot1" type="VBoxContainer" parent="TopLeft/Ingredients"]
+[node name="Slot1" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=979197990]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot1"]
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot1" unique_id=1458860341]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot1/IconTile"]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot1/IconTile" unique_id=899744158]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot1"]
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot1" unique_id=1678798655]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
 theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)
@@ -157,22 +133,22 @@ theme_override_font_sizes/font_size = 34
 text = "0/3"
 horizontal_alignment = 1
 
-[node name="Slot2" type="VBoxContainer" parent="TopLeft/Ingredients"]
+[node name="Slot2" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=727107785]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot2"]
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot2" unique_id=1369216682]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot2/IconTile"]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot2/IconTile" unique_id=726961929]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot2"]
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot2" unique_id=178122657]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
 theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)
@@ -182,22 +158,22 @@ theme_override_font_sizes/font_size = 34
 text = "0/3"
 horizontal_alignment = 1
 
-[node name="Slot3" type="VBoxContainer" parent="TopLeft/Ingredients"]
+[node name="Slot3" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=833185882]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot3"]
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot3" unique_id=769333191]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot3/IconTile"]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot3/IconTile" unique_id=919341594]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot3"]
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot3" unique_id=1938682411]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
 theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)

@@ -1,9 +1,7 @@
-[gd_resource type="Resource" script_class="PhaseTiming" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PhaseTiming" format=3 uid="uid://dvf36kcsmvrl1"]
 
-[ext_resource type="Script" path="res://scripts/data/phase_timing.gd" id="1_timing"]
+[ext_resource type="Script" uid="uid://ca5bjuqovhuq3" path="res://scripts/data/phase_timing.gd" id="1_timing"]
 
 [resource]
 script = ExtResource("1_timing")
-duration = 90.0
-two_star_below = 60.0
-one_star_below = 30.0
+duration = 150.0
