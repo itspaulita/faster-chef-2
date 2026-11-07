@@ -13,6 +13,8 @@ const CHEF_WALK := [24, 25]    # running_grab
 const CHEF_STAND := [24, 25]   # idle_side_grab
 ## After handing the dish over: the normal side idle (same frames as idle_side), hands empty.
 const CHEF_EMPTY := [8, 9]
+## Chefs whose carrying frames (24, 25) face RIGHT on their sheet.
+const CARRY_FACES_RIGHT := ["PrincessDish"]
 const MONSTER_FRAMES := [0, 1, 2, 3]
 const EMOTES := preload("res://assets/images/misc/Emotes.png")
 const EMOTE_SCALE := 3.0
@@ -45,7 +47,7 @@ func _ready() -> void:
 	_info = Levels.info(level_override if level_override >= 0 else GameState.level_index)
 	if GameState.selected_chef_texture:
 		chef.texture = GameState.selected_chef_texture
-	#chef.flip_h = true   # walking left
+	chef.flip_h = GameState.selected_chef_name in CARRY_FACES_RIGHT
 	chef.idle_frames = PackedInt32Array(CHEF_WALK)
 	chef.frame_time = 0.15
 	_setup_monsters()
@@ -116,16 +118,15 @@ func _on_arrived() -> void:
 func _on_handed_over() -> void:
 	dish.hide()
 	chef.idle_frames = PackedInt32Array(CHEF_EMPTY)
-	# The idle frames (8, 9) are drawn facing left already, unlike the grab frames,
-	# so they must NOT be flipped.
-	chef.flip_h = false
+	# The empty-hands frames (8, 9) face RIGHT on every sheet, so flip them to face the monster.
+	chef.flip_h = true
 
 ## Skips straight to the last picture: chef stopped, dish delivered, reaction showing.
 func _jump_to_end() -> void:
 	_tween.kill()
 	fade.color.a = 0.0
 	chef.position.x = chef_stop_x
-	_on_arrived()
+	_on_handed_over()
 	dish.hide()
 	reaction.scale = Vector2.ONE * EMOTE_SCALE
 	_finish()
