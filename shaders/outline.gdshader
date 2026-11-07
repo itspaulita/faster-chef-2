@@ -15,5 +15,5 @@ void fragment() {
 	a = max(a, texture(TEXTURE, UV + vec2(-px.x, px.y)).a);
 	a = max(a, texture(TEXTURE, UV + vec2(px.x, -px.y)).a);
 	a = max(a, texture(TEXTURE, UV + vec2(-px.x, -px.y)).a);
-	COLOR = mix(vec4(outline_color.rgb, a), base, base.a);
+	COLOR = mix(vec4(outline_color.rgb, a * outline_color.a), base, base.a);
 }

@@ -47,6 +47,33 @@ func _ready() -> void:
 		phase_two_complete.connect(func(r: Recipe) -> void:
 			popup.open("%s is ready!\nDelivering..." % r.dish_name, [], false, 3.0))
 
+## Blink the outline of whatever the chef should do next: chop, cook, plate.
+func _process(_delta: float) -> void:
+	var next := _next_station()
+	for station in [board, pot, plating]:
+		station.set_highlight(station == next)
+
+
+func _next_station() -> Station:
+	if holder.holds(ItemHolder.Kind.DISH):
+		return null   # head for the exit
+	if holder.holds(ItemHolder.Kind.POT) or plating.has_dish:
+		return plating
+	if holder.holds(ItemHolder.Kind.INGREDIENT):
+		return pot
+	# Empty hands from here on.
+	if board.ready_item != null:
+		return board   # a chopped ingredient is waiting
+	match pot.state:
+		Pot.State.DONE:
+			return pot   # take the cooked pot
+		Pot.State.COOKING:
+			return null   # nothing to do but wait
+		Pot.State.TAKEN:
+			return plating
+	return board if board.next_index < recipe.ingredient_count() else null
+
+
 func _on_dish_picked_up(_dish: Recipe) -> void:
 	message.emit("Dish ready! Run it back to the monster ←")
 

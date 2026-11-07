@@ -18,6 +18,10 @@ const FONT := preload("res://assets/font/RetroGaming.ttf")
 
 var chef: Node2D
 var holder: ItemHolder
+var _blink: Tween
+
+const OUTLINE_SHADER := preload("res://shaders/outline.gdshader")
+const BLINK_TIME := 0.45
 
 var _prompt: PanelContainer
 var _prompt_label: Label
@@ -28,6 +32,32 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	_build_prompt()
 	refresh_prompt()
+
+
+## Blinks a yellow outline around the station's picture to show it is the next thing to do.
+func set_highlight(on: bool) -> void:
+	if on == (_blink != null):
+		return
+	# The station's picture is the AnimatedSprite2D inside its art scene (chopping_spot, ...).
+	var sprites := find_children("*", "AnimatedSprite2D", true, false)
+	if sprites.is_empty():
+		return
+	var art := sprites[0] as CanvasItem
+	if _blink:
+		_blink.kill()
+		_blink = null
+	if not on:
+		art.material = null
+		return
+	var material := ShaderMaterial.new()
+	material.shader = OUTLINE_SHADER
+	material.set_shader_parameter("width", 3.0)
+	art.material = material
+	_blink = create_tween().set_loops()
+	_blink.tween_method(func(a: float) -> void:
+		material.set_shader_parameter("outline_color", Color(1.0, 0.85, 0.2, a)), 1.0, 0.1, BLINK_TIME)
+	_blink.tween_method(func(a: float) -> void:
+		material.set_shader_parameter("outline_color", Color(1.0, 0.85, 0.2, a)), 0.1, 1.0, BLINK_TIME)
 
 
 func is_chef_near() -> bool:

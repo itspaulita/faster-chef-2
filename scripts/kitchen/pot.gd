@@ -116,14 +116,14 @@ func _build_ui() -> void:
 	_count_label.add_theme_color_override("font_outline_color", Color(0.23, 0.12, 0.08))
 	_count_label.add_theme_constant_override("outline_size", 6)
 	_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_count_label.position = Vector2(-60, -86)
+	_count_label.position = Vector2(-60, -104)
 	_count_label.size = Vector2(120, 20)
 	_count_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_count_label)
 
 	_bar_back = ColorRect.new()
 	_bar_back.color = Color(0.23, 0.12, 0.08)
-	_bar_back.position = Vector2(-30, -62)
+	_bar_back.position = Vector2(-30, -80)
 	_bar_back.size = Vector2(60, 8)
 	_bar_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_bar_back)
