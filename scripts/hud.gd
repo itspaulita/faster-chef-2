@@ -17,7 +17,7 @@ const STAR_SIZE := 48
 
 const ICON_SIZE := 32
 ## Frames on "ingredients 32x32.png" (6 columns x 2 rows, row-major):
-## 0 mushrooms, 1 pumpkin, 2 potato, 3 salmon, 4 pork, 5 shrimp, 6 milk, 7 pepper, 8 eggs, 9 flour.
+## 0 mushrooms, 1 pumpkin, 2 potato, 3 salmon, 4 pork, 5 shrimp, 6 cream (milk), 7 pepper, 8 eggs, 9 flour.
 @export var ingredient_frames: Array[int] = [0, 5, 7]
 @export var ingredient_goals: Array[int] = [5, 5, 5]
 
@@ -101,7 +101,7 @@ func set_ingredient(index: int, count: int, animate := true) -> void:
 
 
 func set_points(value: int, animate := true) -> void:
-	points_label.text = "POINT: %d XP" % value
+	points_label.text = "POINT: %d PTS" % value
 	if animate:
 		await get_tree().process_frame
 		points_panel.pivot_offset = points_panel.size / 2.0

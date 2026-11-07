@@ -19,6 +19,8 @@ var _tween: Tween
 var _finished := false
 var _info: LevelInfo
 var _monsters: Array[IdleChef] = []
+## One order bubble per monster (the scene's own, plus a copy for a second monster).
+var _bubbles: Array[Node2D] = []
 
 @onready var chef: IdleChef = $Chef
 @onready var monster: IdleChef = $Monster
@@ -35,15 +37,19 @@ func _ready() -> void:
 	chef.frame_time = 0.15
 	_info = Levels.info(level_override if level_override >= 0 else GameState.level_index)
 	_setup_monsters()
-	dish_icon.texture = _info.dish_icon
-	bubble.scale = Vector2.ZERO
+	for b in _bubbles:
+		b.get_node("DishIcon").texture = _info.dish_icon
+		b.scale = Vector2.ZERO
 
 	_tween = create_tween()
 	_tween.tween_property(fade, "color:a", 0.0, 0.5)
 	_tween.tween_property(chef, "position:x", chef_stop_x, 2.0)
 	_tween.tween_callback(_on_chef_arrived)
-	_tween.tween_property(bubble, "scale", Vector2.ONE, 0.35) \
-			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	for i in _bubbles.size():
+		# The first bubble pops after the chef arrives; the others pop together with it.
+		var step := _tween if i == 0 else _tween.parallel()
+		step.tween_property(_bubbles[i], "scale", Vector2.ONE, 0.35) \
+				.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_tween.tween_callback(_show_order_banner)
 	_tween.tween_interval(2.6) #Chi
 	_tween.tween_callback(_on_chef_leaves) #Chi
@@ -52,8 +58,8 @@ func _ready() -> void:
 	_tween.tween_callback(_finish) #Chi
 
 
-## One monster stands big on the right; two stand side by side, a bit smaller, with the
-## order bubble above the gap between them.
+## One monster stands big on the right; two stand side by side, a bit smaller, each with
+## their own order bubble above them.
 func _setup_monsters() -> void:
 	var textures := _info.monsters
 	var pair := textures.size() > 1
@@ -71,8 +77,16 @@ func _setup_monsters() -> void:
 		add_child(extra)
 		move_child(extra, monster.get_index() + 1)   # behind the bubble and the fade
 		_monsters.append(extra)
+	_bubbles = [bubble]
 	if pair:
-		bubble.position = Vector2(1645.0, 306.0)
+		# Each bubble sits up-left of its monster, like the single one does.
+		for i in _monsters.size():
+			var b: Node2D = bubble if i == 0 else bubble.duplicate()
+			if i > 0:
+				add_child(b)
+				move_child(b, bubble.get_index() + 1)
+				_bubbles.append(b)
+			b.position = Vector2(xs[i] + 150.0, 340.0)
 	for m in _monsters:
 		m.idle_frames = PackedInt32Array(MONSTER_FRAMES)
 		m.frame_time = 0.3
