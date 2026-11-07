@@ -99,10 +99,10 @@ corner_radius_bottom_left = 16
 [node name="Hud" type="CanvasLayer" unique_id=1055163784]
 script = ExtResource("1_hud")
 
-[node name="TopLeft" type="HBoxContainer" parent="."]
+[node name="TopLeft" type="VBoxContainer" parent="."]
 offset_left = 24.0
 offset_top = 24.0
-theme_override_constants/separation = 36
+theme_override_constants/separation = 16
 
 [node name="TimerBox" type="VBoxContainer" parent="TopLeft"]
 visible = false
@@ -130,7 +130,7 @@ vertical_alignment = 1
 
 [node name="Ingredients" type="HBoxContainer" parent="TopLeft"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 12
 
 [node name="Slot1" type="VBoxContainer" parent="TopLeft/Ingredients"]
 layout_mode = 2

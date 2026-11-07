@@ -1,6 +1,6 @@
 class_name Hud
 extends CanvasLayer
-## HUD, top left: the phase timer with its stars above it, and one tile per ingredient with
+## HUD, top left: the phase timer with its stars above it, and under it one tile per ingredient with
 ## the "have/goal" count under it. Top right: the points counter and the pause button.
 
 ## A star was lost to the clock; `stars_left` is what remains.
