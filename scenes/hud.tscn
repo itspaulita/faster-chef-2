@@ -223,4 +223,37 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_pause_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_pause_hover")
 text = "PAUSE"
 
+[node name="TimerPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -170.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pause")
+
+[node name="Box" type="VBoxContainer" parent="TimerPanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="StarsRow" type="HBoxContainer" parent="TimerPanel/Box"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 6
+
+[node name="TimerLabel" type="Label" parent="TimerPanel/Box"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 52
+text = "1:30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="PauseMenu" parent="." unique_id=907171405 instance=ExtResource("3_pause")]
