@@ -99,6 +99,10 @@ func _connect_level_signals() -> void:
 ## should record its own stars and show the tally when it finishes instead.
 func _on_phase_two_complete(_recipe: Recipe) -> void:
 	GameState.record_stars(2, hud.stop_timer())
+	# The delivery cutscene shows the monster's reaction first, then the score tally.
+	var cutscene: DeliveryCutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
+	add_child(cutscene)
+	await cutscene.finished
 	tally.show_tally(carried_xp)
 
 
