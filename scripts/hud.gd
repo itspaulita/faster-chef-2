@@ -53,12 +53,8 @@ func _ready() -> void:
 	_empty_tile_style.bg_color = Color(0.72, 0.74, 0.78)
 	_done_tile_style = _normal_tile_style.duplicate()
 	_done_tile_style.bg_color = Color(1.0, 0.86, 0.3)
+	set_ingredient_frames(ingredient_frames)
 	for i in rows.size():
-		var icon := AtlasTexture.new()
-		icon.atlas = sheet
-		var frame := ingredient_frames[i]
-		icon.region = Rect2((frame % 6) * ICON_SIZE, (frame / 6) * ICON_SIZE, ICON_SIZE, ICON_SIZE)
-		rows[i].get_node("IconTile/Icon").texture = icon
 		set_ingredient(i, 0, false)
 	set_points(0, false)
 	$PauseButton.pressed.connect(pause_menu.open)
@@ -67,6 +63,17 @@ func _ready() -> void:
 	phase_timer.star_lost.connect(_on_star_lost)
 	phase_timer.timed_out.connect(timed_out.emit)
 	_setup_bar()
+
+
+## Changes the three tile pictures: frames on "ingredients 32x32.png" (6 columns, row-major).
+## Each level has its own ingredients, so main.gd calls this when a level loads.
+func set_ingredient_frames(frames: Array[int]) -> void:
+	ingredient_frames = frames
+	for i in rows.size():
+		var icon := AtlasTexture.new()
+		icon.atlas = sheet
+		icon.region = Rect2((frames[i] % 6) * ICON_SIZE, (frames[i] / 6) * ICON_SIZE, ICON_SIZE, ICON_SIZE)
+		rows[i].get_node("IconTile/Icon").texture = icon
 
 
 ## Sets how many of ingredient `index` (0-2) have been collected.

@@ -10,13 +10,15 @@ const MONSTER_FRAMES := [0, 1, 2, 3]
 ## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
 const CHEF_EXIT_X := 2100.0
 
-## Shown in the order banner: "<monster_name> ordered <dish_name>!"
-@export var monster_name := "Mr. Apple"
-@export var dish_name := "salmon soup"
+## Which level's order to show (0-based). -1 = the level being played (GameState.level_index);
+## set 1 or 2 to preview another level when running this scene on its own.
+@export var level_override := -1
 @export var chef_stop_x := 960.0
 
 var _tween: Tween
 var _finished := false
+var _info: LevelInfo
+var _monsters: Array[IdleChef] = []
 
 @onready var chef: IdleChef = $Chef
 @onready var monster: IdleChef = $Monster
@@ -31,8 +33,9 @@ func _ready() -> void:
 	# Set here, not in the scene, so the editor can't drop these overrides when it re-saves.
 	chef.idle_frames = PackedInt32Array(CHEF_WALK_RIGHT)
 	chef.frame_time = 0.15
-	monster.idle_frames = PackedInt32Array(MONSTER_FRAMES)
-	monster.frame_time = 0.3
+	_info = Levels.info(level_override if level_override >= 0 else GameState.level_index)
+	_setup_monsters()
+	dish_icon.texture = _info.dish_icon
 	bubble.scale = Vector2.ZERO
 
 	_tween = create_tween()
@@ -49,11 +52,37 @@ func _ready() -> void:
 	_tween.tween_callback(_finish) #Chi
 
 
+## One monster stands big on the right; two stand side by side, a bit smaller, with the
+## order bubble above the gap between them.
+func _setup_monsters() -> void:
+	var textures := _info.monsters
+	var pair := textures.size() > 1
+	var xs := [1270.0, 1640.0] if pair else [1380.0]
+	var scale_k := 3.0 if pair else 4.0
+	var y := 728.0 if pair else 656.0   # keeps their feet on the same floor line
+	monster.texture = textures[0]
+	monster.position = Vector2(xs[0], y)
+	monster.scale = Vector2.ONE * scale_k
+	_monsters = [monster]
+	for i in range(1, mini(textures.size(), xs.size())):
+		var extra: IdleChef = monster.duplicate()
+		extra.texture = textures[i]
+		extra.position = Vector2(xs[i], y)
+		add_child(extra)
+		move_child(extra, monster.get_index() + 1)   # behind the bubble and the fade
+		_monsters.append(extra)
+	if pair:
+		bubble.position = Vector2(1645.0, 306.0)
+	for m in _monsters:
+		m.idle_frames = PackedInt32Array(MONSTER_FRAMES)
+		m.frame_time = 0.3
+
+
 func _show_order_banner() -> void:
 	# The popup scene is reused as a notice: no pause, no dimming, closes itself.
 	var popup: ModalPopup = load("res://scenes/modal_popup.tscn").instantiate()
 	add_child(popup)
-	popup.open("%s ordered %s!" % [monster_name, dish_name], [], false, 2.5)
+	popup.open(_info.order_text, [], false, 2.5)
 
 
 func _input(event: InputEvent) -> void:
