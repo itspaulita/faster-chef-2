@@ -1,7 +1,8 @@
 class_name PlatingStation
 extends Station
-## Where the cooked pot is set down (Q) and turned into the plated dish. Picking the dish up
-## with Q hands it to the chef, which is what starts Phase 3.
+## Where the cooked pot is set down (Q) and turned into the plated dish. The dish shows in a
+## popup (nothing on the counter) until the chef picks it up with Q, which puts it in their
+## hands and is what starts Phase 3.
 
 signal dish_plated
 signal dish_picked_up(recipe: Recipe)
@@ -10,17 +11,17 @@ signal dish_picked_up(recipe: Recipe)
 
 var has_dish := false
 
-var _dish_sprite: Sprite2D
+var _panel: ChopPanel
 
 
 func _ready() -> void:
 	super()
-	_dish_sprite = Sprite2D.new()
-	_dish_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_dish_sprite.position = Vector2(0, -42)
-	_dish_sprite.scale = Vector2.ONE * 0.6
-	_dish_sprite.visible = false
-	add_child(_dish_sprite)
+	_panel = preload("res://scenes/chop_panel.tscn").instantiate()
+	add_child(_panel)
+	chef_entered.connect(func(_body: Node2D) -> void:
+		if has_dish:
+			_show_dish())
+	chef_exited.connect(func(_body: Node2D) -> void: _panel.close())
 
 
 func _get_prompt_text() -> String:
@@ -36,7 +37,7 @@ func _on_grab_drop() -> void:
 		if holder.hold_dish(recipe):
 			Audio.sfx("pickup")
 			has_dish = false
-			_dish_sprite.visible = false
+			_panel.close()
 			dish_picked_up.emit(recipe)
 			refresh_prompt()
 		else:
@@ -46,11 +47,14 @@ func _on_grab_drop() -> void:
 		Audio.sfx("drop_plate")
 		Audio.sfx("plated")
 		has_dish = true
-		_dish_sprite.texture = recipe.dish_texture()
-		_dish_sprite.visible = true
+		_show_dish()
 		dish_plated.emit()
 		refresh_prompt()
 	elif holder.is_empty():
 		message.emit("Bring the cooked pot here to plate it.")
 	else:
 		message.emit("Only the cooked pot goes here, not %s." % holder.describe())
+
+
+func _show_dish() -> void:
+	_panel.show_result("%s READY!" % recipe.dish_name.to_upper(), recipe.dish_texture(), "TAKE IT!")

@@ -1,12 +1,15 @@
 class_name ChopPanel
 extends CanvasLayer
-## The panel that opens while the chef chops: the ingredient, shown whole, then in
-## 2 and 3 pieces as chops land. The chopping board drives it (open / chopped / close).
+## The popup of the chopping board and the plating station. While chopping it shows the
+## ingredient whole, then in 2 and 3 pieces as chops land (open / chopped). Afterwards it
+## keeps showing the finished ingredient or dish (show_result) until the chef takes it
+## with Q; nothing is drawn on the counter. The station closes it (close).
 
 @onready var banner: Control = $Banner
 @onready var title_label: Label = %TitleLabel
 @onready var item: TextureRect = %Item
 @onready var stage_label: Label = %StageLabel
+@onready var hint_label: Label = %HintLabel
 
 var _ingredient: IngredientData
 var _chops_total := 3
@@ -22,7 +25,22 @@ func open(ingredient: IngredientData, chops_done: int, chops_total: int) -> void
 	_ingredient = ingredient
 	_chops_total = chops_total
 	title_label.text = "CHOP %s" % ingredient.display_name.to_upper()
+	hint_label.text = "PRESS  E"
 	_show_stage(chops_done, false)
+	_pop_in()
+
+
+## Shows a finished thing (a chopped ingredient, the plated dish) that waits for Q.
+func show_result(title: String, texture: Texture2D, caption: String) -> void:
+	_ingredient = null
+	title_label.text = title
+	item.texture = texture
+	stage_label.text = caption
+	hint_label.text = "PRESS  Q"
+	_pop_in()
+
+
+func _pop_in() -> void:
 	visible = true
 	create_tween().tween_property(banner, "scale", Vector2.ONE, 0.2) \
 			.from(Vector2(0.85, 0.85)).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
