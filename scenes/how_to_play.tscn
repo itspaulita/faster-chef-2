@@ -117,7 +117,7 @@ autowrap_mode = 3
 [node name="Phase2" type="Label" parent="Dim/Center/Banner/V"]
 custom_minimum_size = Vector2(1400, 0)
 layout_mode = 2
-text = "2. CHOP AND COOK  Stand at the board and press C to chop each ingredient 3 times. Carry it to the pot with B, in recipe order. When all 3 are in, the pot cooks by itself. Take the pot to the plating station."
+text = "2. CHOP AND COOK  Stand at the board and press E to chop each ingredient 3 times. Carry it to the pot with Q, in recipe order. When all 3 are in, the pot cooks by itself. Take the pot to the plating station."
 autowrap_mode = 3
 
 [node name="Phase3" type="Label" parent="Dim/Center/Banner/V"]
@@ -130,7 +130,7 @@ autowrap_mode = 3
 custom_minimum_size = Vector2(1400, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
-text = "MOVE: A / D or arrows     JUMP: Space     CHOP: C     GRAB / DROP: B     PAUSE: Esc"
+text = "MOVE: A / D or arrows     JUMP: Space     CHOP: E     GRAB / DROP: Q     PAUSE: Esc"
 horizontal_alignment = 1
 autowrap_mode = 3
 

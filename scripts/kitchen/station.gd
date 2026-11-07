@@ -2,7 +2,7 @@ class_name Station
 extends Area2D
 ## Base for the kitchen's interaction zones (chopping board, pot, plating station).
 ## Tracks the chef standing in the zone, shows a key prompt above the station, and routes
-## C (chop) and B (grab/drop) to the station the chef is standing at. Away from every
+## E (chop) and Q (grab/drop) to the station the chef is standing at. Away from every
 ## station, nothing listens, so the keys do nothing.
 
 signal chef_entered(chef: Node2D)
@@ -34,7 +34,7 @@ func is_chef_near() -> bool:
 	return chef != null
 
 
-## Subclasses return the prompt, e.g. "C  CHOP". An empty string hides it.
+## Subclasses return the prompt, e.g. "E  CHOP". An empty string hides it.
 func _get_prompt_text() -> String:
 	return ""
 

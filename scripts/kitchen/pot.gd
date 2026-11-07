@@ -1,6 +1,6 @@
 class_name Pot
 extends Station
-## Where chopped ingredients go and the dish cooks. Ingredients go in with B, in the recipe's
+## Where chopped ingredients go and the dish cooks. Ingredients go in with Q, in the recipe's
 ## order (a repeat or an out-of-order one is refused). When the 3rd goes in the pot cooks
 ## for the recipe's cook_time with a progress bar, then the chef can pick the whole pot up.
 
@@ -56,9 +56,9 @@ func _get_prompt_text() -> String:
 	if holder == null:
 		return ""
 	if state == State.FILLING and holder.holds(ItemHolder.Kind.INGREDIENT):
-		return "B  ADD"
+		return "Q  ADD"
 	if state == State.DONE and holder.is_empty():
-		return "B  TAKE POT"
+		return "Q  TAKE POT"
 	return ""
 
 
