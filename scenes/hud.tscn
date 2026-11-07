@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://4tf0qdi1gu53"]
 
-[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
-[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+[ext_resource type="Script" uid="uid://daornefwgjj3x" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="3_pause"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
@@ -72,18 +72,6 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_hover"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_pressed"]
 bg_color = Color(0.88, 0.82, 0.66, 1)
 border_width_left = 6
@@ -96,30 +84,42 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="Hud" type="CanvasLayer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause_hover"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="Hud" type="CanvasLayer" unique_id=1055163784]
 script = ExtResource("1_hud")
 
-[node name="Rows" type="VBoxContainer" parent="."]
+[node name="Rows" type="VBoxContainer" parent="." unique_id=241008584]
 offset_left = 24.0
 offset_top = 24.0
 theme_override_constants/separation = 12
 
-[node name="Row1" type="HBoxContainer" parent="Rows"]
+[node name="Row1" type="HBoxContainer" parent="Rows" unique_id=2035583497]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row1"]
+[node name="IconTile" type="PanelContainer" parent="Rows/Row1" unique_id=1087306267]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row1/IconTile"]
+[node name="Icon" type="TextureRect" parent="Rows/Row1/IconTile" unique_id=785638242]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row1"]
+[node name="Bar" type="ProgressBar" parent="Rows/Row1" unique_id=1150462661]
 custom_minimum_size = Vector2(260, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -130,22 +130,22 @@ theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 step = 0.0
 
-[node name="Row2" type="HBoxContainer" parent="Rows"]
+[node name="Row2" type="HBoxContainer" parent="Rows" unique_id=940286467]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row2"]
+[node name="IconTile" type="PanelContainer" parent="Rows/Row2" unique_id=2027988345]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row2/IconTile"]
+[node name="Icon" type="TextureRect" parent="Rows/Row2/IconTile" unique_id=1508283991]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row2"]
+[node name="Bar" type="ProgressBar" parent="Rows/Row2" unique_id=2104432464]
 custom_minimum_size = Vector2(260, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -156,22 +156,22 @@ theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 step = 0.0
 
-[node name="Row3" type="HBoxContainer" parent="Rows"]
+[node name="Row3" type="HBoxContainer" parent="Rows" unique_id=22366069]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row3"]
+[node name="IconTile" type="PanelContainer" parent="Rows/Row3" unique_id=269812456]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row3/IconTile"]
+[node name="Icon" type="TextureRect" parent="Rows/Row3/IconTile" unique_id=122827734]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row3"]
+[node name="Bar" type="ProgressBar" parent="Rows/Row3" unique_id=543786919]
 custom_minimum_size = Vector2(260, 40)
 layout_mode = 2
 size_flags_vertical = 4
@@ -182,7 +182,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
 step = 0.0
 
-[node name="PointsPanel" type="PanelContainer" parent="."]
+[node name="PointsPanel" type="PanelContainer" parent="." unique_id=2095658903]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -192,7 +192,7 @@ offset_right = -24.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_points")
 
-[node name="PointsLabel" type="Label" parent="PointsPanel"]
+[node name="PointsLabel" type="Label" parent="PointsPanel" unique_id=2119566771]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
@@ -201,26 +201,26 @@ text = "POINT: 0 XP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PauseButton" type="Button" parent="."]
+[node name="PauseButton" type="Button" parent="." unique_id=1191160549]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -96.0
+offset_left = -214.0
 offset_top = 116.0
 offset_right = -24.0
 offset_bottom = 188.0
 grow_horizontal = 0
+focus_mode = 0
 theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
-theme_override_colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
-theme_override_colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
 theme_override_colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 36
 theme_override_styles/normal = SubResource("StyleBoxFlat_pause")
-theme_override_styles/hover = SubResource("StyleBoxFlat_pause_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pause_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_pause_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_pause_hover")
-focus_mode = 0
-text = "II"
+text = "PAUSE"
 
-[node name="PauseMenu" parent="." instance=ExtResource("3_pause")]
+[node name="PauseMenu" parent="." unique_id=907171405 instance=ExtResource("3_pause")]

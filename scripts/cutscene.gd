@@ -10,9 +10,9 @@ const MONSTER_FRAMES := [0, 1, 2, 3]
 ## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
 const CHEF_EXIT_X := 2100.0
 
-@export var dish_name := "Tom yum"
+@export var dish_name := "Salmon soup"
 ## Index into the 5-dish sheet.
-@export var dish_frame := 0
+@export var dish_frame := 1
 @export var chef_stop_x := 960.0
 
 var _tween: Tween

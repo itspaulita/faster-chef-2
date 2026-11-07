@@ -13,6 +13,7 @@ var _open_id := 0
 var _paused_by_popup := false
 
 @onready var dim: ColorRect = $Dim
+@onready var center: CenterContainer = $Dim/CenterContainer
 @onready var banner: PanelContainer = $Dim/CenterContainer/Banner
 @onready var message_label: Label = $Dim/CenterContainer/Banner/VBoxContainer/MessageLabel
 @onready var button_row: HBoxContainer = $Dim/CenterContainer/Banner/VBoxContainer/ButtonRow
@@ -43,6 +44,12 @@ func open(text: String, buttons: PackedStringArray = ["OK"], pause_game := true,
 	_paused_by_popup = pause_game and not get_tree().paused
 	if _paused_by_popup:
 		get_tree().paused = true
+	# Non-pausing popups are just notices: no dimming, and clicks pass through.
+	var is_notice := not pause_game and buttons.is_empty()
+	dim.color.a = 0.0 if is_notice else 0.5
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE if is_notice else Control.MOUSE_FILTER_STOP
+	# Notices sit in the top part of the screen; modal popups stay centered.
+	center.anchor_bottom = 0.3 if is_notice else 1.0
 	show()
 	if button_row.get_child_count() > 0:
 		button_row.get_child(0).grab_focus()

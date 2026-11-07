@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Recipe" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/images/food/5 dishes 60x60.png" id="1_vkam0"]
+[ext_resource type="Script" path="res://scripts/data/ingredient_data.gd" id="2_ybj5j"]
+[ext_resource type="Resource" path="res://resources/ingredients/salmon.tres" id="3_wcttq"]
+[ext_resource type="Resource" path="res://resources/ingredients/cream.tres" id="4_1rhyo"]
+[ext_resource type="Resource" path="res://resources/ingredients/potato.tres" id="5_8wqlx"]
+[ext_resource type="Script" path="res://scripts/data/recipe.gd" id="6_mvsd3"]
+
+[resource]
+script = ExtResource("6_mvsd3")
+dish_name = "Salmon soup"
+ingredients = Array[ExtResource("2_ybj5j")]([ExtResource("3_wcttq"), ExtResource("4_1rhyo"), ExtResource("5_8wqlx")])
+dish_sheet = ExtResource("1_vkam0")
+dish_frame = 1
