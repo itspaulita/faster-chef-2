@@ -86,12 +86,20 @@ func _on_frame_changed() -> void:
 
 
 func _update_animation() -> void:
+	var carrying := _is_carrying()
 	if not is_on_floor():
-		sprite.play("jumping")
+		# There's no "jumping while holding" animation, so keep the arms out in the air.
+		sprite.play("idle_side_grab" if carrying else "jumping")
 	elif absf(velocity.x) > 1.0:
-		sprite.play("running")
+		sprite.play("running_grab" if carrying else "running")
 	else:
-		sprite.play("idle_side")
+		sprite.play("idle_side_grab" if carrying else "idle_side")
+
+
+## True while the chef carries the pot or the dish (the kitchen gives her an ItemHolder).
+func _is_carrying() -> bool:
+	var holder := get_node_or_null("ItemHolder") as ItemHolder
+	return holder != null and holder.holds_in_hands()
 
 ## Called by a cat when it touches the chef. Returns true if the hit counted.
 func hit_by_cat() -> bool:

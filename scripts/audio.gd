@@ -12,7 +12,6 @@ extends Node
 const SFX_DIR := "res://assets/sfx/FC_sfx_"
 const MUSIC_DIR := "res://assets/music/"
 const SFX_VOICES := 12
-const MUSIC_VOLUME_DB := -8.0
 const MUSIC_FADE := 0.6
 
 ## name -> the file names (after "FC_sfx_" and before ".wav"). More than one = random variant.
@@ -41,11 +40,58 @@ const SOUNDS := {
 	"walk": ["player_walk_1", "player_walk_2", "player_walk_3"],
 	"walk_soft": ["player_walk-2_1", "player_walk-2_2", "player_walk-2_3"],
 }
-## Some files are recorded very quietly; this brings them up (dB). Missing = 0.
-const GAIN_DB := {
-	"click": 14.0,
-	"walk": 9.0,
-	"walk_soft": 14.0,
+## How far each file is turned up or down (dB) so everything plays at the same loudness.
+## Measured from the files: sound effects aim at -22 dBFS RMS, music at -27 (a bit
+## quieter, so it sits behind the effects). Re-measure if a file is replaced.
+const FILE_GAIN_DB := {
+	"UI_click": 21.5,
+	"UI_countdown_5s": -12.0,
+	"UI_gameover_lose": -7.5,
+	"UI_gameover_win": -7.5,
+	"UI_pause": -3.5,
+	"UI_scoring_1": -3.5,
+	"UI_scoring_2": -5.0,
+	"UI_unpause": -4.5,
+	"UI_wrong": 4.0,
+	"cat_meow_friendly": 3.0,
+	"cooking_finished_1": 6.5,
+	"cooking_inprogress_boiling": 2.5,
+	"cooking_inprogress_frying": -4.5,
+	"ingredient_drop_1": 8.0,
+	"ingredient_drop_2": 7.0,
+	"ingredient_drop_3": 8.0,
+	"ingredient_drop_plate_1": 3.5,
+	"ingredient_drop_plate_2": 0.0,
+	"ingredient_pickup_1": 5.5,
+	"ingredient_pickup_2": 0.5,
+	"ingredient_pickup_3": 5.5,
+	"ingredient_pickup_4": 3.5,
+	"minigame_allchopped_1": 6.5,
+	"minigame_open_1": -2.0,
+	"player_chopping_1": -1.0,
+	"player_chopping_2": -1.0,
+	"player_chopping_3": -1.0,
+	"player_plating_done": 6.5,
+	"player_plating_progress": -5.0,
+	"player_walk-2_1": 18.0,
+	"player_walk-2_2": 14.5,
+	"player_walk-2_3": 15.5,
+	"player_walk_1": 15.0,
+	"player_walk_2": 12.0,
+	"player_walk_3": 14.5,
+}
+const MUSIC_GAIN_DB := {
+	"intro": -6.5,
+	"level-1": -9.0,
+	"level-2": -3.0,
+	"level-3": -9.0,
+}
+## Extra trim for sounds that repeat a lot or run for a long time, so they don't tire the ear.
+const SOUND_TRIM_DB := {
+	"walk": -8.0,
+	"walk_soft": -8.0,
+	"boiling": -8.0,
+	"chop": -3.0,
 }
 
 var _voices: Array[AudioStreamPlayer] = []
@@ -62,7 +108,6 @@ func _ready() -> void:
 		add_child(voice)
 		_voices.append(voice)
 	_music_player = AudioStreamPlayer.new()
-	_music_player.volume_db = MUSIC_VOLUME_DB
 	add_child(_music_player)
 	# Every button, in every scene, clicks.
 	get_tree().node_added.connect(_on_node_added)
@@ -84,9 +129,14 @@ func sfx(sound: String, variant := -1) -> bool:
 	index = clampi(index, 0, files.size() - 1)
 	var voice := _free_voice()
 	voice.stream = _load(SFX_DIR + files[index] + ".wav")
-	voice.volume_db = GAIN_DB.get(sound, 0.0)
+	voice.volume_db = FILE_GAIN_DB.get(files[index], 0.0) + SOUND_TRIM_DB.get(sound, 0.0)
 	voice.play()
 	return true
+
+
+## The volume (dB) a node's own player should use for a sound (first variant).
+func gain_db(sound: String) -> float:
+	return FILE_GAIN_DB.get(SOUNDS[sound][0], 0.0) + SOUND_TRIM_DB.get(sound, 0.0)
 
 
 ## A looping copy of a sound, to put on a node's own AudioStreamPlayer (so the sound
@@ -115,7 +165,7 @@ func music(track: String) -> void:
 		_music_tween.tween_property(_music_player, "volume_db", -60.0, MUSIC_FADE)
 	_music_tween.tween_callback(func() -> void:
 		_music_player.stream = stream
-		_music_player.volume_db = MUSIC_VOLUME_DB
+		_music_player.volume_db = MUSIC_GAIN_DB.get(track, 0.0)
 		_music_player.play())
 
 

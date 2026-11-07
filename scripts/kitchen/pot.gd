@@ -33,6 +33,7 @@ func _ready() -> void:
 	# The pot's own player: it freezes when the game is paused and stops with the pot.
 	_boil_sound = AudioStreamPlayer.new()
 	_boil_sound.stream = Audio.looping_stream("boiling")
+	_boil_sound.volume_db = Audio.gain_db("boiling")
 	add_child(_boil_sound)
 	_update_visuals()
 
