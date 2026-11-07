@@ -80,9 +80,17 @@ func _show_scene(path: String, phase_three := false) -> void:
 	elif current_level.has_signal("phase_two_complete"):
 		current_phase = 2
 	if current_phase > 0:
-		hud.start_timer(PHASE_TIMINGS[current_phase])
+		hud.start_timer(_timing_for(current_phase))
 	else:
 		hud.hide_timer()
+
+
+## This level's own clock for a phase if its LevelInfo has one, else the default.
+func _timing_for(phase: int) -> PhaseTiming:
+	var own := Levels.info(level_index).phase_timings
+	if phase - 1 < own.size() and own[phase - 1] != null:
+		return own[phase - 1]
+	return PHASE_TIMINGS[phase]
 
 
 func _setup_ingredient_bars() -> void:
