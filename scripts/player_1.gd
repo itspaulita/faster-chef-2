@@ -17,8 +17,14 @@ const BLINK_INTERVAL := 0.4
 var is_immune := false
 var blink_tween: Tween
 
-# The chosen chef's own run speed (Princess Dish +15%, Legend of Lasagna -15%): see ChefStats.
+# ---- The chosen chef's abilities and weaknesses (see ChefStats) ----
 var chef_speed_scale := 1.0
+var chef_jump_scale := 1.0
+## Mavis Papaya: slow to start and stop, like on ice.
+var slippery := false
+## Pastatouille: extra jumps allowed in the air (1 = double jump).
+var max_air_jumps := 0
+var air_jumps_left := 0
 
 ## Which footstep sound plays (see Audio.SOUNDS). The kitchen switches to the soft one.
 var footstep_sound := "walk"
@@ -29,14 +35,50 @@ var jump_multiplier := 1.0
 var _gum_count := 0   # how many gum patches the chef is touching right now
 
 func _ready() -> void:
-	chef_speed_scale = ChefStats.speed_scale(GameState.selected_chef_name)
+	chef_speed_scale = ChefStats.mine("speed", 1.0)
+	chef_jump_scale = ChefStats.mine("jump", 1.0)
+	slippery = ChefStats.mine("slippery", false)
+	max_air_jumps = ChefStats.mine("air_jumps", 0)
+	_apply_chef_look()
+	var pickup_radius: float = ChefStats.mine("pickup_radius", 0.0)
+	if pickup_radius > 0.0:
+		_add_pickup_area(pickup_radius)
 	sprite.frame_changed.connect(_on_frame_changed)
+
+
+## Every level uses player_1.tscn, so borrow the animations from the chosen chef's scene.
+func _apply_chef_look() -> void:
+	var path: String = ChefStats.mine("scene", "")
+	if path == "" or path == scene_file_path:
+		return
+	var other: Node = load(path).instantiate()
+	sprite.sprite_frames = other.get_node("AnimatedSprite2D").sprite_frames
+	other.free()
+	sprite.play("idle_side")
+
+
+## Mavis Papaya: a bigger invisible circle that collects ingredients from further away.
+## (Only ingredients have the `collected` signal, so cats, flags and fire are ignored.)
+func _add_pickup_area(radius: float) -> void:
+	var area := Area2D.new()
+	area.collision_layer = 0
+	var shape := CollisionShape2D.new()
+	var circle := CircleShape2D.new()
+	circle.radius = radius
+	shape.shape = circle
+	area.add_child(shape)
+	area.area_entered.connect(func(other: Area2D) -> void:
+		if other.has_signal("collected") and other.has_method("_on_body_entered"):
+			other._on_body_entered(self))
+	add_child(area)
 
 
 func _physics_process(delta: float) -> void:
 	# Coyote time: refill while standing, count down while in the air.
+	# Landing also gives back the air jumps (double jump).
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
+		air_jumps_left = max_air_jumps
 	else:
 		coyote_timer -= delta
 	apply_heavy_gravity(delta)
@@ -48,21 +90,34 @@ func _physics_process(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
-		velocity.y = JUMP_VELOCITY * jump_multiplier
-		jump_buffer_timer = 0.0
-		coyote_timer = 0.0
+		_jump()
+	elif Input.is_action_just_pressed("jump") and coyote_timer <= 0.0 and air_jumps_left > 0:
+		# In the air and past coyote time: use an air jump (Pastatouille's double jump).
+		air_jumps_left -= 1
+		_jump()
 
 	# Let go of jump early for a short hop.
 	if Input.is_action_just_released("jump") and velocity.y < 0.0:
 		velocity.y *= 0.5
 
 	var direction := Input.get_axis("left", "right")
-	apply_horizontal_movement(delta, direction, SPEED * chef_speed_scale * speed_multiplier)
+	var max_speed := SPEED * chef_speed_scale * speed_multiplier
+	if slippery:
+		# slow to speed up, slides when letting go, wide turns
+		apply_horizontal_movement(delta, direction, max_speed, 0.3, 0.6, 0.7)
+	else:
+		apply_horizontal_movement(delta, direction, max_speed)
 	if direction:
 		sprite.flip_h = direction < 0
 
 	move_and_slide()
 	_update_animation()
+
+
+func _jump() -> void:
+	velocity.y = JUMP_VELOCITY * chef_jump_scale * jump_multiplier
+	jump_buffer_timer = 0.0
+	coyote_timer = 0.0
 
 ## Called by a bubblegum path when the chef steps on it.
 func enter_gum(speed_mult: float, jump_mult: float) -> void:
