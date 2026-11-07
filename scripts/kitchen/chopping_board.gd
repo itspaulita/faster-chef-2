@@ -11,8 +11,8 @@ signal ingredient_taken(ingredient: IngredientData)
 const PANEL_SCENE := preload("res://scenes/chop_panel.tscn")
 ## Seconds a chop takes. Presses during it are ignored, so mashing E can't skip stages.
 const CHOP_TIME := 0.25
-## Seconds the chef must stand still in the zone before the panel opens by itself.
-const STAND_TIME := 0.15
+### Seconds the chef must stand still in the zone before the panel opens by itself.
+#const STAND_TIME := 0.15
 
 @export var recipe: Recipe
 
@@ -24,7 +24,7 @@ var is_chopping := false
 var ready_item: IngredientData
 
 var _busy := false
-var _still_time := 0.0
+#var _still_time := 0.0
 var _panel: ChopPanel
 var _item_sprite: Sprite2D
 
@@ -39,18 +39,19 @@ func _ready() -> void:
 	_item_sprite.scale = Vector2.ONE * 0.35
 	_item_sprite.visible = false
 	add_child(_item_sprite)
+	chef_entered.connect(_on_chef_arrived)   # walk in  → panel opens
+	chef_exited.connect(_on_chef_left)       # walk out → panel closes, chopping resets
 
-
-func _physics_process(delta: float) -> void:
-	if chef == null or is_chopping or not _can_start_chopping():
-		_still_time = 0.0
-		return
-	if _is_standing():
-		_still_time += delta
-		if _still_time >= STAND_TIME:
-			_start_chopping()
-	else:
-		_still_time = 0.0  # Just running past the board: don't grab the chef.
+#func _physics_process(delta: float) -> void:
+	#if chef == null or is_chopping or not _can_start_chopping():
+		#_still_time = 0.0
+		#return
+	#if _is_standing():
+		#_still_time += delta
+		#if _still_time >= STAND_TIME:
+			#_start_chopping()
+	#else:
+		#_still_time = 0.0  # Just running past the board: don't grab the chef.
 
 
 func _get_prompt_text() -> String:
@@ -63,21 +64,18 @@ func _get_prompt_text() -> String:
 
 func _on_chop() -> void:
 	if not is_chopping:
-		# E also opens the panel, in case the chef is at the board but still moving.
-		if _can_start_chopping():
-			if _is_grounded():
-				_start_chopping()
-		elif not holder.is_empty():
-			message.emit("Your hands are full! You're carrying %s." % holder.describe())
-		elif ready_item != null:
-			message.emit("Pick up the chopped %s first (Q)." % ready_item.display_name)
-		else:
-			message.emit("Everything is already chopped!")
-		return
+		if not _can_start_chopping():
+			if not holder.is_empty():
+				message.emit("Your hands are full! You're carrying %s." % holder.describe())
+			elif ready_item != null:
+				message.emit("Pick up the chopped %s first (Q)." % ready_item.display_name)
+			else:
+				message.emit("Everything is already chopped!")
+			return
+		_start_chopping()
 	if _busy:
 		return
 	_chop()
-
 
 func _on_grab_drop() -> void:
 	if is_chopping:
@@ -105,19 +103,19 @@ func _can_start_chopping() -> bool:
 			and ready_item == null \
 			and next_index < recipe.ingredient_count()
 
+#
+#func _is_grounded() -> bool:
+	#return (chef as CharacterBody2D).is_on_floor()
 
-func _is_grounded() -> bool:
-	return (chef as CharacterBody2D).is_on_floor()
 
-
-func _is_standing() -> bool:
-	return _is_grounded() and absf((chef as CharacterBody2D).velocity.x) < 5.0
+#func _is_standing() -> bool:
+	#return _is_grounded() and absf((chef as CharacterBody2D).velocity.x) < 5.0
 
 
 func _start_chopping() -> void:
 	is_chopping = true
-	_still_time = 0.0
-	_lock_chef()
+	#_still_time = 0.0
+	#_lock_chef()
 	_panel.open(recipe.ingredient_at(next_index), chops, recipe.chops_per_ingredient)
 	refresh_prompt()
 
@@ -144,21 +142,34 @@ func _finish_chopping() -> void:
 	is_chopping = false
 	_busy = false
 	_panel.close()
-	_unlock_chef()
+	#_unlock_chef()
 	_item_sprite.texture = ready_item.chopped_texture()
 	_item_sprite.visible = true
 	chopped.emit(ready_item)
 	refresh_prompt()
 
+## The chef walked out of the zone in the middle of chopping: start this ingredient over.
+func _on_chef_left(_body: Node2D) -> void:
+	if not is_chopping:
+		return
+	chops = 0
+	is_chopping = false
+	_busy = false
+	_panel.close()
+	#message.emit("You walked away, chopping reset!")
+	refresh_prompt()
 
+func _on_chef_arrived(_body: Node2D) -> void:
+	if _can_start_chopping():
+		_start_chopping()
 # The chef can't move while chopping, and turns to face the wall (the front-facing idle).
-func _lock_chef() -> void:
-	chef.set_physics_process(false)
-	(chef as CharacterBody2D).velocity = Vector2.ZERO
-	var sprite := chef.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
-	if sprite and sprite.sprite_frames.has_animation("idle"):
-		sprite.play("idle")
-
-
-func _unlock_chef() -> void:
-	chef.set_physics_process(true)
+#func _lock_chef() -> void:
+	#chef.set_physics_process(false)
+	#(chef as CharacterBody2D).velocity = Vector2.ZERO
+	#var sprite := chef.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	#if sprite and sprite.sprite_frames.has_animation("idle"):
+		#sprite.play("idle")
+#
+#
+#func _unlock_chef() -> void:
+	#chef.set_physics_process(true)

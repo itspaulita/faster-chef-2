@@ -1129,36 +1129,36 @@ expand_mode = 1
 [node name="ceramic stove-decoration2" type="TextureRect" parent="decoration" unique_id=506624307]
 texture_filter = 1
 offset_left = 538.0
-offset_top = 276.33334
+offset_top = 277.33334
 offset_right = 620.6667
-offset_bottom = 359.00003
+offset_bottom = 360.00003
 texture = ExtResource("4_7aj05")
 expand_mode = 1
 
 [node name="cabinet-decoration3" type="TextureRect" parent="decoration" unique_id=1745191981]
 texture_filter = 1
 offset_left = 193.66666
-offset_top = 279.0
+offset_top = 282.0
 offset_right = 276.33334
-offset_bottom = 361.6667
+offset_bottom = 364.6667
 texture = ExtResource("5_2mpyy")
 expand_mode = 1
 
 [node name="microwave-decoration4" type="TextureRect" parent="decoration" unique_id=1459570160]
 texture_filter = 1
 offset_left = 197.66667
-offset_top = 247.33333
+offset_top = 250.33333
 offset_right = 249.33337
-offset_bottom = 299.0
+offset_bottom = 302.0
 texture = ExtResource("6_i8j0g")
 expand_mode = 1
 
 [node name="kettle-decoration5" type="TextureRect" parent="decoration" unique_id=739365767]
 texture_filter = 1
 offset_left = 250.66667
-offset_top = 267.3333
+offset_top = 270.3333
 offset_right = 274.33337
-offset_bottom = 291.0
+offset_bottom = 294.0
 texture = ExtResource("7_uguuv")
 expand_mode = 1
 
@@ -1334,18 +1334,18 @@ expand_mode = 1
 [node name="pot-decoration13" type="TextureRect" parent="decoration" unique_id=66421878]
 texture_filter = 1
 offset_left = 317.0
-offset_top = 240.66667
+offset_top = 243.0
 offset_right = 362.66666
-offset_bottom = 286.33334
+offset_bottom = 288.6667
 texture = ExtResource("11_ylt13")
 expand_mode = 1
 
 [node name="pot-decoration14" type="TextureRect" parent="decoration" unique_id=980399110]
 texture_filter = 1
 offset_left = 282.66666
-offset_top = 232.66667
+offset_top = 235.0
 offset_right = 328.3333
-offset_bottom = 283.66663
+offset_bottom = 285.99994
 texture = ExtResource("12_ubry4")
 expand_mode = 1
 
@@ -1391,8 +1391,7 @@ script = ExtResource("6_nv83i")
 station_name = "Chopping board"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stations/ChoppingBoard" unique_id=1722402071]
-visible = false
-position = Vector2(0, -45)
+position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_5j4t3")
 
 [node name="chopping_spot" parent="Stations/ChoppingBoard" unique_id=1903818716 instance=ExtResource("17_j6fdr")]
@@ -1404,11 +1403,10 @@ script = ExtResource("8_ktli7")
 station_name = "Pot"
 
 [node name="cooking_stove" parent="Stations/Pot" unique_id=1971927405 instance=ExtResource("19_3q2bk")]
-position = Vector2(0, 3.666687)
+position = Vector2(0, 6.0000205)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stations/Pot" unique_id=624098983]
-visible = false
-position = Vector2(0.3333435, 4.666687)
+position = Vector2(0.3333435, 20.666668)
 shape = SubResource("RectangleShape2D_5j4t3")
 
 [node name="PlatingStation" type="Area2D" parent="Stations" unique_id=2035708255]
@@ -1417,8 +1415,7 @@ script = ExtResource("9_h5csf")
 station_name = "Plating station"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stations/PlatingStation" unique_id=1575740185]
-visible = false
-position = Vector2(0, -45)
+position = Vector2(0, 24.333336)
 shape = SubResource("RectangleShape2D_5j4t3")
 
 [node name="plating_spot" parent="Stations/PlatingStation" unique_id=405005092 instance=ExtResource("23_wnpwg")]

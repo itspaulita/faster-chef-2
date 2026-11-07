@@ -15,7 +15,7 @@ const INGREDIENT_ROWS := { "salmon": 0, "cream": 1, "potato": 2 }
 var level_index := 0
 var current_level: Node
 var carried_xp := 0   # XP kept when moving from Phase 1 to the Phase 2-3 map
-
+var current_recipe: Recipe
 
 func _ready() -> void:
 	load_level(0)
@@ -32,15 +32,21 @@ func next_level() -> void:
 		load_level(level_index + 1)
 
 
-func _show_scene(path: String) -> void:
+func _show_scene(path: String, phase_three := false) -> void:
 	if current_level:
 		# Remove the old scene right away so its camera doesn't fight the new one.
 		remove_child(current_level)
 		current_level.queue_free()
 	current_level = load(path).instantiate()
+	if phase_three:
+		# Set BEFORE add_child: that's when the level's _ready() runs.
+		current_level.is_phase_three = true
+		current_level.start_xp = carried_xp
+		current_level.recipe = current_recipe
 	add_child(current_level)
 	hud.set_points(carried_xp, false)
-	_setup_ingredient_bars()
+	if not phase_three:
+		_setup_ingredient_bars()   # Phase 3: keep the bars as they were
 	_connect_level_signals()
 
 
@@ -67,12 +73,17 @@ func _connect_level_signals() -> void:
 		current_level.phase_two_complete.connect(_on_phase_two_complete)
 	if current_level.has_signal("phase_one_complete"):
 		current_level.phase_one_complete.connect(_on_phase_one_complete)
+	if current_level.has_signal("countdown_changed"):
+		current_level.countdown_changed.connect(_on_countdown_changed)
+	if current_level.has_signal("phase_three_complete"):
+		current_level.phase_three_complete.connect(_on_phase_three_complete)
+	if current_level.has_signal("phase_three_failed"):
+		current_level.phase_three_failed.connect(_on_phase_three_failed)
 
-
-## Placeholder: the dish was picked up. The real Phase 3 transition replaces this.
+## The chef left the kitchen with the dish: back to this level's map, in Phase 3 mode.
 func _on_phase_two_complete(recipe: Recipe) -> void:
-	popup.open("%s is ready!\nDelivering..." % recipe.dish_name, [], false, 3.0)
-
+	current_recipe = recipe
+	_show_scene.call_deferred(LEVELS[level_index], true)
 
 func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
 	if INGREDIENT_ROWS.has(type):
@@ -92,3 +103,19 @@ func _on_phase_one_complete(final_xp: int) -> void:
 	else:
 		# No Phase 2-3 map yet: just show the result for a few seconds.
 		popup.open("Phase 1 complete!\nXP: %d\n\nPhase 2 coming soon..." % final_xp, [], false, 5.0)
+
+func _on_countdown_changed(seconds_left: int) -> void:
+	if hud.has_method("set_countdown"):
+		hud.set_countdown(seconds_left)
+	else:
+		print("Countdown: ", seconds_left)   # until Paula adds a timer to the HUD
+
+
+## Placeholder: the monster room hand-off and grading (ticket 2.10) replace this.
+func _on_phase_three_complete(time_left: float, final_xp: int) -> void:
+	popup.open("Delivered!\nTime left: %d s\nXP: %d" % [ceili(time_left), final_xp], [], false, 5.0)
+
+
+func _on_phase_three_failed() -> void:
+	popup.open("Time's up!\nThe monster is still hungry...", ["Try again"])
+	popup.closed.connect(func(_i: int) -> void: load_level(level_index), CONNECT_ONE_SHOT)
