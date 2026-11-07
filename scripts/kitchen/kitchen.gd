@@ -25,12 +25,15 @@ func _ready() -> void:
 	camera.limit_top = 0
 	camera.limit_right = int(room_size.x * scale.x)
 	camera.limit_bottom = int(room_size.y * scale.y)
+	chef.footstep_sound = "walk_soft"
 	board.recipe = recipe
 	pot.recipe = recipe
 	plating.recipe = recipe
 	for station in $Stations.get_children():
 		if station is Station:
 			station.message.connect(message.emit)
+			# Every station message is a "can't do that" hint.
+			station.message.connect(func(_text: String) -> void: Audio.sfx("wrong"))
 	plating.dish_picked_up.connect(_on_dish_picked_up)
 	exit_zone.body_entered.connect(_on_exit_left_entered)
 	# Run on its own (F6) there's no main.gd to show the toasts, so show them here.

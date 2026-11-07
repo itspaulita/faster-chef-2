@@ -40,4 +40,5 @@ func _turn() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	# hit_by_cat() returns false while the chef is immune, so no steal then.
 	if body.has_method("hit_by_cat") and body.hit_by_cat():
+		Audio.sfx("meow")
 		hit_chef.emit(cat_name)

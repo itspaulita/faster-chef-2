@@ -26,6 +26,9 @@ var phase_timer := PhaseTimer.new()
 var star_icons: Array[StarIcon] = []
 
 var _bar_fill: StyleBoxFlat
+## Seconds left at which the 5-second countdown sound plays (once per phase).
+const COUNTDOWN_AT := 5.0
+var _countdown_played := false
 
 # Ingredient tile looks: grey at 0 collected, blue while collecting, yellow once complete.
 var _empty_tile_style: StyleBoxFlat
@@ -140,6 +143,7 @@ func _place_stars(timing: PhaseTiming) -> void:
 func start_timer(timing: PhaseTiming) -> void:
 	timer_panel.visible = true
 	_place_stars(timing)
+	_countdown_played = false
 	phase_timer.start(timing)
 	_update_stars(false)
 
@@ -155,6 +159,9 @@ func hide_timer() -> void:
 
 
 func _on_tick(time_left: float) -> void:
+	if time_left <= COUNTDOWN_AT and time_left > 0.0 and not _countdown_played and phase_timer.running:
+		_countdown_played = true
+		Audio.sfx("countdown")
 	var whole := ceili(time_left)
 	timer_label.text = "%d:%02d" % [whole / 60, whole % 60]
 	var warning := phase_timer.stars <= 1

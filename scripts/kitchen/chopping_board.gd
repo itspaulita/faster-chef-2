@@ -1,15 +1,15 @@
 class_name ChoppingBoard
 extends Station
 ## Where the chef chops. Standing still at the board turns the chef to the wall and opens
-## the chop panel. Each E is one chop (whole -> 2 pieces -> 3 pieces -> done). When the
-## 3rd chop lands the panel closes and the chopped ingredient rests on the board until the
-## chef picks it up with Q. Ingredients are chopped in the recipe's order.
+## the chop panel. Each C is one chop (whole -> 2 pieces -> 3 pieces -> done). When the
+## 3rd chop lands the panel keeps showing the chopped ingredient (nothing is drawn on the
+## counter) until the chef picks it up with B, which puts it in their hands. Ingredients are chopped in the recipe's order.
 
 signal chopped(ingredient: IngredientData)
 signal ingredient_taken(ingredient: IngredientData)
 
 const PANEL_SCENE := preload("res://scenes/chop_panel.tscn")
-## Seconds a chop takes. Presses during it are ignored, so mashing E can't skip stages.
+## Seconds a chop takes. Presses during it are ignored, so mashing C can't skip stages.
 const CHOP_TIME := 0.25
 ### Seconds the chef must stand still in the zone before the panel opens by itself.
 #const STAND_TIME := 0.15
@@ -24,21 +24,16 @@ var is_chopping := false
 var ready_item: IngredientData
 
 var _busy := false
+## Bumped whenever chopping starts over, so a chop timer from before can't act on the new one.
+var _session := 0
 #var _still_time := 0.0
 var _panel: ChopPanel
-var _item_sprite: Sprite2D
 
 
 func _ready() -> void:
 	super()
 	_panel = PANEL_SCENE.instantiate()
 	add_child(_panel)
-	_item_sprite = Sprite2D.new()
-	_item_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_item_sprite.position = Vector2(24, -36)
-	_item_sprite.scale = Vector2.ONE * 0.35
-	_item_sprite.visible = false
-	add_child(_item_sprite)
 	chef_entered.connect(_on_chef_arrived)   # walk in  → panel opens
 	chef_exited.connect(_on_chef_left)       # walk out → panel closes, chopping resets
 
@@ -58,8 +53,8 @@ func _get_prompt_text() -> String:
 	if holder == null or is_chopping:
 		return ""
 	if ready_item != null:
-		return "Q  PICK UP" if holder.is_empty() else ""
-	return "E  CHOP" if _can_start_chopping() else ""
+		return "B  PICK UP" if holder.is_empty() else ""
+	return "C  CHOP" if _can_start_chopping() else ""
 
 
 func _on_chop() -> void:
@@ -68,7 +63,7 @@ func _on_chop() -> void:
 			if not holder.is_empty():
 				message.emit("Your hands are full! You're carrying %s." % holder.describe())
 			elif ready_item != null:
-				message.emit("Pick up the chopped %s first (Q)." % ready_item.display_name)
+				message.emit("Pick up the chopped %s first (B)." % ready_item.display_name)
 			else:
 				message.emit("Everything is already chopped!")
 			return
@@ -89,8 +84,9 @@ func _on_grab_drop() -> void:
 		return
 	var taken := ready_item
 	if holder.hold_ingredient(taken):
+		Audio.sfx("pickup")
 		ready_item = null
-		_item_sprite.visible = false
+		_panel.close()
 		ingredient_taken.emit(taken)
 		refresh_prompt()
 	else:
@@ -113,8 +109,10 @@ func _can_start_chopping() -> bool:
 
 
 func _start_chopping() -> void:
+	_session += 1
 	is_chopping = true
 	#_still_time = 0.0
+	Audio.sfx("minigame_open")
 	#_lock_chef()
 	_panel.open(recipe.ingredient_at(next_index), chops, recipe.chops_per_ingredient)
 	refresh_prompt()
@@ -123,9 +121,13 @@ func _start_chopping() -> void:
 func _chop() -> void:
 	chops += 1
 	_busy = true
+	Audio.sfx("chop", chops - 1)   # chop 1, 2, 3 each have their own sound
 	_panel.chopped(chops)
-	# Ignore E until the chop animation is over; the last chop then closes the panel.
-	create_tween().tween_interval(CHOP_TIME).finished.connect(_after_chop)
+	# Ignore C until the chop animation is over; the last chop then closes the panel.
+	var session := _session
+	create_tween().tween_interval(CHOP_TIME).finished.connect(func() -> void:
+		if session == _session:
+			_after_chop())
 
 
 func _after_chop() -> void:
@@ -136,31 +138,37 @@ func _after_chop() -> void:
 
 
 func _finish_chopping() -> void:
+	Audio.sfx("all_chopped")
 	ready_item = recipe.ingredient_at(next_index)
 	next_index += 1
 	chops = 0
 	is_chopping = false
 	_busy = false
-	_panel.close()
 	#_unlock_chef()
-	_item_sprite.texture = ready_item.chopped_texture()
-	_item_sprite.visible = true
+	_show_ready_item()
 	chopped.emit(ready_item)
 	refresh_prompt()
 
-## The chef walked out of the zone in the middle of chopping: start this ingredient over.
+func _show_ready_item() -> void:
+	_panel.show_result("%s CHOPPED!" % ready_item.display_name.to_upper(), ready_item.chopped_texture(), "TAKE IT!")
+
+
+## The chef walked out of the zone: the popup closes. Mid-chop, this ingredient starts over.
 func _on_chef_left(_body: Node2D) -> void:
+	_panel.close()
 	if not is_chopping:
 		return
+	_session += 1
 	chops = 0
 	is_chopping = false
 	_busy = false
-	_panel.close()
 	#message.emit("You walked away, chopping reset!")
 	refresh_prompt()
 
 func _on_chef_arrived(_body: Node2D) -> void:
-	if _can_start_chopping():
+	if ready_item != null:
+		_show_ready_item()   # still waiting to be picked up
+	elif _can_start_chopping():
 		_start_chopping()
 # The chef can't move while chopping, and turns to face the wall (the front-facing idle).
 #func _lock_chef() -> void:

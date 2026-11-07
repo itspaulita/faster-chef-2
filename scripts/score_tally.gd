@@ -56,7 +56,9 @@ func show_tally(xp: int) -> void:
 			"  PERFECT!" if multiplier == GameState.PERFECT_MULTIPLIER else ""]
 	tween.tween_callback(func() -> void: total_label.modulate.a = 1.0)
 	tween.tween_interval(0.5)
-	tween.tween_callback(func() -> void: score_label.modulate.a = 1.0)
+	tween.tween_callback(func() -> void:
+			Audio.sfx("score")
+			score_label.modulate.a = 1.0)
 	tween.tween_method(func(v: float) -> void:
 			score_label.text = "%d XP x %d = %d" % [xp, multiplier, int(round(v))],
 			0.0, float(score), 0.8)
@@ -87,6 +89,7 @@ func _add_phase_row(phase: int) -> Array[StarIcon]:
 func _reveal_stars(icons: Array[StarIcon], stars: int) -> void:
 	for i in stars:
 		get_tree().create_timer(i * STAR_STEP).timeout.connect(func() -> void:
+			Audio.sfx("star")
 			icons[i].set_earned(true)
 			icons[i].play_sparkle())
 

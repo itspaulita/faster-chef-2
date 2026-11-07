@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_timing")
-duration = 60.0
+duration = 100.0
 two_star_below = 40.0
 one_star_below = 20.0
