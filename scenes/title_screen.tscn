@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://c3g4ls31mmqjr" path="res://assets/images/player/Mavis Papaya 110x80.png" id="8_mavis"]
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_mykxm"]
 
+[ext_resource type="PackedScene" path="res://scenes/how_to_play.tscn" id="10_how"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 bg_color = Color(0.91, 0.6, 0.17, 1)
 border_width_left = 8
@@ -151,3 +153,23 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "START"
+
+[node name="HowToPlayButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 730.0
+offset_top = 600.0
+offset_right = 1190.0
+offset_bottom = 716.0
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("9_mykxm")
+theme_override_font_sizes/font_size = 44
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+text = "HOW TO PLAY"
+
+[node name="HowToPlay" parent="." instance=ExtResource("10_how")]

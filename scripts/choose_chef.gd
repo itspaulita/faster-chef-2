@@ -6,11 +6,15 @@ const DIMMED := Color(0.6, 0.6, 0.6)
 ## The stats box sits above the chef, with its bottom edge at this y.
 const POPUP_BOTTOM := 690.0
 
+const DEFAULT_PROMPT := "Select a chef and press play"
+const NICKNAME_PROMPT := "Type a nickname first!"
+
 var _selected: Sprite2D
 
 @onready var chefs: Array[Node] = $Chefs.get_children()
 @onready var play_button: Button = $PlayButton
 @onready var prompt_label: Label = $PromptLabel
+@onready var nickname_edit: LineEdit = $NicknameRow/NicknameEdit
 @onready var stats_popup: PanelContainer = $StatsPopup
 @onready var name_label: Label = $StatsPopup/VBoxContainer/NameLabel
 @onready var ability_label: Label = $StatsPopup/VBoxContainer/AbilityLabel
@@ -19,11 +23,18 @@ var _selected: Sprite2D
 
 func _ready() -> void:
 	play_button.pressed.connect(_on_play_pressed)
+	nickname_edit.text = GameState.nickname
+	# Enter confirms the name, so the keyboard goes back to the screen.
+	nickname_edit.text_changed.connect(func(_text: String) -> void: prompt_label.text = DEFAULT_PROMPT)
+	nickname_edit.text_submitted.connect(func(_text: String) -> void: nickname_edit.release_focus())
 
 
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		return
+	# Clicking anywhere but the name field leaves it.
+	if not nickname_edit.get_global_rect().has_point(event.position):
+		nickname_edit.release_focus()
 	for chef: Sprite2D in chefs:
 		if chef.get_rect().has_point(chef.to_local(event.position)):
 			_select(chef)
@@ -61,13 +72,27 @@ func _show_stats(chef: Sprite2D) -> void:
 
 
 func _on_play_pressed() -> void:
-	if _selected == null:
-		prompt_label.modulate = Color(1.0, 0.3, 0.3)
-		create_tween().tween_property(prompt_label, "modulate", Color.WHITE, 0.4)
+	# The nickname is required (it will be the name on the scoreboard).
+	if nickname_edit.text.strip_edges().is_empty():
+		prompt_label.text = NICKNAME_PROMPT
+		_flash(prompt_label)
+		_flash(nickname_edit)
+		nickname_edit.grab_focus()
 		return
+	if _selected == null:
+		prompt_label.text = DEFAULT_PROMPT
+		_flash(prompt_label)
+		return
+	GameState.nickname = nickname_edit.text.strip_edges()
 	GameState.selected_chef_name = _selected.name
 	GameState.selected_chef_texture = _selected.texture
 	if ResourceLoader.exists(NEXT_SCENE):
 		get_tree().change_scene_to_file(NEXT_SCENE)
 	else:
 		print("Next scene not made yet: ", NEXT_SCENE)
+
+
+## Turns a control red and fades it back, to show what's missing.
+func _flash(control: Control) -> void:
+	control.modulate = Color(1.0, 0.3, 0.3)
+	create_tween().tween_property(control, "modulate", Color.WHITE, 0.4)

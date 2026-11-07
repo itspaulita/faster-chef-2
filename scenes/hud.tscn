@@ -4,46 +4,6 @@
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="3_pause"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
-bg_color = Color(0.84, 0.93, 1, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(1, 0.97, 0.88, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
-bg_color = Color(0.91, 0.6, 0.17, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_points"]
 content_margin_left = 32.0
 content_margin_top = 12.0
@@ -59,6 +19,22 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.84, 0.93, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pause"]
 bg_color = Color(1, 0.97, 0.88, 1)
@@ -99,88 +75,121 @@ corner_radius_bottom_left = 16
 [node name="Hud" type="CanvasLayer" unique_id=1055163784]
 script = ExtResource("1_hud")
 
-[node name="Rows" type="VBoxContainer" parent="." unique_id=241008584]
+[node name="TopLeft" type="VBoxContainer" parent="." unique_id=377290021]
 offset_left = 24.0
 offset_top = 24.0
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
-[node name="Row1" type="HBoxContainer" parent="Rows" unique_id=2035583497]
+[node name="TimerBox" type="PanelContainer" parent="TopLeft" unique_id=871254405]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_points")
+
+[node name="Box" type="VBoxContainer" parent="TopLeft/TimerBox" unique_id=1525463348]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BarArea" type="Control" parent="TopLeft/TimerBox/Box" unique_id=433183121]
+custom_minimum_size = Vector2(420, 60)
+layout_mode = 2
+
+[node name="Bar" type="ProgressBar" parent="TopLeft/TimerBox/Box/BarArea" unique_id=2014307651]
+layout_mode = 0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 44.0
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="TimerLabel" type="Label" parent="TopLeft/TimerBox/Box" unique_id=63144125]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.17, 0.09, 0.06, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 52
+text = "2:30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ingredients" type="HBoxContainer" parent="TopLeft" unique_id=431021962]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row1" unique_id=1087306267]
-custom_minimum_size = Vector2(72, 72)
+[node name="Slot1" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=979197990]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot1" unique_id=1458860341]
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row1/IconTile" unique_id=785638242]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot1/IconTile" unique_id=899744158]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row1" unique_id=1150462661]
-custom_minimum_size = Vector2(260, 40)
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot1" unique_id=1678798655]
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
-step = 0.0
+theme_override_font_sizes/font_size = 34
+text = "0/3"
+horizontal_alignment = 1
 
-[node name="Row2" type="HBoxContainer" parent="Rows" unique_id=940286467]
+[node name="Slot2" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=727107785]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row2" unique_id=2027988345]
-custom_minimum_size = Vector2(72, 72)
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot2" unique_id=1369216682]
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row2/IconTile" unique_id=1508283991]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot2/IconTile" unique_id=726961929]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row2" unique_id=2104432464]
-custom_minimum_size = Vector2(260, 40)
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot2" unique_id=178122657]
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
-step = 0.0
+theme_override_font_sizes/font_size = 34
+text = "0/3"
+horizontal_alignment = 1
 
-[node name="Row3" type="HBoxContainer" parent="Rows" unique_id=22366069]
+[node name="Slot3" type="VBoxContainer" parent="TopLeft/Ingredients" unique_id=833185882]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
-[node name="IconTile" type="PanelContainer" parent="Rows/Row3" unique_id=269812456]
-custom_minimum_size = Vector2(72, 72)
+[node name="IconTile" type="PanelContainer" parent="TopLeft/Ingredients/Slot3" unique_id=769333191]
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tile")
 
-[node name="Icon" type="TextureRect" parent="Rows/Row3/IconTile" unique_id=122827734]
+[node name="Icon" type="TextureRect" parent="TopLeft/Ingredients/Slot3/IconTile" unique_id=919341594]
 texture_filter = 1
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Bar" type="ProgressBar" parent="Rows/Row3" unique_id=543786919]
-custom_minimum_size = Vector2(260, 40)
+[node name="CountLabel" type="Label" parent="TopLeft/Ingredients/Slot3" unique_id=1938682411]
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.23, 0.12, 0.08, 1)
+theme_override_colors/font_outline_color = Color(1, 0.97, 0.88, 1)
+theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
-step = 0.0
+theme_override_font_sizes/font_size = 34
+text = "0/3"
+horizontal_alignment = 1
 
 [node name="PointsPanel" type="PanelContainer" parent="." unique_id=2095658903]
 anchors_preset = 1

@@ -10,9 +10,9 @@ const MONSTER_FRAMES := [0, 1, 2, 3]
 ## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
 const CHEF_EXIT_X := 2100.0
 
-@export var dish_name := "Salmon soup"
-## Index into the 5-dish sheet.
-@export var dish_frame := 1
+## Shown in the order banner: "<monster_name> ordered <dish_name>!"
+@export var monster_name := "Mr. Apple"
+@export var dish_name := "salmon soup"
 @export var chef_stop_x := 960.0
 
 var _tween: Tween
@@ -22,7 +22,6 @@ var _finished := false
 @onready var monster: IdleChef = $Monster
 @onready var bubble: Node2D = $OrderBubble
 @onready var dish_icon: Sprite2D = $OrderBubble/DishIcon
-@onready var dish_label: Label = $OrderBubble/DishLabel
 @onready var fade: ColorRect = $Fade
 
 
@@ -34,9 +33,6 @@ func _ready() -> void:
 	chef.frame_time = 0.15
 	monster.idle_frames = PackedInt32Array(MONSTER_FRAMES)
 	monster.frame_time = 0.3
-	dish_icon.frame = dish_frame
-	dish_label.text = dish_name
-	dish_label.visible_ratio = 0.0
 	bubble.scale = Vector2.ZERO
 
 	_tween = create_tween()
@@ -45,12 +41,19 @@ func _ready() -> void:
 	_tween.tween_callback(_on_chef_arrived)
 	_tween.tween_property(bubble, "scale", Vector2.ONE, 0.35) \
 			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	_tween.tween_property(dish_label, "visible_ratio", 1.0, 0.6)
-	_tween.tween_interval(2.0) #Chi
+	_tween.tween_callback(_show_order_banner)
+	_tween.tween_interval(2.6) #Chi
 	_tween.tween_callback(_on_chef_leaves) #Chi
 	_tween.tween_property(chef, "position:x", CHEF_EXIT_X, 1.0) \
 			.set_ease(Tween.EASE_IN) #Chi
 	_tween.tween_callback(_finish) #Chi
+
+
+func _show_order_banner() -> void:
+	# The popup scene is reused as a notice: no pause, no dimming, closes itself.
+	var popup: ModalPopup = load("res://scenes/modal_popup.tscn").instantiate()
+	add_child(popup)
+	popup.open("%s ordered %s!" % [monster_name, dish_name], [], false, 2.5)
 
 
 func _input(event: InputEvent) -> void:
