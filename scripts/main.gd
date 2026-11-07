@@ -6,6 +6,7 @@ const ORDER_CUTSCENE := "res://scenes/cutscene.tscn"
 const PHASE_TIMINGS := {
 	1: preload("res://resources/timing/phase_1.tres"),
 	2: preload("res://resources/timing/phase_2.tres"),
+	3: preload("res://resources/timing/phase_3.tres"),
 }
 const TITLE_SCENE := "res://scenes/title_screen.tscn"
 ## Seconds the "too slow" message shows before the level restarts.
@@ -20,9 +21,10 @@ var delivery_cutscene: DeliveryCutscene
 ## Which HUD row shows which ingredient, from the level's LevelInfo: { "beef": 0, ... }.
 var ingredient_rows := {}
 var level_index := 0
-var current_phase := 0   # 1 or 2 while a timed phase is showing, 0 otherwise
+var current_phase := 0   # 1, 2 or 3 while a timed phase is showing, 0 otherwise
 var current_level: Node
-var carried_xp := 0   # XP kept when moving from Phase 1 to the Phase 2-3 map
+var carried_xp := 0      # XP kept between phases
+var current_recipe: Recipe
 
 
 func _ready() -> void:
@@ -40,6 +42,7 @@ func load_level(index: int) -> void:
 	level_index = index
 	GameState.level_index = index
 	carried_xp = 0
+	current_recipe = null
 	GameState.reset_run()
 	var info := Levels.info(index)
 	hud.set_ingredient_frames(info.ingredient_frames)
@@ -49,19 +52,28 @@ func load_level(index: int) -> void:
 	_show_scene(info.level_scene)
 
 
-func _show_scene(path: String) -> void:
+func _show_scene(path: String, phase_three := false) -> void:
 	if current_level:
 		# Remove the old scene right away so its camera doesn't fight the new one.
 		remove_child(current_level)
 		current_level.queue_free()
 	current_level = load(path).instantiate()
+	# Set BEFORE add_child: that's when the scene's _ready() runs.
+	if current_recipe and "recipe" in current_level:
+		current_level.recipe = current_recipe   # the kitchen cooks this level's dish
+	if phase_three:
+		current_level.is_phase_three = true
+		current_level.start_xp = carried_xp
 	add_child(current_level)
 	hud.set_points(carried_xp, false)
-	_setup_ingredient_bars()
+	if not phase_three:
+		_setup_ingredient_bars()   # Phase 3: keep the bars as they were
 	_connect_level_signals()
-	# Each timed phase has its own clock; the scene tells us which phase it is.
+	# Each timed phase has its own clock. Phase 3 reuses the Phase 1 map, so check it first.
 	current_phase = 0
-	if current_level.has_signal("phase_one_complete"):
+	if phase_three:
+		current_phase = 3
+	elif current_level.has_signal("phase_one_complete"):
 		current_phase = 1
 	elif current_level.has_signal("phase_two_complete"):
 		current_phase = 2
@@ -94,29 +106,10 @@ func _connect_level_signals() -> void:
 		current_level.phase_two_complete.connect(_on_phase_two_complete)
 	if current_level.has_signal("phase_one_complete"):
 		current_level.phase_one_complete.connect(_on_phase_one_complete)
-
-
-## The dish was picked up. For now the tally shows here; once Phase 3 (deliver) exists it
-## should record its own stars and show the tally when it finishes instead.
-func _on_phase_two_complete(_recipe: Recipe) -> void:
-	GameState.record_stars(2, hud.stop_timer())
-	# The delivery cutscene shows the monster's reaction first, then the score tally.
-	delivery_cutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
-	add_child(delivery_cutscene)
-	await delivery_cutscene.finished
-	# The cutscene stays up behind the tally as its background.
-	tally.show_tally(carried_xp)
-
-
-func _on_tally_continue() -> void:
-	if is_instance_valid(delivery_cutscene):
-		delivery_cutscene.close()
-	if level_index + 1 < Levels.count():
-		# Next level: its order cutscene first, then main loads the level.
-		GameState.level_index = level_index + 1
-		get_tree().change_scene_to_file(ORDER_CUTSCENE)
-	elif ResourceLoader.exists(TITLE_SCENE):
-		get_tree().change_scene_to_file(TITLE_SCENE)
+	if current_level.has_signal("time_penalty"):
+		current_level.time_penalty.connect(_on_time_penalty)
+	if current_level.has_signal("phase_three_complete"):
+		current_level.phase_three_complete.connect(_on_phase_three_complete)
 
 
 func _on_ingredient_progress(type: String, have: int, _total: int) -> void:
@@ -145,6 +138,7 @@ func _on_timed_out() -> void:
 func _on_phase_one_complete(final_xp: int) -> void:
 	GameState.record_stars(1, hud.stop_timer())
 	carried_xp = final_xp
+	current_recipe = current_level.recipe
 	var next: String = current_level.next_phase_scene
 	if next != "" and ResourceLoader.exists(next):
 		# Deferred: we're inside a collision callback, so swap scenes after it.
@@ -152,3 +146,39 @@ func _on_phase_one_complete(final_xp: int) -> void:
 	else:
 		# No Phase 2-3 map yet: just show the result for a few seconds.
 		popup.open("Phase 1 complete!\nXP: %d   Stars: %d\n\nPhase 2 coming soon..." % [final_xp, GameState.phase_stars[1]], [], false, 5.0)
+
+
+## The chef left the kitchen with the dish: back to this level's map, in Phase 3 mode.
+func _on_phase_two_complete(recipe: Recipe) -> void:
+	GameState.record_stars(2, hud.stop_timer())
+	current_recipe = recipe
+	_show_scene.call_deferred(Levels.info(level_index).level_scene, true)
+
+
+## A cat hit the chef in Phase 3: take seconds off the HUD clock (stars can drop too).
+func _on_time_penalty(seconds: float) -> void:
+	hud.phase_timer.advance(seconds)
+
+
+## The dish was delivered: record Phase 3's stars, play the delivery cutscene
+## (monster reaction), then show the tally of all 3 phases on top of it.
+func _on_phase_three_complete(final_xp: int) -> void:
+	GameState.record_stars(3, hud.stop_timer())
+	carried_xp = final_xp
+	# The cutscene picks this level's monsters and dish from its LevelInfo by itself.
+	delivery_cutscene = preload("res://scenes/delivery_cutscene.tscn").instantiate()
+	add_child(delivery_cutscene)
+	await delivery_cutscene.finished
+	# The cutscene stays up behind the tally as its background.
+	tally.show_tally(final_xp)
+
+
+func _on_tally_continue() -> void:
+	if is_instance_valid(delivery_cutscene):
+		delivery_cutscene.close()
+	if level_index + 1 < Levels.count():
+		# Next level: its order cutscene first, then main loads the level.
+		GameState.level_index = level_index + 1
+		get_tree().change_scene_to_file(ORDER_CUTSCENE)
+	elif ResourceLoader.exists(TITLE_SCENE):
+		get_tree().change_scene_to_file(TITLE_SCENE)

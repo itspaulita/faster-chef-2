@@ -3,6 +3,7 @@ extends Node2D
 ## The chef's hands: holds ONE item at a time (a chopped ingredient, the pot, or the dish)
 ## and draws it above the chef's head. Stations never change the item directly; they ask
 ## this node, and it says no if the hands are already full.
+const POT_TEXTURE := preload("res://assets/images/kitchen/Pot_Medium4X.png")
 
 signal changed
 
@@ -12,6 +13,9 @@ const NODE_NAME := "ItemHolder"
 const CHEF_GROUP := &"chef"
 ## Where the item floats, in the chef's local space.
 const HEAD_OFFSET := Vector2(0, -78)
+## Where the pot/dish sits when held in the hands, for a chef facing RIGHT.
+## Facing left mirrors the x automatically.
+const HAND_OFFSET := Vector2(40, 25)
 const ITEM_SCALE := 0.6
 
 var kind := Kind.NONE
@@ -52,7 +56,21 @@ func is_empty() -> bool:
 func holds(what: Kind) -> bool:
 	return kind == what
 
-
+## True while the chef carries anything (chopped ingredient, pot or dish): it's held in
+## the hands and the chef uses the grab animations.
+func holds_in_hands() -> bool:
+	return not is_empty()
+	
+func _process(_delta: float) -> void:
+	if not holds_in_hands():
+		_sprite.position = HEAD_OFFSET
+		_sprite.flip_h = false
+		return
+	var chef_sprite := get_parent().get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	var facing_left := chef_sprite != null and chef_sprite.flip_h
+	_sprite.position = Vector2(-HAND_OFFSET.x if facing_left else HAND_OFFSET.x, HAND_OFFSET.y)
+	_sprite.flip_h = facing_left   # the pot's handle turns with the chef
+	
 ## Each hold_* returns false (and changes nothing) when the hands are full.
 func hold_ingredient(data: IngredientData) -> bool:
 	if not is_empty() or data == null:
@@ -65,7 +83,7 @@ func hold_ingredient(data: IngredientData) -> bool:
 func hold_pot() -> bool:
 	if not is_empty():
 		return false
-	_set_item(Kind.POT, null)
+	_set_item(Kind.POT, POT_TEXTURE)
 	return true
 
 
@@ -105,16 +123,3 @@ func _set_item(new_kind: Kind, texture: Texture2D) -> void:
 	_sprite.visible = texture != null
 	queue_redraw()
 	changed.emit()
-
-
-# The pot has no art yet, so it's a simple placeholder drawing.
-func _draw() -> void:
-	if kind != Kind.POT:
-		return
-	var c := HEAD_OFFSET
-	var dark := Color(0.23, 0.12, 0.08)
-	draw_rect(Rect2(c + Vector2(-26, -4), Vector2(8, 5)), dark)   # left handle
-	draw_rect(Rect2(c + Vector2(18, -4), Vector2(8, 5)), dark)    # right handle
-	draw_rect(Rect2(c + Vector2(-20, -10), Vector2(40, 22)), dark)
-	draw_rect(Rect2(c + Vector2(-17, -7), Vector2(34, 16)), Color(0.55, 0.57, 0.6))
-	draw_rect(Rect2(c + Vector2(-17, -7), Vector2(34, 4)), Color(0.75, 0.77, 0.8))

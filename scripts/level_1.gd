@@ -24,6 +24,7 @@ const BASE_XP := 1
 const BONUS_XP := 3
 const FALL_PENALTY_XP := 1
 const FIRE_PENALTY_XP := 1
+const CAT_TIME_PENALTY := 3   # seconds a cat costs in Phase 3
 ## After this percent of the level's pieces are collected, each extra piece gives BONUS_XP.
 const BONUS_PERCENT := 80
 
@@ -44,6 +45,21 @@ var xp := 0
 # respawn character
 @onready var player: CharacterBody2D = $"Player 1"
 
+# ---- Phase 3: run back to the start with the dish ----
+## A cat hit the chef in Phase 3: main.gd takes these seconds off the HUD clock.
+signal time_penalty(seconds: float)
+signal phase_three_complete(final_xp: int)
+
+# main.gd sets these BEFORE the level is added, so _ready() knows which phase it is.
+var is_phase_three := false
+var start_xp := 0
+## The dish this level cooks in the shared kitchen (and carries back in Phase 3).
+@export var recipe: Recipe
+var delivered := false
+
+@onready var phase3_start: Marker2D = get_node_or_null("Phase3Start")
+@onready var delivery_zone: Area2D = get_node_or_null("DeliveryZone")
+
 ## How far below the bottom of the map the chef falls before respawning.
 const FALL_MARGIN := 200.0
 var respawn_point := Vector2.ZERO
@@ -51,11 +67,14 @@ var respawn_point := Vector2.ZERO
 
 func _ready() -> void:
 	_fit_camera_to_map()
-	_setup_ingredients()
 	_setup_cats()
-	_setup_checkpoints()
 	_setup_fire_pits()
-	exit_zone.body_entered.connect(_on_exit_zone_entered)
+	if is_phase_three:
+		_start_phase_three()
+	else:
+		_setup_ingredients()
+		exit_zone.body_entered.connect(_on_exit_zone_entered)
+	_setup_checkpoints()
 
 func _fit_camera_to_map() -> void:
 	var used := terrain.get_used_rect()
@@ -120,6 +139,11 @@ func _on_fire_burned() -> void:
 	message.emit("Ouch, hot! -%d XP" % FIRE_PENALTY_XP)
 	
 func _on_cat_hit_chef(cat_name: String) -> void:
+	if is_phase_three:
+		# Phase 3: nothing to steal, so the cat costs time on the HUD clock instead.
+		time_penalty.emit(CAT_TIME_PENALTY)
+		message.emit("%s slowed you down! -%d s" % [cat_name, CAT_TIME_PENALTY])
+		return
 	var type := _most_collected_type()
 	if type == "":
 		return  # Nothing collected yet, nothing to steal.
@@ -181,15 +205,28 @@ func _on_exit_zone_entered(body: Node2D) -> void:
 	phase_one_complete.emit(xp)
 	
 func _setup_checkpoints() -> void:
-	respawn_point = player.global_position          # no flag reached yet = start of the level
-	for flag in get_tree().get_nodes_in_group("checkpoint"):
-		flag.reached.connect(_on_checkpoint_reached)
+	respawn_point = player.global_position     # Phase 1: the start. Phase 3: Phase3Start.
+	var used := "CheckpointsPhase3" if is_phase_three else "Checkpoints"
+	var unused := "Checkpoints" if is_phase_three else "CheckpointsPhase3"
 
+	var unused_flags := get_node_or_null(unused)
+	if unused_flags:
+		unused_flags.queue_free()               # the other phase's flags disappear
+
+	var used_flags := get_node_or_null(used)
+	if used_flags:
+		for flag in used_flags.get_children():
+			if flag.has_signal("reached"):
+				flag.reached.connect(_on_checkpoint_reached)
 
 func _on_checkpoint_reached(spawn_position: Vector2) -> void:
+	# Only move forward: right in Phase 1, left in Phase 3.
+	var is_forward := spawn_position.x < respawn_point.x if is_phase_three \
+			else spawn_position.x > respawn_point.x
+	if not is_forward:
+		return
 	respawn_point = spawn_position
-	message.emit("Checkpoint!")                     # shows in Paula's notifications
-
+	message.emit("Checkpoint!")
 
 func _physics_process(_delta: float) -> void:
 	if player.global_position.y > camera.limit_bottom + FALL_MARGIN:
@@ -202,3 +239,22 @@ func _respawn_player() -> void:
 	camera.reset_smoothing()                        # jump the camera there, don't glide
 	_add_xp(-FALL_PENALTY_XP)
 	message.emit("Oops! -%d XP" % FALL_PENALTY_XP)
+	
+func _start_phase_three() -> void:
+	ingredients.queue_free()                     # nothing to collect on the way back
+	exit_wall.enabled = false                    # the wall stays open
+	player.global_position = phase3_start.global_position
+	player.sprite.flip_h = true                  # face left
+	camera.reset_smoothing()
+	if recipe:
+		ItemHolder.get_or_create(player).hold_dish(recipe)   # dish floats above the chef
+	xp = start_xp                                # continue from the Phase 1 XP
+	xp_changed.emit(xp)
+	delivery_zone.body_entered.connect(_on_delivery_zone_entered)
+
+
+func _on_delivery_zone_entered(body: Node2D) -> void:
+	if delivered or body != player:
+		return
+	delivered = true
+	phase_three_complete.emit(xp)

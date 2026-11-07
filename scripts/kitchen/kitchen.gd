@@ -18,7 +18,7 @@ signal phase_two_complete(recipe: Recipe)
 @onready var board: ChoppingBoard = $Stations/ChoppingBoard
 @onready var pot: Pot = $Stations/Pot
 @onready var plating: PlatingStation = $Stations/PlatingStation
-
+@onready var exit_zone: Area2D = $ExitZone
 
 func _ready() -> void:
 	camera.limit_left = 0
@@ -31,7 +31,8 @@ func _ready() -> void:
 	for station in $Stations.get_children():
 		if station is Station:
 			station.message.connect(message.emit)
-	plating.dish_picked_up.connect(phase_two_complete.emit)
+	plating.dish_picked_up.connect(_on_dish_picked_up)
+	exit_zone.body_entered.connect(_on_exit_left_entered)
 	# Run on its own (F6) there's no main.gd to show the toasts, so show them here.
 	if get_tree().current_scene == self:
 		var toasts: Notifications = load("res://scenes/notifications.tscn").instantiate()
@@ -43,6 +44,17 @@ func _ready() -> void:
 		phase_two_complete.connect(func(r: Recipe) -> void:
 			popup.open("%s is ready!\nDelivering..." % r.dish_name, [], false, 3.0))
 
+func _on_dish_picked_up(_dish: Recipe) -> void:
+	message.emit("Dish ready! Run it back to the monster ←")
+
+
+func _on_exit_left_entered(body: Node2D) -> void:
+	if body != chef:
+		return
+	if not holder.holds(ItemHolder.Kind.DISH):
+		message.emit("Grab the dish first!")
+		return
+	phase_two_complete.emit(recipe)   # main.gd takes it from here: Phase 3
 
 ## Debug shortcuts (editor/debug builds only) to try the held-item system before the
 ## stations can hand items over: 1-3 give each recipe ingredient, 4 the pot, 5 the dish,
@@ -50,15 +62,3 @@ func _ready() -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not OS.is_debug_build() or not event is InputEventKey or not event.pressed or event.echo:
 		return
-	match event.keycode:
-		KEY_0:
-			holder.drop()
-		KEY_1, KEY_2, KEY_3:
-			holder.drop()
-			holder.hold_ingredient(recipe.ingredient_at(event.keycode - KEY_1))
-		KEY_4:
-			holder.drop()
-			holder.hold_pot()
-		KEY_5:
-			holder.drop()
-			holder.hold_dish(recipe)

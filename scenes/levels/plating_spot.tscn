@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bhaiycxldj7s8"]
+
+[ext_resource type="Texture2D" uid="uid://dnadkc8iu0jr5" path="res://assets/images/kitchen/Cabinet_One_Floor_Drawers4X.png" id="1_53tnk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rqd3"]
+atlas = ExtResource("1_53tnk")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejf1h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2rqd3")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yhv81"]
+size = Vector2(80, 78)
+
+[node name="plating_spot" type="Area2D" unique_id=1903818716]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=712058443]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_ejf1h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=114041515]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_yhv81")
