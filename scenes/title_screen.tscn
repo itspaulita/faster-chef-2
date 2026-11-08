@@ -9,6 +9,18 @@
 [ext_resource type="Texture2D" uid="uid://dmy73jutvpil1" path="res://assets/images/player/mavis papaya.png" id="8_mavis"]
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_mykxm"]
 [ext_resource type="PackedScene" path="res://scenes/how_to_play.tscn" id="10_how"]
+[ext_resource type="Texture2D" uid="uid://dh3xfwx3oj0dr" path="res://assets/images/decorations/tile_0014.png" id="10_ib7db"]
+[ext_resource type="Script" uid="uid://blg33ap77bdjj" path="res://scripts/wiggle.gd" id="11_frs5l"]
+[ext_resource type="Texture2D" uid="uid://xw6ehh1yh6iw" path="res://assets/images/decorations/tile_0015.png" id="12_mynnq"]
+[ext_resource type="Texture2D" uid="uid://bbprw4wh3wan8" path="res://assets/images/decorations/tile_0103.png" id="13_p07av"]
+[ext_resource type="Texture2D" uid="uid://ccggarp2lsrvb" path="res://assets/images/decorations/tile_0104.png" id="14_khjys"]
+[ext_resource type="Texture2D" uid="uid://bh7ls8s5a8x82" path="res://assets/images/decorations/tile_0093.png" id="15_174rq"]
+[ext_resource type="Texture2D" uid="uid://ctjs6tju21e61" path="res://assets/images/decorations/tile_0094.png" id="16_lrxh4"]
+[ext_resource type="Texture2D" uid="uid://dwe42gd14vbup" path="res://assets/images/decorations/tile_0095.png" id="17_neciy"]
+[ext_resource type="Texture2D" uid="uid://bbr8vsjtyjiq5" path="res://assets/images/decorations/tile_0029.png" id="18_neciy"]
+[ext_resource type="Texture2D" uid="uid://b40jojs4or46l" path="res://assets/images/decorations/tile_0030.png" id="19_w03br"]
+[ext_resource type="Texture2D" uid="uid://dvs067qfcei30" path="res://assets/images/decorations/tile_0031.png" id="20_jr68i"]
+[ext_resource type="Texture2D" uid="uid://c6l5rsa0ywt7" path="res://assets/images/decorations/tile_0044.png" id="21_b344i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
 bg_color = Color(0.91, 0.6, 0.17, 1)
@@ -165,3 +177,214 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "HOW TO PLAY"
 
 [node name="HowToPlay" parent="." unique_id=837731721 instance=ExtResource("10_how")]
+visible = false
+
+[node name="Decorations" type="Node2D" parent="." unique_id=76849655]
+
+[node name="DonutShake" type="Sprite2D" parent="Decorations" unique_id=1677523721]
+texture_filter = 1
+position = Vector2(37.999992, 277)
+scale = Vector2(10.23148, 10.23148)
+texture = ExtResource("10_ib7db")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="DonutShake4" type="Sprite2D" parent="Decorations" unique_id=1264745853]
+texture_filter = 1
+position = Vector2(1877, 93)
+scale = Vector2(14.337965, 14.337965)
+texture = ExtResource("10_ib7db")
+script = ExtResource("11_frs5l")
+speed = 0.3
+
+[node name="DonutShake3" type="Sprite2D" parent="Decorations" unique_id=1142596078]
+texture_filter = 1
+position = Vector2(1403, 1072)
+scale = Vector2(5.4768515, 5.4768515)
+texture = ExtResource("10_ib7db")
+script = ExtResource("11_frs5l")
+speed = 0.7
+
+[node name="DonutShake2" type="Sprite2D" parent="Decorations" unique_id=728209421]
+texture_filter = 1
+position = Vector2(1479, 537.00006)
+rotation = 0.7853982
+scale = Vector2(4.611474, 4.611474)
+texture = ExtResource("12_mynnq")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="DonutShake5" type="Sprite2D" parent="Decorations" unique_id=2049643882]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+texture_filter = 1
+position = Vector2(416, 306.00003)
+rotation = -0.35430184
+scale = Vector2(8.768513, 8.768513)
+texture = ExtResource("12_mynnq")
+script = ExtResource("11_frs5l")
+speed = 0.4
+
+[node name="SushiShake" type="Sprite2D" parent="Decorations" unique_id=1383108139]
+texture_filter = 1
+position = Vector2(1494.6241, 152.37582)
+rotation = -0.17627825
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("13_p07av")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="SushiShake3" type="Sprite2D" parent="Decorations" unique_id=953654883]
+texture_filter = 1
+position = Vector2(116.000015, 7.0000076)
+rotation = 0.35430184
+scale = Vector2(7.6750255, 7.6750255)
+texture = ExtResource("13_p07av")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="SushiShake2" type="Sprite2D" parent="Decorations" unique_id=381561673]
+texture_filter = 1
+position = Vector2(1745, 437.99997)
+rotation = 0.08901179
+scale = Vector2(8.359717, 8.359717)
+texture = ExtResource("14_khjys")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="SushiShake4" type="Sprite2D" parent="Decorations" unique_id=123568000]
+texture_filter = 1
+position = Vector2(467.00003, 637)
+rotation = -0.44156832
+scale = Vector2(3.027668, 3.027668)
+texture = ExtResource("14_khjys")
+script = ExtResource("11_frs5l")
+speed = 0.5
+
+[node name="Sandwich" type="Sprite2D" parent="Decorations" unique_id=460506953]
+texture_filter = 1
+position = Vector2(83, 958)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("15_174rq")
+script = ExtResource("11_frs5l")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="Sandwich2" type="Sprite2D" parent="Decorations" unique_id=422565022]
+texture_filter = 1
+position = Vector2(182.00002, 958)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("16_lrxh4")
+script = ExtResource("11_frs5l")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="Sandwich3" type="Sprite2D" parent="Decorations" unique_id=1770239589]
+texture_filter = 1
+position = Vector2(284.00003, 958.00006)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("17_neciy")
+script = ExtResource("11_frs5l")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog" type="Sprite2D" parent="Decorations" unique_id=672578428]
+texture_filter = 1
+position = Vector2(1770.4874, 982.1262)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("18_neciy")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog2" type="Sprite2D" parent="Decorations" unique_id=1235867088]
+texture_filter = 1
+position = Vector2(1778.4874, 868.1262)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("19_w03br")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog3" type="Sprite2D" parent="Decorations" unique_id=2071922118]
+texture_filter = 1
+position = Vector2(1786.4874, 754.1263)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("20_jr68i")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog4" type="Sprite2D" parent="Decorations" unique_id=38248543]
+texture_filter = 1
+position = Vector2(1763.4875, 1090.1263)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("21_b344i")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog5" type="Sprite2D" parent="Decorations" unique_id=263082167]
+texture_filter = 1
+position = Vector2(96.662735, 692.7218)
+rotation = -1.5934856
+scale = Vector2(4.082571, 4.082571)
+texture = ExtResource("18_neciy")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog6" type="Sprite2D" parent="Decorations" unique_id=712954176]
+texture_filter = 1
+position = Vector2(95.10657, 627.3946)
+rotation = -1.5934856
+scale = Vector2(4.067791, 4.067791)
+texture = ExtResource("19_w03br")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog7" type="Sprite2D" parent="Decorations" unique_id=1721607430]
+texture_filter = 1
+position = Vector2(93.46075, 554.46075)
+rotation = -1.5934856
+scale = Vector2(4.070993, 4.070993)
+texture = ExtResource("20_jr68i")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog8" type="Sprite2D" parent="Decorations" unique_id=1340350248]
+texture_filter = 1
+position = Vector2(98.368965, 765.1998)
+rotation = -1.5934856
+scale = Vector2(4.10697, 4.1305327)
+texture = ExtResource("21_b344i")
+script = ExtResource("11_frs5l")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
