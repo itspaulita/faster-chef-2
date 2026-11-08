@@ -146,9 +146,14 @@ func _on_timed_out() -> void:
 	if index == level_index:
 		load_level(level_index)
 
+## Stops the clock and records the phase's stars and the seconds left.
+func _end_phase(phase: int) -> void:
+	GameState.record_time_left(phase, hud.phase_timer.time_left)
+	GameState.record_stars(phase, hud.stop_timer())
 
 func _on_phase_one_complete(final_xp: int) -> void:
-	GameState.record_stars(1, hud.stop_timer())
+	_end_phase(1)
+	GameState.all_extras = current_level.collected_all_pieces()
 	carried_xp = final_xp
 	current_recipe = current_level.recipe
 	var next: String = current_level.next_phase_scene
@@ -162,7 +167,7 @@ func _on_phase_one_complete(final_xp: int) -> void:
 
 ## The chef left the kitchen with the dish: back to this level's map, in Phase 3 mode.
 func _on_phase_two_complete(recipe: Recipe) -> void:
-	GameState.record_stars(2, hud.stop_timer())
+	_end_phase(2)
 	current_recipe = recipe
 	_show_scene.call_deferred(Levels.info(level_index).level_scene, true)
 
@@ -175,7 +180,7 @@ func _on_time_penalty(seconds: float) -> void:
 ## The dish was delivered: record Phase 3's stars, play the delivery cutscene
 ## (monster reaction), then show the tally of all 3 phases on top of it.
 func _on_phase_three_complete(final_xp: int) -> void:
-	GameState.record_stars(3, hud.stop_timer())
+	_end_phase(3)
 	GameState.record_level_result(level_index, final_xp)
 	carried_xp = final_xp
 	# The cutscene picks this level's monsters and dish from its LevelInfo by itself.

@@ -1,7 +1,49 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://v4fjqv0uuu14"]
 
-[ext_resource type="Script" path="res://scripts/score_tally.gd" id="1_how"]
-[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+[ext_resource type="Script" uid="uid://dep2wkngnmavx" path="res://scripts/score_tally.gd" id="1_how"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 40.0
+content_margin_right = 40.0
+bg_color = Color(0.97, 0.71, 0.28, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+content_margin_left = 40.0
+content_margin_right = 40.0
+bg_color = Color(0.91, 0.6, 0.17, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Theme" id="Theme_how"]
+default_font = ExtResource("2_font")
+default_font_size = 28
+Button/colors/font_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
+Button/colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
+Button/font_sizes/font_size = 36
+Button/styles/focus = SubResource("StyleBoxFlat_btn_hover")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
+Button/styles/normal = SubResource("StyleBoxFlat_btn")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn")
+Label/colors/font_color = Color(0.17, 0.09, 0.06, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
 content_margin_left = 48.0
@@ -19,53 +61,11 @@ corner_radius_top_right = 14
 corner_radius_bottom_right = 14
 corner_radius_bottom_left = 14
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
-bg_color = Color(0.91, 0.6, 0.17, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-content_margin_left = 40.0
-content_margin_right = 40.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
-bg_color = Color(0.97, 0.71, 0.28, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-content_margin_left = 40.0
-content_margin_right = 40.0
-
-[sub_resource type="Theme" id="Theme_how"]
-default_font = ExtResource("2_font")
-default_font_size = 28
-Label/colors/font_color = Color(0.17, 0.09, 0.06, 1)
-Button/colors/font_color = Color(0.17, 0.09, 0.06, 1)
-Button/colors/font_hover_color = Color(0.17, 0.09, 0.06, 1)
-Button/colors/font_pressed_color = Color(0.17, 0.09, 0.06, 1)
-Button/colors/font_focus_color = Color(0.17, 0.09, 0.06, 1)
-Button/font_sizes/font_size = 36
-Button/styles/normal = SubResource("StyleBoxFlat_btn")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn")
-Button/styles/focus = SubResource("StyleBoxFlat_btn_hover")
-
-[node name="ScoreTally" type="CanvasLayer"]
+[node name="ScoreTally" type="CanvasLayer" unique_id=1785056686]
 layer = 11
 script = ExtResource("1_how")
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=1384134238]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -73,7 +73,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 
-[node name="Center" type="CenterContainer" parent="Dim"]
+[node name="Center" type="CenterContainer" parent="Dim" unique_id=751905296]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -82,17 +82,17 @@ offset_left = 960.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Banner" type="PanelContainer" parent="Dim/Center"]
+[node name="Banner" type="PanelContainer" parent="Dim/Center" unique_id=1990619363]
 unique_name_in_owner = true
 layout_mode = 2
 theme = SubResource("Theme_how")
 theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
 
-[node name="V" type="VBoxContainer" parent="Dim/Center/Banner"]
+[node name="V" type="VBoxContainer" parent="Dim/Center/Banner" unique_id=8031285]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Dim/Center/Banner/V"]
+[node name="Title" type="Label" parent="Dim/Center/Banner/V" unique_id=712006942]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.91, 0.5, 0.1, 1)
 theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
@@ -101,35 +101,53 @@ theme_override_font_sizes/font_size = 60
 text = "ORDER DELIVERED!"
 horizontal_alignment = 1
 
-[node name="Body" type="HBoxContainer" parent="Dim/Center/Banner/V"]
+[node name="Body" type="HBoxContainer" parent="Dim/Center/Banner/V" unique_id=1732347940]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="Right" type="VBoxContainer" parent="Dim/Center/Banner/V/Body"]
+[node name="Right" type="VBoxContainer" parent="Dim/Center/Banner/V/Body" unique_id=1135552378]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 14
 
-[node name="PhaseRows" type="VBoxContainer" parent="Dim/Center/Banner/V/Body/Right"]
+[node name="PhaseRows" type="VBoxContainer" parent="Dim/Center/Banner/V/Body/Right" unique_id=890560619]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TotalLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right"]
+[node name="TotalLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right" unique_id=1544511425]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 32
 text = "0 STARS = x0"
+horizontal_alignment = 1
 
-[node name="ScoreLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right"]
+[node name="ExtrasLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right" unique_id=559239292]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 44
-text = "0 PTS x 0 = 0"
+theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 32
+text = "ALL EXTRA = x0"
+horizontal_alignment = 1
 
-[node name="ContinueButton" type="Button" parent="Dim/Center/Banner/V"]
+[node name="TimeLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right" unique_id=1424634967]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 32
+text = "TIME = x0"
+horizontal_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="Dim/Center/Banner/V/Body/Right" unique_id=1861712770]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "0 PTS x 0 = 0"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="Dim/Center/Banner/V" unique_id=1160762028]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

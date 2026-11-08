@@ -239,6 +239,13 @@ func _all_ingredients_at_minimum() -> bool:
 			return false
 	return true
 
+## True if the chef holds every piece of every ingredient (all the extras too).
+## Pieces a cat stole and the chef didn't get back are missing, so they don't count.
+func collected_all_pieces() -> bool:
+	for type in total_by_type:
+		if collected_by_type[type] < total_by_type[type]:
+			return false
+	return true
 
 func _on_exit_zone_entered(body: Node2D) -> void:
 	if not exit_open or not body is CharacterBody2D:

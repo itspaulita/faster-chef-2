@@ -19,6 +19,8 @@ const STAR_STEP := 0.3
 @onready var phase_rows: VBoxContainer = %PhaseRows
 @onready var total_label: Label = %TotalLabel
 @onready var score_label: Label = %ScoreLabel
+@onready var extras_label: Label = %ExtrasLabel
+@onready var time_label: Label = %TimeLabel
 @onready var continue_button: Button = %ContinueButton
 
 
@@ -34,6 +36,8 @@ func show_tally(xp: int) -> void:
 		child.queue_free()
 	total_label.modulate.a = 0.0
 	score_label.modulate.a = 0.0
+	extras_label.modulate.a = 0.0
+	time_label.modulate.a = 0.0
 	score_label.text = ""
 	continue_button.disabled = true
 
@@ -54,13 +58,23 @@ func show_tally(xp: int) -> void:
 	var score := GameState.final_score(xp)
 	total_label.text = "%d STARS  =  x%d%s" % [GameState.total_stars(), multiplier,
 			"  PERFECT!" if multiplier == GameState.PERFECT_MULTIPLIER else ""]
-	tween.tween_callback(func() -> void: total_label.modulate.a = 1.0)
-	tween.tween_interval(0.5)
+	extras_label.text = "ALL EXTRAS  =  x%d" % GameState.ALL_EXTRAS_MULTIPLIER \
+			if GameState.all_extras else "EXTRAS MISSED  =  x1"
+	var clocks: Array[String] = []
+	for phase in GameState.phase_time_left.keys():
+		var s := GameState.whole_seconds(phase)
+		clocks.append("%d:%02d" % [s / 60, s % 60])
+	time_label.text = "TIME  %s  =  x%.2f" % [" / ".join(clocks), GameState.time_multiplier()]
+
+	# Reveal the bonuses one by one, then count the score up.
+	for label in [total_label, extras_label, time_label]:
+		tween.tween_callback(func() -> void: label.modulate.a = 1.0)
+		tween.tween_interval(0.5)
 	tween.tween_callback(func() -> void:
 			Audio.sfx("score")
 			score_label.modulate.a = 1.0)
 	tween.tween_method(func(v: float) -> void:
-			score_label.text = "%d PTS x %d = %d" % [xp, multiplier, int(round(v))],
+			score_label.text = "%d PTS x %.2f = %d" % [xp, GameState.total_multiplier(), int(round(v))],
 			0.0, float(score), 0.8)
 	tween.tween_interval(0.3)
 	tween.tween_callback(func() -> void:
