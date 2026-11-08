@@ -215,7 +215,7 @@ func _play_unlock(i: int) -> void:
 ## so it stays clickable over the level popups.
 func _build_menu() -> void:
 	var layer := CanvasLayer.new()
-	layer.layer = 40   # above the popups, under the sound buttons (50)
+	layer.layer = 40   # above the popups
 	add_child(layer)
 
 	_menu_button = _button("MENU", 32)
@@ -349,32 +349,10 @@ func _waiting_text(info: LevelInfo) -> String:
 	return "%s and %s are waiting to order..." % [first, names[names.size() - 1]]
 
 
-## After the last level: each level's stars and points, one row at a time, then the total.
+## After the last level: the total of every level, and the way to the results screen.
 func _open_finished_popup() -> void:
 	var box := _new_popup("ALL LEVELS DONE!")
-	var rows := VBoxContainer.new()
-	rows.add_theme_constant_override("separation", 12)
-	box.add_child(rows)
-	var total := _label("TOTAL  %d PTS" % GameState.game_score(), 44, DONE_COLOR)
-	total.modulate.a = 0.0
-	box.add_child(total)
-
-	var tween := create_tween()
-	tween.tween_interval(0.3)
-	for level in Levels.count():
-		if not GameState.level_results.has(level):
-			continue
-		var row := _result_row(level, GameState.level_results[level])
-		row.modulate.a = 0.0
-		rows.add_child(row)
-		tween.tween_callback(func() -> void:
-			row.modulate.a = 1.0
-			Audio.sfx("star"))
-		tween.tween_interval(0.45)
-	tween.tween_callback(func() -> void:
-		total.modulate.a = 1.0
-		Audio.sfx("win"))
-
+	box.add_child(_label("TOTAL  %d PTS" % GameState.game_score(), 40, DONE_COLOR))
 	var close := _button("CLOSE")
 	close.pressed.connect(_close_popup)
 	var results := _button("RESULTS")
@@ -383,27 +361,6 @@ func _open_finished_popup() -> void:
 		get_tree().change_scene_to_file(GAME_OVER_SCENE))
 	box.add_child(_button_row([close, results]))
 	results.grab_focus()
-
-
-## "LEVEL 1   ★ 7/9   1260 PTS"
-func _result_row(level: int, result: Dictionary) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 18)
-	var name_label := _label("LEVEL %d" % (level + 1), 34, INK)
-	name_label.custom_minimum_size = Vector2(200, 0)
-	row.add_child(name_label)
-	var star := StarIcon.new(44)
-	star.set_earned(true, false)
-	row.add_child(star)
-	var stars_label := _label("%d/%d" % [result.stars, GameState.PHASE_COUNT * GameState.MAX_STARS], 34, INK)
-	stars_label.custom_minimum_size = Vector2(90, 0)
-	row.add_child(stars_label)
-	var points := _label("%d PTS" % result.score, 34, INK)
-	points.custom_minimum_size = Vector2(220, 0)
-	points.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	row.add_child(points)
-	return row
 
 
 func _start_level(i: int) -> void:
@@ -494,7 +451,7 @@ func _chef_view(id: String, size_px: float) -> Control:
 	chef.scale = Vector2.ONE * (size_px / (sheet.get_height() / 4.0))
 	holder.add_child(chef)
 	return holder
-	
+
 
 func _label(text: String, size_px: int, color: Color) -> Label:
 	var label := Label.new()
