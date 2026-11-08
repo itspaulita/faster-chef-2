@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LevelInfo" format=3 uid="uid://dehjq4ny8xitv"]
 
-[ext_resource type="Script" path="res://scripts/data/level_info.gd" id="1_info"]
-[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-pineapple2.png" id="2_m1"]
-[ext_resource type="Texture2D" path="res://assets/images/food/dish-burger.png" id="9_dish"]
-
+[ext_resource type="Script" uid="uid://bjqaqefh5pmsk" path="res://scripts/data/level_info.gd" id="1_info"]
+[ext_resource type="Texture2D" uid="uid://cxpfj2e5plt6r" path="res://assets/images/monsters/monster-pineapple2.png" id="2_m1"]
+[ext_resource type="Script" uid="uid://ca5bjuqovhuq3" path="res://scripts/data/phase_timing.gd" id="3_2gm7q"]
+[ext_resource type="Texture2D" uid="uid://j2moj13sytno" path="res://assets/images/food/dish-burger.png" id="9_dish"]
 [ext_resource type="Resource" path="res://resources/timing/level_2_phase_1.tres" id="10_t1"]
 [ext_resource type="Resource" path="res://resources/timing/level_2_phase_3.tres" id="11_t3"]
 
@@ -11,8 +11,9 @@
 script = ExtResource("1_info")
 level_scene = "res://scenes/levels/level_2.tscn"
 monsters = Array[Texture2D]([ExtResource("2_m1")])
+monster_names = PackedStringArray("JGPiNE")
 order_text = "JGPiNE ordered a Hamburger!"
 dish_icon = ExtResource("9_dish")
 ingredient_types = PackedStringArray("beef", "lettuce", "bun")
 ingredient_frames = Array[int]([4, 7, 8])
-phase_timings = Array[PhaseTiming]([ExtResource("10_t1"), null, ExtResource("11_t3")])
+phase_timings = Array[ExtResource("3_2gm7q")]([ExtResource("10_t1"), null, ExtResource("11_t3")])

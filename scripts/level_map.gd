@@ -12,6 +12,8 @@ const DONE_COLOR := Color(0.12, 0.45, 0.45)     # finished levels
 const OPEN_COLOR := Color(0.91, 0.6, 0.17)      # unlocked, not finished yet
 const LOCKED_COLOR := Color(0.6, 0.6, 0.62)
 const NODE_SIZE := 150.0
+const POPUP_SIZE := 800.0       # the popup is always this square
+const MONSTER_FRAMES := [0, 1, 2, 3]   # same idle loop as the order cutscene
 
 ## Centre of each level button on the 1920x1080 screen, in level order. Move them here.
 @export var node_positions: Array[Vector2] = [Vector2(420, 760), Vector2(960, 470), Vector2(1500, 760)]
@@ -161,13 +163,17 @@ func _play_unlock(i: int) -> void:
 func _open_popup(i: int) -> void:
 	var info := Levels.info(i)
 	var box := _new_popup("LEVEL %d" % (i + 1))
-	var pictures := HBoxContainer.new()
-	pictures.alignment = BoxContainer.ALIGNMENT_CENTER
-	pictures.add_theme_constant_override("separation", 40)
-	pictures.add_child(_picture(_monster_frame(info), 220))
-	pictures.add_child(_picture(info.dish_icon, 160))
-	box.add_child(pictures)
-	box.add_child(_label(info.order_text, 32, INK))
+	# The monster(s), animated like in the order cutscene. Two monsters are drawn a bit smaller.
+	var monsters := HBoxContainer.new()
+	monsters.alignment = BoxContainer.ALIGNMENT_CENTER
+	monsters.add_theme_constant_override("separation", 20)
+	var pair := info.monsters.size() > 1
+	for m in info.monsters.size():
+		monsters.add_child(_monster_view(info.monsters[m], 220.0 if pair else 280.0, m * 0.15))
+	box.add_child(monsters)
+	var waiting := _label(_waiting_text(info), 32, INK)
+	waiting.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(waiting)
 	if GameState.level_results.has(i):
 		var best: Dictionary = GameState.level_results[i]
 		box.add_child(_label("LAST: %d/9 STARS   %d PTS" % [best.stars, best.score], 28, DONE_COLOR))
@@ -179,6 +185,17 @@ func _open_popup(i: int) -> void:
 	start.pressed.connect(_start_level.bind(i))
 	box.add_child(_button_row([close, start]))
 	start.grab_focus()
+
+
+## "JGPiNE is waiting to order..." / "Mishapple and Tomate-o are waiting to order..."
+func _waiting_text(info: LevelInfo) -> String:
+	var names := info.monster_names
+	if names.is_empty():
+		return "A hungry monster is waiting to order..."
+	if names.size() == 1:
+		return "%s is waiting to order..." % names[0]
+	var first := ", ".join(names.slice(0, names.size() - 1))
+	return "%s and %s are waiting to order..." % [first, names[names.size() - 1]]
 
 
 func _open_finished_popup() -> void:
@@ -200,7 +217,8 @@ func _start_level(i: int) -> void:
 	get_tree().change_scene_to_file(ORDER_CUTSCENE)
 
 
-## Dims the map and shows a centred pixel panel with a title. Returns its content box.
+## Dims the map and shows the square pixel panel, fixed size, in the middle of the screen.
+## Returns its content box.
 func _new_popup(title: String) -> VBoxContainer:
 	_close_popup()
 	var dim := ColorRect.new()
@@ -208,18 +226,33 @@ func _new_popup(title: String) -> VBoxContainer:
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	_popup = dim
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	dim.add_child(center)
-	var panel := PanelContainer.new()
-	panel.add_theme_stylebox_override("panel", PixelUI.panel(Color(1, 0.97, 0.88), OUTLINE, 8, 20, 40))
-	center.add_child(panel)
+	# A plain Panel (not a PanelContainer), so the content can never resize or move it.
+	var panel := Panel.new()
+	panel.add_theme_stylebox_override("panel", PixelUI.panel(Color(1, 0.97, 0.88), OUTLINE, 8, 20, 0))
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -POPUP_SIZE / 2.0
+	panel.offset_top = -POPUP_SIZE / 2.0
+	panel.offset_right = POPUP_SIZE / 2.0
+	panel.offset_bottom = POPUP_SIZE / 2.0
+	panel.pivot_offset = Vector2(POPUP_SIZE, POPUP_SIZE) / 2.0
+	dim.add_child(panel)
+	# The content fills the panel, minus a margin.
 	var box := VBoxContainer.new()
+	box.set_anchors_preset(Control.PRESET_FULL_RECT)
+	box.offset_left = 48
+	box.offset_top = 40
+	box.offset_right = -48
+	box.offset_bottom = -40
 	box.add_theme_constant_override("separation", 20)
 	panel.add_child(box)
 	box.add_child(_label(title, 64, INK))
+	# Fade in, with a small pop.
 	dim.modulate.a = 0.0
-	create_tween().tween_property(dim, "modulate:a", 1.0, 0.2)
+	panel.scale = Vector2(0.9, 0.9)
+	var tween := create_tween().set_parallel()
+	tween.tween_property(dim, "modulate:a", 1.0, 0.2)
+	tween.tween_property(panel, "scale", Vector2.ONE, 0.25) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	return box
 
 
@@ -231,24 +264,24 @@ func _close_popup() -> void:
 
 # ---- Small helpers --------------------------------------------------------------------
 
-## The first frame of the level's first monster (monster sheets are 2x2 frames).
-func _monster_frame(info: LevelInfo) -> Texture2D:
-	if info.monsters.is_empty():
-		return null
-	var atlas := AtlasTexture.new()
-	atlas.atlas = info.monsters[0]
-	atlas.region = Rect2(Vector2.ZERO, info.monsters[0].get_size() / 2.0)
-	return atlas
-
-
-func _picture(texture: Texture2D, size_px: float) -> TextureRect:
-	var rect := TextureRect.new()
-	rect.texture = texture
-	rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	rect.custom_minimum_size = Vector2(size_px, size_px)
-	return rect
+## An animated monster (the same IdleChef loop as the order cutscene), sized to `size_px`.
+## Sprites can't sit in containers, so it's wrapped in a Control of that size.
+func _monster_view(texture: Texture2D, size_px: float, delay: float) -> Control:
+	var holder := Control.new()
+	holder.custom_minimum_size = Vector2(size_px, size_px)
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sprite := IdleChef.new()
+	sprite.texture = texture
+	sprite.hframes = 2
+	sprite.vframes = 2
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sprite.idle_frames = PackedInt32Array(MONSTER_FRAMES)
+	sprite.frame_time = 0.3
+	sprite.start_delay = delay   # two monsters don't move in sync
+	sprite.position = Vector2(size_px, size_px) / 2.0
+	sprite.scale = Vector2.ONE * (size_px / (texture.get_width() / 2.0))
+	holder.add_child(sprite)
+	return holder
 
 
 func _label(text: String, size_px: int, color: Color) -> Label:
@@ -287,6 +320,7 @@ func _button(text: String) -> Button:
 func _button_row(buttons: Array) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_END
 	row.add_theme_constant_override("separation", 30)
 	for b in buttons:
 		row.add_child(b)

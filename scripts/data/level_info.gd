@@ -7,6 +7,9 @@ extends Resource
 @export_file("*.tscn") var level_scene := ""
 ## One monster, or two (the first one is on the left in the order cutscene).
 @export var monsters: Array[Texture2D] = []
+## The monsters' names, in the same order as `monsters` (the level map popup says
+## "X is waiting to order..." / "X and Y are waiting to order...").
+@export var monster_names := PackedStringArray()
 ## The sentence in the order banner, e.g. "JGPiNE ordered a Hamburger!".
 @export var order_text := ""
 ## The dish picture in the order bubble (60x60).
