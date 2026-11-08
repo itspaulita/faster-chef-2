@@ -67,7 +67,8 @@ func _show_scene(path: String, phase_three := false) -> void:
 		current_level.recipe = current_recipe   # the kitchen cooks this level's dish
 	if phase_three:
 		current_level.is_phase_three = true
-		current_level.start_xp = carried_xp
+	if "start_xp" in current_level:
+		current_level.start_xp = carried_xp   # the kitchen and Phase 3 continue the count
 	add_child(current_level)
 	hud.set_points(carried_xp, false)
 	if not phase_three:
@@ -169,6 +170,7 @@ func _on_phase_one_complete(final_xp: int) -> void:
 ## The chef left the kitchen with the dish: back to this level's map, in Phase 3 mode.
 func _on_phase_two_complete(recipe: Recipe) -> void:
 	_end_phase(2)
+	carried_xp = current_level.xp   # Phase 1 + the 7 kitchen points
 	current_recipe = recipe
 	_show_scene.call_deferred(Levels.info(level_index).level_scene, true)
 
@@ -205,4 +207,9 @@ func _on_tally_continue() -> void:
 			GameState.just_unlocked = next
 	else:
 		GameState.game_complete = true
+		# Chefs this level unlocks (only the first time it's finished).
+	for chef in ChefStats.unlocked_by(level_index):
+		if chef not in GameState.unlocked_chefs:
+			GameState.unlocked_chefs.append(chef)
+			GameState.new_chefs.append(chef)
 	get_tree().change_scene_to_file(LEVEL_MAP)

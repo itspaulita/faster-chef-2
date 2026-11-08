@@ -3,6 +3,8 @@ extends Control
 const NEXT_SCENE := "res://scenes/level_map.tscn"
 const OUTLINE_SHADER := preload("res://shaders/outline.gdshader")
 const DIMMED := Color(0.6, 0.6, 0.6)
+## Locked chefs are dark silhouettes.
+const LOCKED_TINT := Color(0.12, 0.1, 0.16)
 ## The stats box sits above the chef, with its bottom edge at this y.
 const POPUP_BOTTOM := 690.0
 
@@ -29,6 +31,12 @@ func _ready() -> void:
 	nickname_edit.text_changed.connect(func(_text: String) -> void: prompt_label.text = DEFAULT_PROMPT)
 	nickname_edit.text_submitted.connect(_on_nickname_submitted)
 	add_child(SoundToggles.new())
+	_mark_locked_chefs()
+	# Start on the chef from last time (when switching from the map), or the first open one.
+	var start := get_node_or_null("Chefs/" + GameState.selected_chef_name) as Sprite2D
+	if start == null or _is_locked(start):
+		start = $Chefs/PrincessDish
+	_select(start)
 	
 
 ## Enter confirms the name and picks the first chef (if none is picked yet), so the rest can be
@@ -47,11 +55,11 @@ func _on_nickname_submitted(text: String) -> void:
 
 func _move_selection(step: int) -> void:
 	var index := chefs.find(_selected)
-	if index < 0:
-		index = 0 if step > 0 else chefs.size() - 1
-	else:
+	for i in chefs.size():
 		index = wrapi(index + step, 0, chefs.size())
-	_select(chefs[index])
+		if not _is_locked(chefs[index]):
+			_select(chefs[index])
+			return
 
 
 ## Returns true if the key was used.
@@ -89,10 +97,16 @@ func _input(event: InputEvent) -> void:
 
 
 func _select(chef: Sprite2D) -> void:
+	if _is_locked(chef):
+		Audio.sfx("wrong")
+		prompt_label.text = "Finish Level %d to unlock %s!" % [ChefStats.unlock_level(chef.name), ChefStats.get_stats(chef.name).name]
+		_flash(prompt_label)
+		return
+	prompt_label.text = DEFAULT_PROMPT
 	_selected = chef
 	for other: Sprite2D in chefs:
 		other.material = null
-		other.modulate = DIMMED
+		other.modulate = LOCKED_TINT if _is_locked(other) else DIMMED
 	chef.modulate = Color.WHITE
 	chef.material = ShaderMaterial.new()
 	chef.material.shader = OUTLINE_SHADER
@@ -135,8 +149,11 @@ func _on_play_pressed() -> void:
 		_flash(prompt_label)
 		return
 	GameState.nickname = nickname_edit.text.strip_edges()
-	GameState.level_index = 0   # a new game starts at level 1
-	GameState.reset_game()
+	if GameState.changing_chef:
+		GameState.changing_chef = false   # switching chef from the map: keep the progress
+	else:
+		GameState.level_index = 0   # a new game starts at level 1
+		GameState.reset_game()
 	GameState.selected_chef_name = _selected.name
 	GameState.selected_chef_texture = _selected.texture
 	if ResourceLoader.exists(NEXT_SCENE):
@@ -149,3 +166,26 @@ func _on_play_pressed() -> void:
 func _flash(control: Control) -> void:
 	control.modulate = Color(1.0, 0.3, 0.3)
 	create_tween().tween_property(control, "modulate", Color.WHITE, 0.4)
+
+func _is_locked(chef: Sprite2D) -> bool:
+	return not GameState.unlocked_chefs.has(String(chef.name))
+
+
+## Dark silhouette + "LOCKED / CLEAR LEVEL n" over each chef that isn't unlocked yet.
+func _mark_locked_chefs() -> void:
+	for chef: Sprite2D in chefs:
+		if not _is_locked(chef):
+			continue
+		chef.modulate = LOCKED_TINT
+		var label := Label.new()
+		label.text = "LOCKED\nCLEAR LEVEL %d" % ChefStats.unlock_level(chef.name)
+		label.add_theme_font_override("font", prompt_label.get_theme_font("font"))
+		label.add_theme_font_size_override("font_size", 26)
+		label.add_theme_color_override("font_color", Color(1, 0.97, 0.88))
+		label.add_theme_color_override("font_outline_color", Color(0.23, 0.12, 0.08))
+		label.add_theme_constant_override("outline_size", 10)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.size = Vector2(280, 80)
+		label.position = chef.position - label.size / 2.0   # over the chef's body
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(label)

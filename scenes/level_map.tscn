@@ -2,6 +2,20 @@
 
 [ext_resource type="Script" uid="uid://dyj3rx4ifi7qn" path="res://scripts/level_map.gd" id="1_4jybi"]
 [ext_resource type="Texture2D" uid="uid://cao23likhi5q0" path="res://assets/images/bg/Background 1920x1080.png" id="2_4jybi"]
+[ext_resource type="Texture2D" uid="uid://dh3xfwx3oj0dr" path="res://assets/images/decorations/tile_0014.png" id="3_st3e4"]
+[ext_resource type="Script" uid="uid://blg33ap77bdjj" path="res://scripts/wiggle.gd" id="4_nrc3n"]
+[ext_resource type="Texture2D" uid="uid://xw6ehh1yh6iw" path="res://assets/images/decorations/tile_0015.png" id="5_tn44n"]
+[ext_resource type="Texture2D" uid="uid://w8071ertksa1" path="res://assets/images/decorations/tile_0106.png" id="6_nrc3n"]
+[ext_resource type="Texture2D" uid="uid://bbprw4wh3wan8" path="res://assets/images/decorations/tile_0103.png" id="6_xb237"]
+[ext_resource type="Texture2D" uid="uid://ccggarp2lsrvb" path="res://assets/images/decorations/tile_0104.png" id="7_auith"]
+[ext_resource type="Texture2D" uid="uid://bh7ls8s5a8x82" path="res://assets/images/decorations/tile_0093.png" id="8_e0uae"]
+[ext_resource type="Texture2D" uid="uid://ctjs6tju21e61" path="res://assets/images/decorations/tile_0094.png" id="9_x8qqs"]
+[ext_resource type="Texture2D" uid="uid://dwe42gd14vbup" path="res://assets/images/decorations/tile_0095.png" id="10_jh031"]
+[ext_resource type="Texture2D" uid="uid://bbr8vsjtyjiq5" path="res://assets/images/decorations/tile_0029.png" id="11_5p3qx"]
+[ext_resource type="Texture2D" uid="uid://b40jojs4or46l" path="res://assets/images/decorations/tile_0030.png" id="12_v153b"]
+[ext_resource type="Texture2D" uid="uid://dvs067qfcei30" path="res://assets/images/decorations/tile_0031.png" id="13_xv1ul"]
+[ext_resource type="Texture2D" uid="uid://c6l5rsa0ywt7" path="res://assets/images/decorations/tile_0044.png" id="14_qluw1"]
+[ext_resource type="Texture2D" uid="uid://ck7vbl3eaqtjc" path="res://assets/images/decorations/tile_0058.png" id="16_tn44n"]
 
 [node name="LevelMap" type="Control" unique_id=1737690280]
 layout_mode = 3
@@ -22,3 +36,259 @@ grow_vertical = 2
 texture = ExtResource("2_4jybi")
 expand_mode = 1
 stretch_mode = 6
+
+[node name="Decorations" type="Node2D" parent="." unique_id=1791339566]
+
+[node name="DonutShake" type="Sprite2D" parent="Decorations" unique_id=1644924276]
+texture_filter = 1
+position = Vector2(10, 482)
+scale = Vector2(10.23148, 10.23148)
+texture = ExtResource("3_st3e4")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="DonutShake4" type="Sprite2D" parent="Decorations" unique_id=1244680786]
+texture_filter = 1
+position = Vector2(1877, 93)
+scale = Vector2(14.337965, 14.337965)
+texture = ExtResource("3_st3e4")
+script = ExtResource("4_nrc3n")
+speed = 0.3
+
+[node name="DonutShake3" type="Sprite2D" parent="Decorations" unique_id=1155978206]
+texture_filter = 1
+position = Vector2(1403, 1072)
+scale = Vector2(5.4768515, 5.4768515)
+texture = ExtResource("3_st3e4")
+script = ExtResource("4_nrc3n")
+speed = 0.7
+
+[node name="DonutShake2" type="Sprite2D" parent="Decorations" unique_id=917139857]
+texture_filter = 1
+position = Vector2(1510, 805)
+rotation = 0.7853982
+scale = Vector2(4.611474, 4.611474)
+texture = ExtResource("5_tn44n")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="DonutShake5" type="Sprite2D" parent="Decorations" unique_id=730889172]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+texture_filter = 1
+position = Vector2(273, 41.99996)
+rotation = -0.35430184
+scale = Vector2(4.5368776, 4.5368776)
+texture = ExtResource("5_tn44n")
+script = ExtResource("4_nrc3n")
+speed = 0.4
+
+[node name="DonutShake6" type="Sprite2D" parent="Decorations" unique_id=338716597]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+texture_filter = 1
+position = Vector2(819, 1051.0001)
+rotation = 0.17627825
+scale = Vector2(8.768513, 8.768513)
+texture = ExtResource("6_nrc3n")
+script = ExtResource("4_nrc3n")
+motion = 3
+speed = 0.4
+
+[node name="DonutShake7" type="Sprite2D" parent="Decorations" unique_id=1177251425]
+texture_filter = 1
+position = Vector2(1024, 47)
+rotation = 2.830924
+scale = Vector2(8.768513, 8.768513)
+texture = ExtResource("6_nrc3n")
+script = ExtResource("4_nrc3n")
+motion = 3
+speed = 0.4
+
+[node name="SushiShake" type="Sprite2D" parent="Decorations" unique_id=2116250016]
+texture_filter = 1
+position = Vector2(97.00012, 127.000046)
+rotation = -0.17627825
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("6_xb237")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="SushiShake3" type="Sprite2D" parent="Decorations" unique_id=1877473327]
+texture_filter = 1
+position = Vector2(1494, 10.999996)
+rotation = 0.35430184
+scale = Vector2(7.6750255, 7.6750255)
+texture = ExtResource("6_xb237")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="SushiShake2" type="Sprite2D" parent="Decorations" unique_id=1599269340]
+modulate = Color(0.90359825, 0.90359825, 0.9035982, 1)
+texture_filter = 1
+position = Vector2(678.00006, 132.99998)
+rotation = 0.08901179
+scale = Vector2(8.359717, 8.359717)
+texture = ExtResource("7_auith")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="SushiShake4" type="Sprite2D" parent="Decorations" unique_id=1015374280]
+texture_filter = 1
+position = Vector2(247.00003, 994)
+rotation = -0.44156832
+scale = Vector2(3.027668, 3.027668)
+texture = ExtResource("7_auith")
+script = ExtResource("4_nrc3n")
+speed = 0.5
+
+[node name="Sandwich" type="Sprite2D" parent="Decorations" unique_id=565418809]
+texture_filter = 1
+position = Vector2(-30.624199, 826.3758)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("8_e0uae")
+script = ExtResource("4_nrc3n")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="Sandwich2" type="Sprite2D" parent="Decorations" unique_id=2042605008]
+texture_filter = 1
+position = Vector2(68.37582, 826.3758)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("9_x8qqs")
+script = ExtResource("4_nrc3n")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="Sandwich3" type="Sprite2D" parent="Decorations" unique_id=72452652]
+texture_filter = 1
+position = Vector2(170.37582, 826.37585)
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("10_jh031")
+script = ExtResource("4_nrc3n")
+motion = 3
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog" type="Sprite2D" parent="Decorations" unique_id=1576445402]
+texture_filter = 1
+position = Vector2(1844.052, 769.0521)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("11_5p3qx")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog2" type="Sprite2D" parent="Decorations" unique_id=985191952]
+texture_filter = 1
+position = Vector2(1852.052, 655.0521)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("12_v153b")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog3" type="Sprite2D" parent="Decorations" unique_id=1943492853]
+texture_filter = 1
+position = Vector2(1860.052, 541.0521)
+rotation = -1.5044738
+scale = Vector2(6.3750863, 6.3750863)
+texture = ExtResource("13_xv1ul")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog4" type="Sprite2D" parent="Decorations" unique_id=683627295]
+texture_filter = 1
+position = Vector2(1837.0521, 877.05225)
+rotation = -1.5044738
+scale = Vector2(6.375089, 6.375089)
+texture = ExtResource("14_qluw1")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog5" type="Sprite2D" parent="Decorations" unique_id=159989053]
+modulate = Color(0.8992584, 0.8992584, 0.8992584, 1)
+texture_filter = 1
+position = Vector2(484.66272, 1096.7218)
+rotation = -1.5934856
+scale = Vector2(4.082571, 4.082571)
+texture = ExtResource("11_5p3qx")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog6" type="Sprite2D" parent="Decorations" unique_id=1071044198]
+modulate = Color(0.8992584, 0.8992584, 0.8992584, 1)
+texture_filter = 1
+position = Vector2(483.10654, 1031.3945)
+rotation = -1.5934856
+scale = Vector2(4.067791, 4.067791)
+texture = ExtResource("12_v153b")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog7" type="Sprite2D" parent="Decorations" unique_id=204752563]
+modulate = Color(0.8992584, 0.8992584, 0.8992584, 1)
+texture_filter = 1
+position = Vector2(481.46075, 958.46075)
+rotation = -1.5934856
+scale = Vector2(4.070993, 4.070993)
+texture = ExtResource("13_xv1ul")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="corndog8" type="Sprite2D" parent="Decorations" unique_id=413841273]
+modulate = Color(0.8992584, 0.8992584, 0.8992584, 1)
+texture_filter = 1
+position = Vector2(486.36896, 1169.1998)
+rotation = -1.5934856
+scale = Vector2(4.10697, 4.1305327)
+texture = ExtResource("14_qluw1")
+script = ExtResource("4_nrc3n")
+motion = 2
+speed = 0.4
+random_start = false
+metadata/_edit_group_ = true
+
+[node name="Levels" type="Node2D" parent="." unique_id=989656830]
+
+[node name="Level 1" type="Sprite2D" parent="Levels" unique_id=769945377]
+texture_filter = 1
+position = Vector2(386.00003, 412)
+scale = Vector2(10.111111, 10.111111)
+texture = ExtResource("16_tn44n")
+
+[node name="Level 2" type="Sprite2D" parent="Levels" unique_id=1415763179]
+texture_filter = 1
+position = Vector2(963.00006, 676.00006)
+scale = Vector2(10.111111, 10.111111)
+texture = ExtResource("16_tn44n")
+
+[node name="Level 3" type="Sprite2D" parent="Levels" unique_id=658241835]
+texture_filter = 1
+position = Vector2(1497, 437)
+scale = Vector2(10.111111, 10.111111)
+texture = ExtResource("16_tn44n")
