@@ -49,6 +49,14 @@ static func reset_run() -> void:
 	phase_time_left = {}
 	all_extras = false
 
+# --- Chefs -----------------------------------------------------------------------------
+## Chefs the player may pick. Princess Dish is open from the start; the others unlock by
+## finishing levels (ChefStats "unlock_after"). Kept on a new game; a page reload resets it.
+static var unlocked_chefs: Array[String] = ["PrincessDish"]
+## Chefs the level just finished unlocked: the map announces them once, then clears this.
+static var new_chefs: Array[String] = []
+## True while the player is switching chef from the level map (Play keeps the progress).
+static var changing_chef := false
 
 ## A new game starts: forget the levels of the last one.
 static func reset_game() -> void:

@@ -205,4 +205,9 @@ func _on_tally_continue() -> void:
 			GameState.just_unlocked = next
 	else:
 		GameState.game_complete = true
+		# Chefs this level unlocks (only the first time it's finished).
+	for chef in ChefStats.unlocked_by(level_index):
+		if chef not in GameState.unlocked_chefs:
+			GameState.unlocked_chefs.append(chef)
+			GameState.new_chefs.append(chef)
 	get_tree().change_scene_to_file(LEVEL_MAP)

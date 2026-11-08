@@ -14,6 +14,8 @@ const LOCKED_COLOR := Color(0.6, 0.6, 0.62)
 const NODE_SIZE := 150.0
 const POPUP_SIZE := 800.0       # the popup is always this square
 const MONSTER_FRAMES := [0, 1, 2, 3]   # same idle loop as the order cutscene
+const CHOOSE_CHEF_SCENE := "res://scenes/choose_chef.tscn"
+
 
 ## Centre of each level button on the 1920x1080 screen, in level order. Move them here.
 @export var node_positions: Array[Vector2] = [Vector2(420, 760), Vector2(960, 470), Vector2(1500, 760)]
@@ -27,6 +29,7 @@ var _busy := false   # true while the unlock animation plays (clicks are ignored
 
 func _ready() -> void:
 	Audio.music("intro")
+	add_child(SoundToggles.new())
 	var newly := GameState.just_unlocked
 	GameState.just_unlocked = -1
 	# The path is filled up to the last unlocked level (or one before the one about to unlock).
@@ -35,11 +38,12 @@ func _ready() -> void:
 		_build_level_node(i, i > GameState.unlocked_level or i == newly)
 	if newly > 0:
 		await _play_unlock(newly)
+	if not GameState.new_chefs.is_empty():
+		await _show_new_chefs()
 	if GameState.game_complete:
 		_open_finished_popup()
 	else:
 		_open_popup(GameState.unlocked_level)
-	add_child(SoundToggles.new())
 
 
 # ---- Map ------------------------------------------------------------------------------
@@ -170,8 +174,9 @@ func _open_popup(i: int) -> void:
 	monsters.add_theme_constant_override("separation", 20)
 	var pair := info.monsters.size() > 1
 	for m in info.monsters.size():
-		monsters.add_child(_monster_view(info.monsters[m], 220.0 if pair else 280.0, m * 0.15))
+		monsters.add_child(_monster_view(info.monsters[m], 180.0 if pair else 220.0, m * 0.15))
 	box.add_child(monsters)
+	box.add_child(_chef_row())
 	var waiting := _label(_waiting_text(info), 32, INK)
 	waiting.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(waiting)
@@ -187,6 +192,49 @@ func _open_popup(i: int) -> void:
 	box.add_child(_button_row([close, start]))
 	start.grab_focus()
 
+## "[chef] Princess Dish  [CHANGE]": who's cooking, and a way to switch (once there's a choice).
+func _chef_row() -> HBoxContainer:
+	var id := GameState.selected_chef_name if ChefStats.DATA.has(GameState.selected_chef_name) else "PrincessDish"
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 16)
+	row.add_child(_chef_view(id, 72.0))
+	row.add_child(_label(ChefStats.get_stats(id).name, 24, INK))
+	var change := _button("CHANGE", 24)
+	change.visible = GameState.unlocked_chefs.size() > 1
+	change.pressed.connect(_change_chef)
+	row.add_child(change)
+	return row
+
+
+func _change_chef() -> void:
+	GameState.changing_chef = true
+	get_tree().change_scene_to_file(CHOOSE_CHEF_SCENE)
+
+
+## "NEW CHEF!" with the chef(s) the last level unlocked. Returns when the player presses OK.
+func _show_new_chefs() -> void:
+	var count := GameState.new_chefs.size()
+	var box := _new_popup("NEW CHEF!" if count == 1 else "NEW CHEFS!")
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 40)
+	for id in GameState.new_chefs:
+		var column := VBoxContainer.new()
+		column.add_child(_chef_view(id, 260.0 if count == 1 else 220.0))
+		column.add_child(_label(ChefStats.get_stats(id).name, 28, INK))
+		column.add_child(_label(ChefStats.get_stats(id).ability, 22, DONE_COLOR))
+		row.add_child(column)
+	box.add_child(row)
+	var note := _label("Pick them with CHANGE in the level popup.", 26, INK)
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(note)
+	var ok := _button("NICE!")
+	box.add_child(_button_row([ok]))
+	ok.grab_focus()
+	Audio.sfx("win")
+	GameState.new_chefs.clear()
+	await ok.pressed
 
 ## "JGPiNE is waiting to order..." / "Mishapple and Tomate-o are waiting to order..."
 func _waiting_text(info: LevelInfo) -> String:
@@ -284,6 +332,24 @@ func _monster_view(texture: Texture2D, size_px: float, delay: float) -> Control:
 	holder.add_child(sprite)
 	return holder
 
+## A chef idling (front-facing frames of its 8x4 sheet), `size_px` tall, in a Control.
+func _chef_view(id: String, size_px: float) -> Control:
+	var holder := Control.new()
+	holder.custom_minimum_size = Vector2(size_px, size_px)
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sheet: Texture2D = load(ChefStats.stat(id, "sheet", ""))
+	if sheet == null:
+		return holder
+	var chef := IdleChef.new()
+	chef.texture = sheet
+	chef.hframes = 8
+	chef.vframes = 4
+	chef.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	chef.position = Vector2(size_px, size_px) / 2.0
+	chef.scale = Vector2.ONE * (size_px / (sheet.get_height() / 4.0))
+	holder.add_child(chef)
+	return holder
+	
 
 func _label(text: String, size_px: int, color: Color) -> Label:
 	var label := Label.new()
@@ -297,11 +363,11 @@ func _label(text: String, size_px: int, color: Color) -> Label:
 
 
 ## Same orange button as the game over screen (PixelSkin gives it the pixel corners).
-func _button(text: String) -> Button:
+func _button(text: String, font_size := 36) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.add_theme_font_override("font", FONT)
-	button.add_theme_font_size_override("font_size", 36)
+	button.add_theme_font_size_override("font_size", font_size)
 	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
 		button.add_theme_color_override(state, INK)
 	for state in ["normal", "hover", "pressed", "focus"]:

@@ -1117,6 +1117,8 @@ texture_filter = 1
 tile_map_data = PackedByteArray("AAB9ABAAAQAPAAAAAAB9ABEAAQAPAAEAAAB9ABIAAQAPAAEAAAB9ABMAAQAPAAEAAAB9ABQAAQAPAAEAAAB9ABUAAQAPAAIAAAD//xAAAQAPAAAAAAD//xEAAQAPAAEAAAD//xIAAQAPAAEAAAD//xMAAQAPAAIAAAA=")
 tile_set = SubResource("TileSet_ejf1h")
 
+[node name="Decorations" type="Node2D" parent="." unique_id=1443544437]
+
 [node name="Checkpoints" type="Node2D" parent="." unique_id=471905261]
 
 [node name="checkpointFlag2" parent="Checkpoints" unique_id=1100763472 instance=ExtResource("5_dnkej")]
