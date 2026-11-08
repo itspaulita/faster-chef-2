@@ -129,6 +129,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "RESTART LEVEL"
 
+[node name="MapButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1567575459]
+unique_name_in_owner = true
+layout_mode = 2
+text = "BACK TO LEVEL MAP"
+
 [node name="LobbyButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1236772365]
 unique_name_in_owner = true
 layout_mode = 2

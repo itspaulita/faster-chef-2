@@ -1,10 +1,11 @@
 class_name PauseMenu
 extends CanvasLayer
-## Pause screen: Resume, Restart level, Back to lobby, Sound on/off, Quit.
+## Pause screen: Resume, Restart level, Back to level map, Back to lobby, Music / SFX on/off, Quit.
 ## Call open() (the HUD's pause button does). Esc toggles it too.
 
 const LOBBY_SCENE := "res://scenes/choose_chef.tscn"
 const TITLE_SCENE := "res://scenes/title_screen.tscn"
+const LEVEL_MAP_SCENE := "res://scenes/level_map.tscn"
 
 signal resumed
 ## Emitted just before the level is reloaded, in case something outside the scene needs resetting.
@@ -13,6 +14,7 @@ signal restart_requested
 @onready var banner: Control = $Dim/CenterContainer/Banner
 @onready var resume_button: Button = %ResumeButton
 @onready var restart_button: Button = %RestartButton
+@onready var map_button: Button = %MapButton
 @onready var lobby_button: Button = %LobbyButton
 @onready var music_button: Button = %MusicButton
 @onready var sfx_button: Button = %SfxButton
@@ -24,6 +26,7 @@ func _ready() -> void:
 	visible = false
 	resume_button.pressed.connect(close)
 	restart_button.pressed.connect(_restart_level)
+	map_button.pressed.connect(_go_to_level_map)
 	lobby_button.pressed.connect(_go_to_lobby)
 	music_button.pressed.connect(Audio.toggle_mute.bind(Audio.MUSIC_BUS))
 	sfx_button.pressed.connect(Audio.toggle_mute.bind(Audio.SFX_BUS))
@@ -70,6 +73,10 @@ func _restart_level() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 
+## Leaves the level without finishing it (nothing is saved or unlocked) and goes back to the map.
+func _go_to_level_map() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(LEVEL_MAP_SCENE)
 
 func _go_to_lobby() -> void:
 	get_tree().paused = false
