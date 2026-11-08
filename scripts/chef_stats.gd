@@ -16,11 +16,11 @@ const PLACEHOLDER := "TBD"
 const DATA := {
 	"PrincessDish": {
 		"name": "Princess Dish",
-		"ability": "50% faster",
-		"weakness": "Lowest jump",
+		"ability": "Normal",
+		"weakness": "Normal",
 		"scene": "res://scenes/player_1.tscn",
-		"speed": 1.5,
-		"jump": 0.9,
+		"speed": 1.0,
+		"jump": 1.0,
 	},
 	"LegendOfLasagna": {
 		"name": "Legend of Lasagna",
