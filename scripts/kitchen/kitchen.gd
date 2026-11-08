@@ -6,11 +6,20 @@ extends Node2D
 signal message(text: String)
 ## The chef picked up the plated dish: Phase 2 is over, Phase 3 (deliver) starts.
 signal phase_two_complete(recipe: Recipe)
+## The points changed (the HUD counter listens, like in Phase 1 and 3).
+signal xp_changed(total_xp: int)
+
+const CHOP_XP := 1    # an ingredient fully chopped (all 3 [E])
+const POT_XP := 1     # an ingredient put in the pot
+const PLATE_XP := 1   # the dish plated
 
 ## The dish this kitchen cooks. Swap the .tres per level.
 @export var recipe: Recipe = preload("res://resources/recipes/level_1.tres")
 ## Size of the room in local units (the root is scaled 3x, so 640x360 fills 1920x1080).
 @export var room_size := Vector2(640, 360)
+## Points from Phase 1 (main.gd sets this before the kitchen starts).
+var start_xp := 0
+var xp := 0
 
 @onready var camera: Camera2D = $"Player 1/Camera2D"
 @onready var chef: CharacterBody2D = $"Player 1"
@@ -35,6 +44,10 @@ func _ready() -> void:
 			# Every station message is a "can't do that" hint.
 			station.message.connect(func(_text: String) -> void: Audio.sfx("wrong"))
 	plating.dish_picked_up.connect(_on_dish_picked_up)
+	xp = start_xp
+	board.chopped.connect(func(_ingredient: IngredientData) -> void: _add_xp(CHOP_XP))
+	pot.ingredient_added.connect(func(_ingredient: IngredientData, _count: int) -> void: _add_xp(POT_XP))
+	plating.dish_plated.connect(func() -> void: _add_xp(PLATE_XP))
 	exit_zone.body_entered.connect(_on_exit_left_entered)
 	# Run on its own (F6) there's no main.gd to show the toasts, so show them here.
 	if get_tree().current_scene == self:
@@ -46,6 +59,11 @@ func _ready() -> void:
 		add_sibling.call_deferred(popup)
 		phase_two_complete.connect(func(r: Recipe) -> void:
 			popup.open("%s is ready!\nDelivering..." % r.dish_name, [], false, 3.0))
+
+func _add_xp(amount: int) -> void:
+	xp += amount
+	xp_changed.emit(xp)
+	
 
 ## Blink the outline of whatever the chef should do next: chop, cook, plate.
 func _process(_delta: float) -> void:
