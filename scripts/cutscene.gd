@@ -4,8 +4,8 @@ extends Control
 const NEXT_SCENE := "res://scenes/main.tscn" # Chi - change scene to main after cutscene
 const FALLBACK_SCENE := "res://scenes/title_screen.tscn"
 ## Sheet row 1 (side view): columns 6-7 walk right, columns 2-3 stand facing right.
-const CHEF_WALK_RIGHT := [14, 15]
-const CHEF_STAND_RIGHT := [10, 11]
+const CHEF_WALK_RIGHT := [10, 11]
+const CHEF_STAND_RIGHT := [8, 9]
 const MONSTER_FRAMES := [0, 1, 2, 3]
 ## Chi - Where the chef runs to before the level starts (off the right edge of 1920).
 const CHEF_EXIT_X := 2100.0
