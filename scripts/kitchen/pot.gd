@@ -111,13 +111,16 @@ func _try_add(ingredient: IngredientData) -> void:
 func _build_ui() -> void:
 	_count_label = Label.new()
 	_count_label.add_theme_font_override("font", FONT)
-	_count_label.add_theme_font_size_override("font_size", 14)
+	_count_label.add_theme_font_size_override("font_size", 42)
 	_count_label.add_theme_color_override("font_color", Color(1, 0.97, 0.88))
 	_count_label.add_theme_color_override("font_outline_color", Color(0.23, 0.12, 0.08))
-	_count_label.add_theme_constant_override("outline_size", 6)
+	_count_label.add_theme_constant_override("outline_size", 18)
 	_count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Built 3x big and shrunk 1/3 so the 3x-scaled kitchen doesn't blur it.
+	_count_label.scale = Vector2.ONE / 3.0
+	_count_label.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_count_label.position = Vector2(-60, -104)
-	_count_label.size = Vector2(120, 20)
+	_count_label.size = Vector2(360, 60)
 	_count_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_count_label)
 

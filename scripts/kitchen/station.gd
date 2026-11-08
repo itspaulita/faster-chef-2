@@ -88,7 +88,7 @@ func refresh_prompt() -> void:
 	_prompt.visible = text != ""
 	_prompt_label.text = text
 	_prompt.reset_size()
-	_prompt.position = prompt_offset - _prompt.size / 2.0
+	_prompt.position = prompt_offset - _prompt.size * _prompt.scale / 2.0
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -126,24 +126,29 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func _build_prompt() -> void:
+	# The kitchen is scaled up 3x, which blurs text drawn at its normal size. So the prompt is
+	# built 3x big (crisp, real-size letters) and shrunk by 1/3 to cancel the scaling.
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(1, 0.97, 0.88)
 	style.border_color = Color(0.23, 0.12, 0.08)
-	style.set_border_width_all(1)
-	style.set_corner_radius_all(3)
-	style.content_margin_left = 7
-	style.content_margin_right = 7
-	style.content_margin_top = 3
-	style.content_margin_bottom = 3
+	style.set_border_width_all(3)
+	style.set_corner_radius_all(9)
+	style.anti_aliasing = false
+	style.content_margin_left = 21
+	style.content_margin_right = 21
+	style.content_margin_top = 9
+	style.content_margin_bottom = 9
 
 	_prompt = PanelContainer.new()
 	_prompt.add_theme_stylebox_override("panel", style)
 	_prompt.z_index = 10
+	_prompt.scale = Vector2.ONE / 3.0
+	_prompt.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	_prompt_label = Label.new()
 	_prompt_label.add_theme_font_override("font", FONT)
-	_prompt_label.add_theme_font_size_override("font_size", 14)
+	_prompt_label.add_theme_font_size_override("font_size", 42)
 	_prompt_label.add_theme_color_override("font_color", Color(0.17, 0.09, 0.06))
 	_prompt_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_prompt.add_child(_prompt_label)

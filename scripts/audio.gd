@@ -86,6 +86,8 @@ const MUSIC_GAIN_DB := {
 	"level-2": -3.0,
 	"level-3": -9.0,
 }
+## Turns every sound effect down by this much (dB) on top of the per-file levelling.
+const SFX_MASTER_DB := -6.0
 ## Extra trim for sounds that repeat a lot or run for a long time, so they don't tire the ear.
 const SOUND_TRIM_DB := {
 	"walk": -8.0,
@@ -129,14 +131,14 @@ func sfx(sound: String, variant := -1) -> bool:
 	index = clampi(index, 0, files.size() - 1)
 	var voice := _free_voice()
 	voice.stream = _load(SFX_DIR + files[index] + ".wav")
-	voice.volume_db = FILE_GAIN_DB.get(files[index], 0.0) + SOUND_TRIM_DB.get(sound, 0.0)
+	voice.volume_db = FILE_GAIN_DB.get(files[index], 0.0) + SOUND_TRIM_DB.get(sound, 0.0) + SFX_MASTER_DB
 	voice.play()
 	return true
 
 
 ## The volume (dB) a node's own player should use for a sound (first variant).
 func gain_db(sound: String) -> float:
-	return FILE_GAIN_DB.get(SOUNDS[sound][0], 0.0) + SOUND_TRIM_DB.get(sound, 0.0)
+	return FILE_GAIN_DB.get(SOUNDS[sound][0], 0.0) + SOUND_TRIM_DB.get(sound, 0.0) + SFX_MASTER_DB
 
 
 ## A looping copy of a sound, to put on a node's own AudioStreamPlayer (so the sound
