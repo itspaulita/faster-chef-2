@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b31wtaesaaigp"]
+
+[ext_resource type="Script" uid="uid://dyj3rx4ifi7qn" path="res://scripts/level_map.gd" id="1_4jybi"]
+[ext_resource type="Texture2D" uid="uid://cao23likhi5q0" path="res://assets/images/bg/Background 1920x1080.png" id="2_4jybi"]
+
+[node name="LevelMap" type="Control" unique_id=1737690280]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4jybi")
+
+[node name="Background" type="TextureRect" parent="." unique_id=224389490]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_4jybi")
+expand_mode = 1
+stretch_mode = 6

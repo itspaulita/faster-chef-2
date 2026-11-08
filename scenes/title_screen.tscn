@@ -2,14 +2,12 @@
 
 [ext_resource type="Script" uid="uid://jjo8h5ej4wko" path="res://scripts/title_screen.gd" id="1_title"]
 [ext_resource type="Script" uid="uid://bqu3hk326euye" path="res://scripts/idle_chef.gd" id="2_idle"]
-[ext_resource type="Texture2D" uid="uid://b5q5aj7nxg2lp" path="res://assets/images/bg/blue wall.png" id="3_wall"]
-[ext_resource type="Texture2D" uid="uid://mvvgcvd3hqf5" path="res://assets/images/bg/floor.png" id="4_floor"]
+[ext_resource type="Texture2D" uid="uid://cao23likhi5q0" path="res://assets/images/bg/Background 1920x1080.png" id="2_mykxm"]
 [ext_resource type="Texture2D" uid="uid://wys3d8eo11sy" path="res://assets/images/player/princess dish 2_2.png" id="5_princess"]
 [ext_resource type="Texture2D" uid="uid://d27h60abxqm8p" path="res://assets/images/player/legend of lasagna.png" id="6_lasagna"]
 [ext_resource type="Texture2D" uid="uid://ctmgul0wwhidt" path="res://assets/images/player/pastatouille.png" id="7_pasta"]
 [ext_resource type="Texture2D" uid="uid://dmy73jutvpil1" path="res://assets/images/player/mavis papaya.png" id="8_mavis"]
 [ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="9_mykxm"]
-
 [ext_resource type="PackedScene" path="res://scenes/how_to_play.tscn" id="10_how"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
@@ -58,13 +56,7 @@ grow_vertical = 2
 script = ExtResource("1_title")
 
 [node name="Wall" type="Sprite2D" parent="." unique_id=1583098312]
-texture = ExtResource("3_wall")
-centered = false
-
-[node name="Floor" type="Sprite2D" parent="." unique_id=2025411109]
-position = Vector2(0, 720)
-scale = Vector2(1.344, 1.344)
-texture = ExtResource("4_floor")
+texture = ExtResource("2_mykxm")
 centered = false
 
 [node name="Chefs" type="Node2D" parent="." unique_id=1310964205]
@@ -110,9 +102,9 @@ start_delay = 0.45
 
 [node name="TitleFaster" type="Label" parent="." unique_id=25844606]
 layout_mode = 0
-offset_top = -14.0
+offset_top = 58.0
 offset_right = 1920.0
-offset_bottom = 170.0
+offset_bottom = 242.0
 theme_override_colors/font_color = Color(0.96, 0.65, 0.17, 1)
 theme_override_colors/font_outline_color = Color(0.23, 0.12, 0.08, 1)
 theme_override_constants/outline_size = 24
@@ -124,9 +116,9 @@ vertical_alignment = 1
 
 [node name="TitleChef" type="Label" parent="." unique_id=2108353221]
 layout_mode = 0
-offset_top = 126.0
+offset_top = 198.0
 offset_right = 1920.0
-offset_bottom = 310.0
+offset_bottom = 382.0
 theme_override_colors/font_color = Color(0.12, 0.45, 0.45, 1)
 theme_override_colors/font_outline_color = Color(0.1, 0.12, 0.16, 1)
 theme_override_constants/outline_size = 24
@@ -154,7 +146,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "START"
 
-[node name="HowToPlayButton" type="Button" parent="."]
+[node name="HowToPlayButton" type="Button" parent="." unique_id=2039994172]
 layout_mode = 0
 offset_left = 730.0
 offset_top = 600.0
@@ -172,4 +164,4 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
 text = "HOW TO PLAY"
 
-[node name="HowToPlay" parent="." instance=ExtResource("10_how")]
+[node name="HowToPlay" parent="." unique_id=837731721 instance=ExtResource("10_how")]

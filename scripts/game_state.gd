@@ -36,6 +36,14 @@ static var all_extras := false
 ## { "stars": int, "points": int, "score": int }. Replaying a level replaces its entry.
 static var level_results := {}
 
+# --- Level map ------------------------------------------------------------------------
+## The highest level (0-based) the player may start.
+static var unlocked_level := 0
+## A level that was just unlocked: the map plays its unlock animation once, then sets -1.
+static var just_unlocked := -1
+## True after the last level's tally: the map offers the results (game over) screen.
+static var game_complete := false
+
 static func reset_run() -> void:
 	phase_stars = {}
 	phase_time_left = {}
@@ -45,6 +53,9 @@ static func reset_run() -> void:
 ## A new game starts: forget the levels of the last one.
 static func reset_game() -> void:
 	level_results = {}
+	unlocked_level = 0
+	just_unlocked = -1
+	game_complete = false
 	reset_run()
 
 

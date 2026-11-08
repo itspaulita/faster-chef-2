@@ -1,6 +1,6 @@
 extends Control
 
-const NEXT_SCENE := "res://scenes/cutscene.tscn"
+const NEXT_SCENE := "res://scenes/level_map.tscn"
 const OUTLINE_SHADER := preload("res://shaders/outline.gdshader")
 const DIMMED := Color(0.6, 0.6, 0.6)
 ## The stats box sits above the chef, with its bottom edge at this y.
