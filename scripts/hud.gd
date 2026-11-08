@@ -31,8 +31,8 @@ const COUNTDOWN_AT := 5.0
 var _countdown_played := false
 
 # Ingredient tile looks: grey at 0 collected, blue while collecting, yellow once complete.
-var _empty_tile_style: StyleBoxFlat
-var _done_tile_style: StyleBoxFlat
+var _empty_tile_style: StyleBox
+var _done_tile_style: StyleBox
 var _normal_tile_style: StyleBox
 
 @onready var points_panel: PanelContainer = $PointsPanel
@@ -51,11 +51,9 @@ var _normal_tile_style: StyleBox
 
 
 func _ready() -> void:
-	_normal_tile_style = rows[0].get_node("IconTile").get_theme_stylebox("panel")
-	_empty_tile_style = _normal_tile_style.duplicate()
-	_empty_tile_style.bg_color = Color(0.72, 0.74, 0.78)
-	_done_tile_style = _normal_tile_style.duplicate()
-	_done_tile_style.bg_color = Color(1.0, 0.86, 0.3)
+	_normal_tile_style = _tile_style(Color(0.84, 0.93, 1))
+	_empty_tile_style = _tile_style(Color(0.72, 0.74, 0.78))
+	_done_tile_style = _tile_style(Color(1.0, 0.86, 0.3))
 	set_ingredient_frames(ingredient_frames)
 	for i in rows.size():
 		set_ingredient(i, 0, false)
@@ -66,6 +64,11 @@ func _ready() -> void:
 	phase_timer.star_lost.connect(_on_star_lost)
 	phase_timer.timed_out.connect(timed_out.emit)
 	_setup_bar()
+
+
+## One look for the ingredient tiles, only the fill color changes (grey / blue / yellow).
+func _tile_style(fill: Color) -> StyleBox:
+	return PixelUI.panel(fill, Color(0.23, 0.12, 0.08), 6, 16, 6)
 
 
 ## Changes the three tile pictures: frames on "ingredients 32x32.png" (6 columns, row-major).
@@ -117,10 +120,12 @@ func _setup_bar() -> void:
 	back.bg_color = Color(1, 0.97, 0.88)
 	back.set_border_width_all(4)
 	back.border_color = Color(0.23, 0.12, 0.08)
-	back.set_corner_radius_all(14)
+	back.set_corner_radius_all(0)   # square blocks: the pixel look
+	back.anti_aliasing = false
 	_bar_fill = StyleBoxFlat.new()
 	_bar_fill.bg_color = BAR_COLOR
-	_bar_fill.set_corner_radius_all(14)
+	_bar_fill.set_corner_radius_all(0)
+	_bar_fill.anti_aliasing = false
 	_bar_fill.set_border_width_all(4)
 	_bar_fill.border_color = Color(0.23, 0.12, 0.08)
 	bar.add_theme_stylebox_override("background", back)
