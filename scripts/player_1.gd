@@ -138,7 +138,7 @@ func exit_gum() -> void:
 ## ("running" and "running_grab").
 func _on_frame_changed() -> void:
 	if String(sprite.animation).begins_with("running") and is_on_floor():
-		Audio.sfx(footstep_sound)
+		Audio.sfx(footstep_sound, 0)   # always the same file, no random variants
 
 
 func _update_animation() -> void:
