@@ -15,7 +15,7 @@ const NODE_SIZE := 150.0
 const POPUP_SIZE := 800.0       # the popup is always this square
 const MONSTER_FRAMES := [0, 1, 2, 3]   # same idle loop as the order cutscene
 const CHOOSE_CHEF_SCENE := "res://scenes/choose_chef.tscn"
-
+const TITLE_SCENE := "res://scenes/title_screen.tscn"
 
 ## Centre of each level button on the 1920x1080 screen, in level order. Move them here.
 @export var node_positions: Array[Vector2] = [Vector2(420, 760), Vector2(960, 470), Vector2(1500, 760)]
@@ -25,11 +25,15 @@ var _locks: Array[Control] = []
 var _path_fill: Line2D
 var _popup: Control
 var _busy := false   # true while the unlock animation plays (clicks are ignored)
+var _menu_button: Button
+var _menu_panel: PanelContainer
+var _music_item: Button
+var _sfx_item: Button
 
 
 func _ready() -> void:
 	Audio.music("intro")
-	add_child(SoundToggles.new())
+	_build_menu()
 	var newly := GameState.just_unlocked
 	GameState.just_unlocked = -1
 	# The path is filled up to the last unlocked level (or one before the one about to unlock).
@@ -162,6 +166,77 @@ func _play_unlock(i: int) -> void:
 	await tween.finished
 	_busy = false
 
+# ---- Menu (top left) ------------------------------------------------------------------
+
+## MENU button with a dropdown: Back to lobby, Music, SFX, Quit. It's on its own layer,
+## so it stays clickable over the level popups.
+func _build_menu() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 40   # above the popups, under the sound buttons (50)
+	add_child(layer)
+
+	_menu_button = _button("MENU", 32)
+	_menu_button.position = Vector2(24, 24)
+	_menu_button.focus_mode = Control.FOCUS_NONE
+	_menu_button.pressed.connect(_toggle_menu)
+	layer.add_child(_menu_button)
+
+	_menu_panel = PanelContainer.new()
+	_menu_panel.add_theme_stylebox_override("panel", PixelUI.panel(Color(1, 0.97, 0.88), OUTLINE, 8, 20, 20))
+	_menu_panel.position = Vector2(24, 110)
+	_menu_panel.visible = false
+	layer.add_child(_menu_panel)
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation", 12)
+	_menu_panel.add_child(list)
+	list.add_child(_menu_item("BACK TO LOBBY", _back_to_lobby))
+	_music_item = _menu_item("", Audio.toggle_mute.bind(Audio.MUSIC_BUS))
+	list.add_child(_music_item)
+	_sfx_item = _menu_item("", Audio.toggle_mute.bind(Audio.SFX_BUS))
+	list.add_child(_sfx_item)
+	list.add_child(_menu_item("QUIT", _quit))
+
+	Audio.mute_changed.connect(_refresh_menu)
+	_refresh_menu()
+
+
+func _menu_item(text: String, action: Callable) -> Button:
+	var item := _button(text, 28)
+	item.focus_mode = Control.FOCUS_NONE   # Enter keeps pressing the popup's START
+	item.pressed.connect(action)
+	return item
+
+
+func _toggle_menu() -> void:
+	_menu_panel.visible = not _menu_panel.visible
+
+
+func _refresh_menu() -> void:
+	_music_item.text = "MUSIC: OFF" if Audio.is_muted(Audio.MUSIC_BUS) else "MUSIC: ON"
+	_sfx_item.text = "SFX: OFF" if Audio.is_muted(Audio.SFX_BUS) else "SFX: ON"
+
+
+## Clicking anywhere outside the open menu (or Esc) closes it.
+func _input(event: InputEvent) -> void:
+	if not _menu_panel or not _menu_panel.visible:
+		return
+	if event.is_action_pressed("ui_cancel"):
+		_menu_panel.visible = false
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed:
+		var pos: Vector2 = event.position
+		if not _menu_panel.get_global_rect().has_point(pos) \
+				and not _menu_button.get_global_rect().has_point(pos):
+			_menu_panel.visible = false
+
+
+## Same as the pause menu: browsers can't close the tab, so the web build goes to the title.
+func _quit() -> void:
+	if OS.has_feature("web"):
+		get_tree().change_scene_to_file(TITLE_SCENE)
+	else:
+		get_tree().quit()
+
 
 # ---- Popups ---------------------------------------------------------------------------
 
@@ -174,9 +249,8 @@ func _open_popup(i: int) -> void:
 	monsters.add_theme_constant_override("separation", 20)
 	var pair := info.monsters.size() > 1
 	for m in info.monsters.size():
-		monsters.add_child(_monster_view(info.monsters[m], 180.0 if pair else 220.0, m * 0.15))
+		monsters.add_child(_monster_view(info.monsters[m], 220.0 if pair else 280.0, m * 0.15))
 	box.add_child(monsters)
-	box.add_child(_chef_row())
 	var waiting := _label(_waiting_text(info), 32, INK)
 	waiting.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(waiting)
@@ -192,22 +266,9 @@ func _open_popup(i: int) -> void:
 	box.add_child(_button_row([close, start]))
 	start.grab_focus()
 
-## "[chef] Princess Dish  [CHANGE]": who's cooking, and a way to switch (once there's a choice).
-func _chef_row() -> HBoxContainer:
-	var id := GameState.selected_chef_name if ChefStats.DATA.has(GameState.selected_chef_name) else "PrincessDish"
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 16)
-	row.add_child(_chef_view(id, 72.0))
-	row.add_child(_label(ChefStats.get_stats(id).name, 24, INK))
-	var change := _button("CHANGE", 24)
-	change.visible = GameState.unlocked_chefs.size() > 1
-	change.pressed.connect(_change_chef)
-	row.add_child(change)
-	return row
 
-
-func _change_chef() -> void:
+## Choose chef, keeping the level progress (Play there comes back to this map).
+func _back_to_lobby() -> void:
 	GameState.changing_chef = true
 	get_tree().change_scene_to_file(CHOOSE_CHEF_SCENE)
 
@@ -226,7 +287,7 @@ func _show_new_chefs() -> void:
 		column.add_child(_label(ChefStats.get_stats(id).ability, 22, DONE_COLOR))
 		row.add_child(column)
 	box.add_child(row)
-	var note := _label("Pick them with CHANGE in the level popup.", 26, INK)
+	var note := _label("Switch chef from MENU > BACK TO LOBBY.", 26, INK)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(note)
 	var ok := _button("NICE!")

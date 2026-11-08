@@ -45,7 +45,7 @@ const DATA := {
 		"air_jumps": 1,
 		"cats_hop": true,
 		"sheet": "res://assets/images/player/pastatouille.png",
-		"unlock_after": 2,
+		"unlock_after": 1,
 	},
 	"MavisPapaya": {
 		"name": "Mavis Papaya",
