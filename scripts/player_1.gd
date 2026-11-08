@@ -134,9 +134,10 @@ func exit_gum() -> void:
 		jump_multiplier = 1.0
 		sprite.speed_scale = 1.0
 
-## A footstep on every frame of the run cycle.
+## A footstep on every frame of the run cycle, with or without something in the hands
+## ("running" and "running_grab").
 func _on_frame_changed() -> void:
-	if sprite.animation == &"running" and is_on_floor():
+	if String(sprite.animation).begins_with("running") and is_on_floor():
 		Audio.sfx(footstep_sound)
 
 
