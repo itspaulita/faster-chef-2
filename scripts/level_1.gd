@@ -14,6 +14,8 @@ extends Node2D
 @onready var exit_zone: Area2D = $ExitZone
 
 var exit_open := false # if player doesnt collect enough ingredient, exit is blocked
+var _exit_opened_once := false   # the "wall is open" popup only shows the first time
+var _wall_tween: Tween           # the wall's fade, killed if the wall flips again mid-fade
 
 signal exit_opened
 signal phase_one_complete(final_xp: int)
@@ -87,6 +89,7 @@ func _ready() -> void:
 	else:
 		_setup_ingredients()
 		exit_zone.body_entered.connect(_on_exit_zone_entered)
+		_add_wall_hint()
 	_setup_checkpoints()
 
 func _fit_camera_to_map() -> void:
@@ -198,6 +201,7 @@ func _on_cat_hit_chef(cat_name: String) -> void:
 	ingredient_progress.emit(type, collected_by_type[type], total_by_type[type])
 	message.emit("Oh No %s steals %s!" % [cat_name, type.capitalize()])
 	_respawn_piece(type, stolen.position)
+	_update_exit()
 
 
 func _most_collected_type() -> String:
@@ -217,19 +221,41 @@ func _respawn_piece(type: String, spawn_position: Vector2) -> void:
 	# Deferred: we're inside a collision callback, where Godot won't let us add Areas.
 	ingredients.add_child.call_deferred(piece)
 	
+## The wall follows the ingredients: open while the chef has the minimum of each,
+## shut again if a cat steals them back below it.
 func _update_exit() -> void:
-	if exit_open or not _all_ingredients_at_minimum():
+	var enough := _all_ingredients_at_minimum()
+	if enough == exit_open:
 		return
-	exit_open = true
-	_open_exit_wall()
-	exit_opened.emit()
+	exit_open = enough
+	if enough:
+		_open_exit_wall()
+		if not _exit_opened_once:
+			_exit_opened_once = true
+			exit_opened.emit()                       # the big "wall is open" popup, once
+		else:
+			message.emit("The wall is open again!")
+	else:
+		_close_exit_wall()
+		message.emit("Missing ingredients! The wall is back.")
 
 
 func _open_exit_wall() -> void:
 	# Fade the wall out, then turn it off (no drawing, no collision).
-	var tween := create_tween()
-	tween.tween_property(exit_wall, "modulate:a", 0.0, 0.6)
-	tween.tween_callback(func(): exit_wall.enabled = false)
+	if _wall_tween:
+		_wall_tween.kill()
+	_wall_tween = create_tween()
+	_wall_tween.tween_property(exit_wall, "modulate:a", 0.0, 0.6)
+	_wall_tween.tween_callback(func(): exit_wall.enabled = false)
+
+
+func _close_exit_wall() -> void:
+	# Solid right away (so the chef can't slip through), then fade back in.
+	if _wall_tween:
+		_wall_tween.kill()
+	exit_wall.enabled = true
+	_wall_tween = create_tween()
+	_wall_tween.tween_property(exit_wall, "modulate:a", 1.0, 0.3)
 
 
 func _all_ingredients_at_minimum() -> bool:
@@ -255,6 +281,31 @@ func _on_exit_zone_entered(body: Node2D) -> void:
 		message.emit("You're missing ingredients! Go get them back first.")
 		return
 	phase_one_complete.emit(xp)
+	
+## An invisible strip one tile in front of the exit wall, as tall as the wall. Running into
+## the wall while it's shut says why. Built from the wall's tiles, so it fits every level.
+func _add_wall_hint() -> void:
+	var rect := exit_wall.get_used_rect()
+	if rect.size == Vector2i.ZERO:
+		return
+	var tile := Vector2(exit_wall.tile_set.tile_size)
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(tile.x, rect.size.y * tile.y)
+	var collision := CollisionShape2D.new()
+	collision.shape = shape
+	var hint := Area2D.new()
+	hint.name = "WallHint"
+	hint.position = exit_wall.position + Vector2(
+			(rect.position.x - 0.5) * tile.x,
+			(rect.position.y + rect.size.y / 2.0) * tile.y)
+	hint.add_child(collision)
+	add_child(hint)
+	hint.body_entered.connect(_on_wall_hint_entered)
+
+
+func _on_wall_hint_entered(body: Node2D) -> void:
+	if body == player and not exit_open:
+		message.emit("You're missing ingredients! Go back and collect them.")
 	
 func _setup_checkpoints() -> void:
 	respawn_point = player.global_position     # Phase 1: the start. Phase 3: Phase3Start.
