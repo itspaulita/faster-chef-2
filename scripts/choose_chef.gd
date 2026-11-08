@@ -28,7 +28,8 @@ func _ready() -> void:
 	# Enter confirms the name, so the keyboard goes back to the screen.
 	nickname_edit.text_changed.connect(func(_text: String) -> void: prompt_label.text = DEFAULT_PROMPT)
 	nickname_edit.text_submitted.connect(_on_nickname_submitted)
-
+	add_child(SoundToggles.new())
+	
 
 ## Enter confirms the name and picks the first chef (if none is picked yet), so the rest can be
 ## done with the keyboard: Left / Right (or A / D) switch chef, Enter starts.

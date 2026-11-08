@@ -39,6 +39,7 @@ func _ready() -> void:
 		_open_finished_popup()
 	else:
 		_open_popup(GameState.unlocked_level)
+	add_child(SoundToggles.new())
 
 
 # ---- Map ------------------------------------------------------------------------------

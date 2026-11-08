@@ -14,7 +14,8 @@ signal restart_requested
 @onready var resume_button: Button = %ResumeButton
 @onready var restart_button: Button = %RestartButton
 @onready var lobby_button: Button = %LobbyButton
-@onready var sound_button: Button = %SoundButton
+@onready var music_button: Button = %MusicButton
+@onready var sfx_button: Button = %SfxButton
 @onready var quit_button: Button = %QuitButton
 
 
@@ -24,7 +25,9 @@ func _ready() -> void:
 	resume_button.pressed.connect(close)
 	restart_button.pressed.connect(_restart_level)
 	lobby_button.pressed.connect(_go_to_lobby)
-	sound_button.pressed.connect(_toggle_sound)
+	music_button.pressed.connect(Audio.toggle_mute.bind(Audio.MUSIC_BUS))
+	sfx_button.pressed.connect(Audio.toggle_mute.bind(Audio.SFX_BUS))
+	Audio.mute_changed.connect(_refresh_sound_text)
 	quit_button.pressed.connect(_quit)
 	_refresh_sound_text()
 
@@ -73,14 +76,9 @@ func _go_to_lobby() -> void:
 	get_tree().change_scene_to_file(LOBBY_SCENE)
 
 
-func _toggle_sound() -> void:
-	AudioServer.set_bus_mute(0, not AudioServer.is_bus_mute(0))
-	_refresh_sound_text()
-
-
 func _refresh_sound_text() -> void:
-	sound_button.text = "SOUND: OFF" if AudioServer.is_bus_mute(0) else "SOUND: ON"
-
+	music_button.text = "MUSIC: OFF" if Audio.is_muted(Audio.MUSIC_BUS) else "MUSIC: ON"
+	sfx_button.text = "SFX: OFF" if Audio.is_muted(Audio.SFX_BUS) else "SFX: ON"
 
 func _quit() -> void:
 	get_tree().paused = false

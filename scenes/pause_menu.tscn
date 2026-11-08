@@ -1,30 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b6w224yc4mens"]
 
-[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_pause"]
-[ext_resource type="FontFile" path="res://assets/font/RetroGaming.ttf" id="2_font"]
+[ext_resource type="Script" uid="uid://gsgmmq3m2txy" path="res://scripts/pause_menu.gd" id="1_pause"]
+[ext_resource type="FontFile" uid="uid://gdslv24chos0" path="res://assets/font/RetroGaming.ttf" id="2_font"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
-content_margin_left = 56.0
-content_margin_top = 40.0
-content_margin_right = 56.0
-content_margin_bottom = 48.0
-bg_color = Color(0.95, 0.66, 0.18, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.23, 0.12, 0.08, 1)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
 content_margin_left = 32.0
 content_margin_top = 14.0
 content_margin_right = 32.0
 content_margin_bottom = 14.0
-bg_color = Color(1, 0.97, 0.88, 1)
+bg_color = Color(1, 1, 1, 1)
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6
@@ -35,12 +19,12 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 32.0
 content_margin_top = 14.0
 content_margin_right = 32.0
 content_margin_bottom = 14.0
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(1, 0.97, 0.88, 1)
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6
@@ -81,13 +65,29 @@ Button/styles/normal = SubResource("StyleBoxFlat_button")
 Button/styles/pressed = SubResource("StyleBoxFlat_button_pressed")
 Label/colors/font_color = Color(0.17, 0.09, 0.06, 1)
 
-[node name="PauseMenu" type="CanvasLayer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
+content_margin_left = 56.0
+content_margin_top = 40.0
+content_margin_right = 56.0
+content_margin_bottom = 48.0
+bg_color = Color(0.95, 0.66, 0.18, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.23, 0.12, 0.08, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=650723598]
 process_mode = 3
 layer = 12
 visible = false
 script = ExtResource("1_pause")
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=2097836429]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -95,7 +95,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.5)
 
-[node name="CenterContainer" type="CenterContainer" parent="Dim"]
+[node name="CenterContainer" type="CenterContainer" parent="Dim" unique_id=1418728407]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -103,43 +103,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Banner" type="PanelContainer" parent="Dim/CenterContainer"]
+[node name="Banner" type="PanelContainer" parent="Dim/CenterContainer" unique_id=227093924]
 layout_mode = 2
 theme = SubResource("Theme_pause")
 theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Dim/CenterContainer/Banner"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Dim/CenterContainer/Banner" unique_id=2099659334]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TitleLabel" type="Label" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1947878102]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "PAUSED"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1869626973]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(520, 0)
 layout_mode = 2
 text = "RESUME"
 
-[node name="RestartButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=137371550]
 unique_name_in_owner = true
 layout_mode = 2
 text = "RESTART LEVEL"
 
-[node name="LobbyButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="LobbyButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1236772365]
 unique_name_in_owner = true
 layout_mode = 2
 text = "BACK TO LOBBY"
 
-[node name="SoundButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="MusicButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=1501220114]
 unique_name_in_owner = true
 layout_mode = 2
-text = "SOUND: ON"
+text = "MUSIC: ON"
 
-[node name="QuitButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer"]
+[node name="SfxButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=796455335]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SFX: ON"
+
+[node name="QuitButton" type="Button" parent="Dim/CenterContainer/Banner/VBoxContainer" unique_id=473419816]
 unique_name_in_owner = true
 layout_mode = 2
 text = "QUIT"

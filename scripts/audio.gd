@@ -13,6 +13,12 @@ const SFX_DIR := "res://assets/sfx/FC_sfx_"
 const MUSIC_DIR := "res://assets/music/"
 const SFX_VOICES := 12
 const MUSIC_FADE := 0.6
+## The two buses the mute buttons switch (both feed into Master).
+const MUSIC_BUS := "Music"
+const SFX_BUS := "SFX"
+
+## A bus was muted or unmuted (the mute buttons redraw).
+signal mute_changed
 
 ## name -> the file names (after "FC_sfx_" and before ".wav"). More than one = random variant.
 const SOUNDS := {
@@ -105,11 +111,15 @@ var _cache := {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_add_bus(MUSIC_BUS)
+	_add_bus(SFX_BUS)
 	for i in SFX_VOICES:
 		var voice := AudioStreamPlayer.new()
+		voice.bus = SFX_BUS
 		add_child(voice)
 		_voices.append(voice)
 	_music_player = AudioStreamPlayer.new()
+	_music_player.bus = MUSIC_BUS
 	add_child(_music_player)
 	# Every button, in every scene, clicks.
 	get_tree().node_added.connect(_on_node_added)
@@ -178,6 +188,28 @@ func stop_music(fade := MUSIC_FADE) -> void:
 	_music_tween = create_tween()
 	_music_tween.tween_property(_music_player, "volume_db", -60.0, fade)
 	_music_tween.tween_callback(_music_player.stop)
+
+func is_muted(bus: String) -> bool:
+	return AudioServer.is_bus_mute(AudioServer.get_bus_index(bus))
+
+
+func set_muted(bus: String, muted: bool) -> void:
+	AudioServer.set_bus_mute(AudioServer.get_bus_index(bus), muted)
+	mute_changed.emit()
+
+
+func toggle_mute(bus: String) -> void:
+	set_muted(bus, not is_muted(bus))
+
+
+## Makes a bus in code (so no bus layout file is needed) that feeds into Master.
+func _add_bus(bus_name: String) -> void:
+	if AudioServer.get_bus_index(bus_name) != -1:
+		return
+	AudioServer.add_bus()
+	var index := AudioServer.bus_count - 1
+	AudioServer.set_bus_name(index, bus_name)
+	AudioServer.set_bus_send(index, "Master")
 
 
 func _free_voice() -> AudioStreamPlayer:
