@@ -32,6 +32,7 @@ func _ready() -> void:
 	_build_ui()
 	# The pot's own player: it freezes when the game is paused and stops with the pot.
 	_boil_sound = AudioStreamPlayer.new()
+	_boil_sound.bus = Audio.SFX_BUS
 	_boil_sound.stream = Audio.looping_stream("boiling")
 	_boil_sound.volume_db = Audio.gain_db("boiling")
 	add_child(_boil_sound)

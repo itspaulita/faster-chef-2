@@ -2201,7 +2201,7 @@ tile_set = SubResource("TileSet_ejf1h")
 
 [node name="ExitWall" type="TileMapLayer" parent="." unique_id=1062537228]
 texture_filter = 1
-tile_map_data = PackedByteArray("AAC/ARAAAQAPAAAAAAC/AREAAQAPAAEAAAC/ARIAAQAPAAEAAAC/ARMAAQAPAAEAAAC/ARQAAQAPAAEAAAC/ARUAAQAPAAIAAAA=")
+tile_map_data = PackedByteArray("AAC/ARAAAQAPAAAAAAC/AREAAQAPAAEAAAC/ARIAAQAPAAEAAAC/ARMAAQAPAAEAAAC/ARQAAQAPAAEAAAC/ARUAAQAPAAIAAAD//xEAAQAPAAEAAAD//xIAAQAPAAEAAAD//xMAAQAPAAEAAAD//xQAAQAPAAEAAAA=")
 tile_set = SubResource("TileSet_ejf1h")
 
 [node name="bubblegum path" type="Node2D" parent="." unique_id=1804800607]

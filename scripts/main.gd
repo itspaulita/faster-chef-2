@@ -2,6 +2,7 @@ extends Node2D
 ## Holds the current level and connects it to the HUD, notifications and popup.
 
 const ORDER_CUTSCENE := "res://scenes/cutscene.tscn"
+const LEVEL_MAP := "res://scenes/level_map.tscn"
 ## Clock and star thresholds per phase (edit the .tres files to tune them).
 const PHASE_TIMINGS := {
 	1: preload("res://resources/timing/phase_1.tres"),
@@ -192,13 +193,16 @@ func _on_phase_three_complete(final_xp: int) -> void:
 	tally.show_tally(final_xp)
 
 
+## Back to the level map. Winning a level for the first time unlocks the next one there
+## (with the animation); the last level's tally offers the results screen instead.
 func _on_tally_continue() -> void:
 	if is_instance_valid(delivery_cutscene):
 		delivery_cutscene.close()
-	if level_index + 1 < Levels.count():
-		# Next level: its order cutscene first, then main loads the level.
-		GameState.level_index = level_index + 1
-		get_tree().change_scene_to_file(ORDER_CUTSCENE)
+	var next := level_index + 1
+	if next < Levels.count():
+		if next > GameState.unlocked_level:
+			GameState.unlocked_level = next
+			GameState.just_unlocked = next
 	else:
-		# That was the last level: the game over screen adds up every level, then the title.
-		get_tree().change_scene_to_file(GAME_OVER_SCENE)
+		GameState.game_complete = true
+	get_tree().change_scene_to_file(LEVEL_MAP)

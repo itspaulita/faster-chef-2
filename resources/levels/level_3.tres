@@ -1,18 +1,20 @@
-[gd_resource type="Resource" script_class="LevelInfo" load_steps=7 format=3]
+[gd_resource type="Resource" script_class="LevelInfo" format=3 uid="uid://8grrm3vj5acw"]
 
-[ext_resource type="Script" path="res://scripts/data/level_info.gd" id="1_info"]
-[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-apple2.png" id="2_m1"]
-[ext_resource type="Texture2D" path="res://assets/images/monsters/monster-tomato2.png" id="3_m2"]
-[ext_resource type="Texture2D" path="res://assets/images/food/dish-pumpkin.png" id="9_dish"]
+[ext_resource type="Script" uid="uid://bjqaqefh5pmsk" path="res://scripts/data/level_info.gd" id="1_info"]
+[ext_resource type="Texture2D" uid="uid://doyjq155bduxu" path="res://assets/images/monsters/monster-apple2.png" id="2_m1"]
+[ext_resource type="Texture2D" uid="uid://1kjm27sominv" path="res://assets/images/monsters/monster-tomato2.png" id="3_m2"]
+[ext_resource type="Script" uid="uid://ca5bjuqovhuq3" path="res://scripts/data/phase_timing.gd" id="4_vh5kk"]
+[ext_resource type="Texture2D" uid="uid://bru6h2pq4jvca" path="res://assets/images/food/dish-pumpkin.png" id="9_dish"]
 [ext_resource type="Resource" path="res://resources/timing/level_3_phase_1.tres" id="10_t1"]
-[ext_resource type="Resource" path="res://resources/timing/level_3_phase_3.tres" id="11_t3"]
+[ext_resource type="Resource" uid="uid://cmvfxrhcl8fhv" path="res://resources/timing/level_3_phase_3.tres" id="11_t3"]
 
 [resource]
 script = ExtResource("1_info")
 level_scene = "res://scenes/levels/level_3.tscn"
 monsters = Array[Texture2D]([ExtResource("2_m1"), ExtResource("3_m2")])
+monster_names = PackedStringArray("Mishapple", "Tomate-o")
 order_text = "Mishapple and Tomate-o ordered Pumpkin soup!"
 dish_icon = ExtResource("9_dish")
 ingredient_types = PackedStringArray("pumpkin", "cream", "seasoning")
 ingredient_frames = Array[int]([1, 6, 9])
-phase_timings = Array[PhaseTiming]([ExtResource("10_t1"), null, ExtResource("11_t3")])
+phase_timings = Array[ExtResource("4_vh5kk")]([ExtResource("10_t1"), null, ExtResource("11_t3")])

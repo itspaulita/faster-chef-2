@@ -11,6 +11,7 @@ func _ready() -> void:
 	Audio.music("intro")
 	start_button.pressed.connect(_on_start_pressed)
 	how_to_play_button.pressed.connect(how_to_play.open)
+	add_child(SoundToggles.new())
 
 
 func _on_start_pressed() -> void:
